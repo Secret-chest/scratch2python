@@ -2,11 +2,11 @@
 # The main file you probably want to run is located at main.py.
 import zipfile as zf
 import json
-import target, costume, sound, block
+import target, costume, sound, block, variable, monitor  # , broadcast
 from io import StringIO
 
 # load project
-project = zf.ZipFile("move.sb3", "r")
+project = zf.ZipFile("Untitled-78.sb3", "r")
 project_json = json.loads(project.read("project.json"))
 targets = []
 print("DEBUG: Project JSON output:", project_json)

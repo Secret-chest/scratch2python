@@ -79,6 +79,7 @@ while project_running:
     set_background(current_bg)
     for target in s2p_unpacker.targets:
         goto(load_svg_bytes(target.costumes[target.currentCostume].file), target.x, target.y)
+
     pygame.display.flip()
     wn.update()
 pygame.quit()
