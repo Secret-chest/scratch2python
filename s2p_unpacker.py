@@ -6,7 +6,7 @@ import target, costume, sound, block, variable, monitor  # , broadcast
 from io import StringIO
 
 # load project
-project = zf.ZipFile("Untitled-78.sb3", "r")
+project = zf.ZipFile("ifonedgebounce.sb3", "r")
 project_json = json.loads(project.read("project.json"))
 targets = []
 print("DEBUG: Project JSON output:", project_json)
