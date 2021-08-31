@@ -2,6 +2,7 @@
 import s2p_unpacker
 from s2p_unpacker import *
 import shutil
+import scratch
 import pygame
 import tkinter as tk
 # import zipfile as zf
@@ -25,7 +26,7 @@ def load_svg_bytes(svg_bytes):
     return pygame.image.load(byte_io)
 
 
-def goto(sprite, x, y):
+def render(sprite, x, y):
     # convert Scratch coordinates into Pygame coordinates
     final_x = x + WIDTH // 2 - sprite.get_width() // 2
     final_y = HEIGHT // 2 - y - sprite.get_height() // 2
@@ -33,7 +34,7 @@ def goto(sprite, x, y):
 
 
 def set_background(bg):
-    goto(bg, 0, 0)
+    render(bg, 0, 0)
 
 
 wn = tk.Tk()
@@ -41,6 +42,7 @@ wn.withdraw()
 # when needed
 # wn.deiconify()
 pygame.init()
+scratch.startProject()
 HEIGHT = 360
 WIDTH = 480
 project_name = "Scratch2Python"
@@ -78,8 +80,15 @@ while project_running:
     # move all sprites to current position and direction
     set_background(current_bg)
     for target in s2p_unpacker.targets:
-        goto(load_svg_bytes(target.costumes[target.currentCostume].file), target.x, target.y)
-
+        render(load_svg_bytes(target.costumes[target.currentCostume].file), target.x, target.y)
+        for _, block in target.blocks.items():
+            if not block.blockRan and block.opcode == "event_whenflagclicked":
+                print("DEBUG: Running opcode", block.opcode)
+                print("DEBUG: Running ID", block.blockID)
+                print("DEBUG: Next ID", block.next)
+                nextBlock = target.blocks[block.next]
+                print("DEBUG: Next opcode", nextBlock.opcode)
+                block.blockRan = True
     pygame.display.flip()
     wn.update()
 pygame.quit()

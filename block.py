@@ -8,3 +8,4 @@ class Block:
         self.fields = {}  # dropdown menus
         self.shadow = False  # if the block is a reporter or boolean block
         self.topLevel = False  # if the block is a hat block
+        self.blockRan = False

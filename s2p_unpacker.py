@@ -6,7 +6,7 @@ import target, costume, sound, block, variable, monitor  # , broadcast
 from io import StringIO
 
 # load project
-project = zf.ZipFile("ifonedgebounce.sb3", "r")
+project = zf.ZipFile("ifonedgebounce.sb3", "r")  # change this to load a different project
 project_json = json.loads(project.read("project.json"))
 targets = []
 print("DEBUG: Project JSON output:", project_json)
@@ -33,6 +33,7 @@ for target_obj in project_json['targets']:
             b.topLevel = block_obj["topLevel"]
             b.inputs = block_obj["inputs"]
             b.fields = block_obj["inputs"]
-            t.blocks.append(b)
+            b.blockRan = False
+            t.blocks[block_id] = b
         targets.append(t)
 

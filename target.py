@@ -3,7 +3,7 @@ class Target:
         self.isStage = False
         self.variables = {}
         self.lists = {}
-        self.blocks = []
+        self.blocks = {}
         self.currentCostume = 0
         self.costumes = []
         self.sounds = []
