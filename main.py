@@ -1,3 +1,8 @@
+"""
+Main Scratch2Python file
+
+This file is used to run Scratch2Python and build the project based on the data given by s2p_unpacker.py
+"""
 # Remember to install pygame and CairoSVG
 import s2p_unpacker
 from s2p_unpacker import *
@@ -14,54 +19,56 @@ import json
 import time
 
 
-def load_svg(filename):
-    new_bites = cairosvg.svg2png(url=filename)
-    byte_io = io.BytesIO(new_bites)
-    return pygame.image.load(byte_io)
+# Basic functions
+# Those functions are used for basic sprite tasks. They will probably be moved to scratch.py.
+# Load SVG in pygame
+def loadSvg(svg_bytes):
+    newBites = cairosvg.svg2png(bytestring=svg_bytes)
+    byteIo = io.BytesIO(newBites)
+    return pygame.image.load(byteIo)
 
 
-def load_svg_bytes(svg_bytes):
-    new_bites = cairosvg.svg2png(bytestring=svg_bytes)
-    byte_io = io.BytesIO(new_bites)
-    return pygame.image.load(byte_io)
-
-
+# Render a sprite at its coordinates
 def render(sprite, x, y):
     # convert Scratch coordinates into Pygame coordinates
-    final_x = x + WIDTH // 2 - sprite.get_width() // 2
-    final_y = HEIGHT // 2 - y - sprite.get_height() // 2
-    display.blit(sprite, (final_x, final_y))
+    finalX = x + WIDTH // 2 - sprite.get_width() // 2
+    finalY = HEIGHT // 2 - y - sprite.get_height() // 2
+    display.blit(sprite, (finalX, finalY))
 
 
-def set_background(bg):
+# Set the stage background
+def setBackground(bg):
     render(bg, 0, 0)
 
 
-# prepare project file
-targets, current_bg_file, project = s2p_unpacker.sb3_unpack("ifonedgebounce.sb3")  # change this to load a different project
-wn = tk.Tk()
-wn.withdraw()
+# Prepare project file
+projectToLoad = "ifonedgebounce.sb3"  # change this to load a different project
+targets, currentBgFile, project = s2p_unpacker.sb3_unpack(projectToLoad)
+wn = tk.Tk()  # Start tkinter for popups
+wn.withdraw()  # Hide main tkinter window
 # when needed
 # wn.deiconify()
-pygame.init()
+pygame.init()  # Start pygame
 scratch.startProject()
+# Set player size
 HEIGHT = 360
 WIDTH = 480
-project_name = "Scratch2Python"
+projectName = projectToLoad[:-4] # Set the project name
 icon = pygame.image.load("icon.png")
 display = pygame.display.set_mode([WIDTH, HEIGHT])
-pygame.display.set_caption(project_name)
+pygame.display.set_caption(projectName + " - Scratch2Python" )
 pygame.display.set_icon(icon)
-current_bg = load_svg_bytes(current_bg_file)
-# current_bg_file = project.read(target["costumes"][target["currentCostume"]]["md5ext"])
-project_running = True
+currentBg = loadSvg(currentBgFile)
+# currentBgFile = project.read(target["costumes"][target["currentCostume"]]["md5ext"])
+projectRunning = True
 
 
-while project_running:
+while projectRunning:
     for event in pygame.event.get():
         # Window quit (ALT-F4 / X button)
         if event.type == pygame.QUIT:
-            project_running = False
+            projectRunning = False
+        # Some controls
         keys = pygame.key.get_pressed()
         if keys[pygame.K_F1]:  # Help
             showinfo("Work in progress", "Help not currently available")
@@ -80,10 +87,10 @@ while project_running:
                 os.mkdir("assets")
                 project.extractall("assets")
     display.fill((255, 255, 255))
-    # move all sprites to current position and direction
-    set_background(current_bg)
+    # Move all sprites to current position and direction
+    setBackground(currentBg)
     for target in targets:
-        render(load_svg_bytes(target.costumes[target.currentCostume].file), target.x, target.y)
+        render(loadSvg(target.costumes[target.currentCostume].file), target.x, target.y)
         for _, block in target.blocks.items():
             if not block.blockRan and block.opcode == "event_whenflagclicked":
                 print("DEBUG: Running opcode", block.opcode)

@@ -1,3 +1,11 @@
+"""
+This program generates a dictionary and objects based on the project.json file.
+It also loads the project file set in main.py.
+
+======= CLASS INFO =======
+The various files with classes are used by this program and the correct data is
+set. Those are then used to build the project in main.py.
+"""
 # This is the Scratch2Python unpacker.
 # The main file you probably want to run is located at main.py.
 import zipfile as zf
@@ -8,13 +16,16 @@ from io import StringIO
 
 
 def sb3_unpack(sb3):
+    # If project does not exist, quit with exit code 1
     if not Path(sb3).exists():
         print("ERROR: Project file does not exist")
         exit(1)
+    print("DEBUG: Loading project")
     project = zf.ZipFile(sb3, "r")
     project_json = json.loads(project.read("project.json"))
     targets = []
     print("DEBUG: Project JSON output:", project_json)
+    # Generate the dictionary based on the contents of project.json
     for target_obj in project_json['targets']:
         if target_obj["isStage"]:
             current_bg_file = project.read(target_obj["costumes"][target_obj["currentCostume"]]["md5ext"])

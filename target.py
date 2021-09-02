@@ -1,4 +1,11 @@
 # TODO: Add pygame sprite for each target
+"""
+Target(sprite) class
+
+======= CLASS INFO =======
+The various files with classes are used by s2p_unpacker and the correct data is
+set. Those are then used to build the project in main.py.
+"""
 
 
 class Target:
