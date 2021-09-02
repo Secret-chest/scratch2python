@@ -12,3 +12,8 @@ Run the following commands:
     sudo pip3 install CairoSVG`
     sudo pip3 install PySide6
     sudo pip3 install qt-material
+
+## Contributing
+### Naming conventions
+Always use `mixedCase` (first letter is always lowercase) for variable and function names.
+Use `Uppercase` for class names.

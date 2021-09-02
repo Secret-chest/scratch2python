@@ -1,3 +1,6 @@
+# TODO: Add pygame sprite for each target
+
+
 class Target:
     def __init__(self):
         self.isStage = False

@@ -37,6 +37,8 @@ def set_background(bg):
     render(bg, 0, 0)
 
 
+# prepare project file
+targets, current_bg_file, project = s2p_unpacker.sb3_unpack("ifonedgebounce.sb3")  # change this to load a different project
 wn = tk.Tk()
 wn.withdraw()
 # when needed
@@ -73,13 +75,14 @@ while project_running:
         if keys[pygame.K_F5]:  # Project info
             confirm = askyesno("Extract", "Extract all project files?")
             if confirm:
+                print("DEBUG: Extracting project")
                 shutil.rmtree("assets")
                 os.mkdir("assets")
                 project.extractall("assets")
     display.fill((255, 255, 255))
     # move all sprites to current position and direction
     set_background(current_bg)
-    for target in s2p_unpacker.targets:
+    for target in targets:
         render(load_svg_bytes(target.costumes[target.currentCostume].file), target.x, target.y)
         for _, block in target.blocks.items():
             if not block.blockRan and block.opcode == "event_whenflagclicked":
