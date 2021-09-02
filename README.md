@@ -1,3 +1,4 @@
+![Logo](s2p.svg)
 # Scratch2Python
 Scratch2Python is a Python program that converts Scratch projects to Pygame code.
 ## Requirements

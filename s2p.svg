@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="362.71899"
+   height="96"
+   viewBox="0 0 95.969398 25.4"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="s2p.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.3772587"
+     inkscape:cx="105.64464"
+     inkscape:cy="4.71952"
+     inkscape:window-width="1920"
+     inkscape:window-height="1052"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     units="px"
+     width="362.719px" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Strat 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <circle
+       style="fill:#26c6da;stroke:#000000;stroke-width:0;paint-order:markers fill stroke"
+       id="path3442"
+       cx="12.7"
+       cy="12.7"
+       r="12.7" />
+    <g
+       id="g830"
+       transform="translate(-1.8520835,-0.66145853)">
+      <path
+         d="m 14.816575,9.2604167 c -0.582084,0 -1.053042,0.4762495 -1.053042,1.0583313 l -0.0052,8.46667 c 0,0.582081 0.470958,1.058332 1.053042,1.058332 h 6.355291 c 0.582084,0 1.058334,-0.476251 1.058334,-1.058332 V 12.435416 L 19.05,9.2604167 Z m 3.704165,3.7041653 v -2.910416 l 2.910418,2.910416 z"
+         id="path872"
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0.529166" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.175px;line-height:1.25;font-family:Catamaran;-inkscape-font-specification:'Catamaran Bold';fill:#26c6da;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         x="17.102667"
+         y="18.004366"
+         id="text4098"><tspan
+           sodipodi:role="line"
+           id="tspan4096"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.175px;font-family:Catamaran;-inkscape-font-specification:'Catamaran Bold';fill:#26c6da;fill-opacity:1;stroke-width:0.264583"
+           x="17.102667"
+           y="18.004366">.py</tspan></text>
+      <path
+         d="M 12.382498,8.4666659 12.170832,7.4083317 H 7.4083317 V 16.404167 H 8.4666638 V 12.7 H 11.43 l 0.211665,1.058333 h 3.704167 V 8.4666659 Z"
+         id="path3526"
+         style="fill:#ffffff;fill-opacity:1;stroke:#26c6da;stroke-width:1.05833;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:1.25;font-family:Catamaran;-inkscape-font-specification:Catamaran;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="27.590752"
+       y="15.271742"
+       id="text2902"><tspan
+         sodipodi:role="line"
+         id="tspan2900"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Catamaran;-inkscape-font-specification:Catamaran;stroke-width:0.264583"
+         x="27.590752"
+         y="15.271742">Scratch2Python</tspan></text>
+  </g>
+</svg>
