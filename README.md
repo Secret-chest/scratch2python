@@ -33,7 +33,7 @@ Always use `mixedCase` (first letter is always lowercase) for variable and funct
 Use `Uppercase` for class names.
 
 Note: Use underscores if the name may become unclear. For example: use `sb3_unpack` instead of `sb3Unpack`
-## how use 
+## How use 
 assuming that you installed all necessery  requirements
 place your sb3 file / files in the 
 scratchtopython folder  where main.py is located
