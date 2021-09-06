@@ -42,7 +42,9 @@ def setBackground(bg):
 
 
 # Prepare project file
-projectToLoad = "ifonedgebounce.sb3"  # change this to load a different project
+print('select which project to load :')
+
+projectToLoad = input()  
 targets, currentBgFile, project = s2p_unpacker.sb3_unpack(projectToLoad)
 wn = tk.Tk()  # Start tkinter for popups
 wn.withdraw()  # Hide main tkinter window
