@@ -34,5 +34,9 @@ Use `Uppercase` for class names.
 
 Note: Use underscores if the name may become unclear. For example: use `sb3_unpack` instead of `sb3Unpack`
 ## how use 
-python3 main.py
+assuming that you installed all necessery  requirements
+place your sb3 file / files in the 
+scratchtopython folder  where main.py is located
+run `python3 main.py`
 it will ask you for the project
+select which one to load you cannot load  more than one project at once 
