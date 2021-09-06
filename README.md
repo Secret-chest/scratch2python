@@ -1,4 +1,4 @@
-# this is a fork to make this really usefull project show up more in search results and for me to mod it once i learn more about python  
+
 ![Logo](s2p.svg)
 # Scratch2Python
 Scratch2Python is a Python program that converts Scratch projects to Pygame code.
@@ -33,3 +33,5 @@ Always use `mixedCase` (first letter is always lowercase) for variable and funct
 Use `Uppercase` for class names.
 
 Note: Use underscores if the name may become unclear. For example: use `sb3_unpack` instead of `sb3Unpack`
+## how to select the scratch project
+go into main py and set the variable  projectToLoad to the project you want to load (make sure to store it in the same folder as main.py ) then run main.py python3 like this --> main.py
