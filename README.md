@@ -33,5 +33,6 @@ Always use `mixedCase` (first letter is always lowercase) for variable and funct
 Use `Uppercase` for class names.
 
 Note: Use underscores if the name may become unclear. For example: use `sb3_unpack` instead of `sb3Unpack`
-## how to select the scratch project
-go into main py and set the variable  projectToLoad to the project you want to load (make sure to store it in the same folder as main.py ) then run main.py  like this -->  `python3  main.py`
+## how use 
+python3 main.py
+it will ask you for the project
