@@ -1,3 +1,4 @@
+# this is a fork to make this really usefull project show up more in search results and for me to mod it once i learn more about python  
 ![Logo](s2p.svg)
 # Scratch2Python
 Scratch2Python is a Python program that converts Scratch projects to Pygame code.
