@@ -11,7 +11,7 @@ Run the following commands:
     pip install qt-material
 ### Linux
     sudo pip3 install pygame
-    sudo pip3 install CairoSVG`
+    sudo pip3 install CairoSVG
     sudo pip3 install PySide6
     sudo pip3 install qt-material
 ## Files
