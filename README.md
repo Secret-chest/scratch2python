@@ -7,13 +7,9 @@ Run the following commands:
 ### Windows
     pip install pygame
     pip install CairoSVG
-    pip install PySide6
-    pip install qt-material
 ### Linux
     sudo pip3 install pygame
     sudo pip3 install CairoSVG
-    sudo pip3 install PySide6
-    sudo pip3 install qt-material
 ## Files
 The files in the project are:
 * `main.py` - run Scratch2Python, mainloop.
