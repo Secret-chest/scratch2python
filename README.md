@@ -1,3 +1,4 @@
+
 ![Logo](s2p.svg)
 # Scratch2Python
 Scratch2Python is a Python program that converts Scratch projects to Pygame code.
@@ -32,3 +33,7 @@ Always use `mixedCase` (first letter is always lowercase) for variable and funct
 Use `Uppercase` for class names.
 
 Note: Use underscores if the name may become unclear. For example: use `sb3_unpack` instead of `sb3Unpack`
+## How to use 
+Assuming that you installed all necessary requirements, place your sb3 files in the scratch2python folder where main.py is located.
+Then, change the projectToLoad variable to your project file.
+Now, just run `python3 main.py` and the project will start!
