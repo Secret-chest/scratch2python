@@ -29,8 +29,10 @@ def loadSvg(svg_bytes):
 
 
 # Render a sprite at its coordinates
-def render(sprite, x, y):
+def render(sprite, x, y, direction):
     # convert Scratch coordinates into Pygame coordinates
+    sprite = pygame.transform.scale(sprite, (sprite.get_width() * 2, sprite.get_height() * 2))
+    # sprite = pygame.transform.rotate(sprite, 100)
     finalX = x + WIDTH // 2 - sprite.get_width() // 2
     finalY = HEIGHT // 2 - y - sprite.get_height() // 2
     display.blit(sprite, (finalX, finalY))
@@ -38,11 +40,11 @@ def render(sprite, x, y):
 
 # Set the stage background
 def setBackground(bg):
-    render(bg, 0, 0)
+    render(bg, 0, 0, 90)
 
 
 # Prepare project file
-projectToLoad = "ifonedgebounce.sb3"  # change this to load a different project
+projectToLoad = "mascots.sb3"  # change this to load a different project
 targets, currentBgFile, project = s2p_unpacker.sb3_unpack(projectToLoad)
 wn = tk.Tk()  # Start tkinter for popups
 wn.withdraw()  # Hide main tkinter window
@@ -51,8 +53,8 @@ wn.withdraw()  # Hide main tkinter window
 pygame.init()  # Start pygame
 scratch.startProject()
 # Set player size
-HEIGHT = 360
-WIDTH = 480
+HEIGHT = 720
+WIDTH = 960
 projectName = projectToLoad[:-4] # Set the project name
 icon = pygame.image.load("icon.png")
 display = pygame.display.set_mode([WIDTH, HEIGHT])
@@ -90,7 +92,7 @@ while projectRunning:
     # Move all sprites to current position and direction
     setBackground(currentBg)
     for target in targets:
-        render(loadSvg(target.costumes[target.currentCostume].file), target.x, target.y)
+        render(loadSvg(target.costumes[target.currentCostume].file), target.x * 2, target.y * 2, 90)
         for _, block in target.blocks.items():
             if not block.blockRan and block.opcode == "event_whenflagclicked":
                 print("DEBUG: Running opcode", block.opcode)
