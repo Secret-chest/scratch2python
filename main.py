@@ -30,9 +30,11 @@ def loadSvg(svg_bytes):
 
 # Render a sprite at its coordinates
 def render(sprite, x, y, direction):
-    # convert Scratch coordinates into Pygame coordinates
+    # upscale sprite
     sprite = pygame.transform.scale(sprite, (sprite.get_width() * 2, sprite.get_height() * 2))
-    # sprite = pygame.transform.rotate(sprite, 100)
+    # set direction
+    sprite = pygame.transform.rotate(sprite, 90 - direction)
+    # convert Scratch coordinates into Pygame coordinates
     finalX = x + WIDTH // 2 - sprite.get_width() // 2
     finalY = HEIGHT // 2 - y - sprite.get_height() // 2
     display.blit(sprite, (finalX, finalY))
@@ -44,7 +46,7 @@ def setBackground(bg):
 
 
 # Prepare project file
-projectToLoad = "mascots.sb3"  # change this to load a different project
+projectToLoad = "Direction.sb3"  # change this to load a different project
 targets, currentBgFile, project = s2p_unpacker.sb3_unpack(projectToLoad)
 wn = tk.Tk()  # Start tkinter for popups
 wn.withdraw()  # Hide main tkinter window
@@ -92,7 +94,7 @@ while projectRunning:
     # Move all sprites to current position and direction
     setBackground(currentBg)
     for target in targets:
-        render(loadSvg(target.costumes[target.currentCostume].file), target.x * 2, target.y * 2, 90)
+        render(loadSvg(target.costumes[target.currentCostume].file), target.x * 2, target.y * 2, target.direction)
         for _, block in target.blocks.items():
             if not block.blockRan and block.opcode == "event_whenflagclicked":
                 print("DEBUG: Running opcode", block.opcode)

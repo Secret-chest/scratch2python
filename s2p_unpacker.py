@@ -33,6 +33,7 @@ def sb3_unpack(sb3):
             t = target.Target()
             t.x = target_obj["x"]
             t.y = target_obj["y"]
+            t.direction = target_obj["direction"]
             t.currentCostume = target_obj["currentCostume"]
             for costume_obj in target_obj["costumes"]:
                 c = costume.Costume()
