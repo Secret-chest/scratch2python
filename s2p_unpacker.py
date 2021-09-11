@@ -28,7 +28,7 @@ def sb3_unpack(sb3):
     # Generate the dictionary based on the contents of project.json
     for target_obj in project_json['targets']:
         if target_obj["isStage"]:
-            current_bg_file = project.read(target_obj["costumes"][target_obj["currentCostume"]]["md5ext"])
+            current_bg_file = project.read(target_obj["costumes"][target_obj["currentCostume"]]["assetId"] + "." + target_obj["costumes"][target_obj["currentCostume"]]["dataFormat"])
         else:
             t = target.Target()
             t.x = target_obj["x"]

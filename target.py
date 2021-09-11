@@ -6,6 +6,7 @@ Target(sprite) class
 The various files with classes are used by s2p_unpacker and the correct data is
 set. Those are then used to build the project in main.py.
 """
+import pygame.sprite
 
 
 class Target:
