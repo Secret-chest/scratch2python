@@ -46,7 +46,7 @@ def setBackground(bg):
 
 
 # Prepare project file
-projectToLoad = "gotoxy2.sb3"  # change this to load a different project
+projectToLoad = "wait_gotoxy.sb3"  # change this to load a different project
 targets, currentBgFile, project = s2p_unpacker.sb3_unpack(projectToLoad)
 wn = tk.Tk()  # Start tkinter for popups
 wn.withdraw()  # Hide main tkinter window

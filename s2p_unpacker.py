@@ -37,8 +37,9 @@ def sb3_unpack(sb3):
             t.currentCostume = target_obj["currentCostume"]
             for costume_obj in target_obj["costumes"]:
                 c = costume.Costume()
-                c.md5ext = costume_obj["md5ext"]
-                c.file = project.read(costume_obj["md5ext"])
+                if "md5ext" in costume_obj:
+                    c.md5ext = costume_obj["md5ext"]
+                c.file = project.read(costume_obj["assetId"] + "." + costume_obj["dataFormat"])
                 t.costumes.append(c)
             for block_id, block_obj in target_obj["blocks"].items():
                 b = block.Block()
