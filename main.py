@@ -13,62 +13,35 @@ import tkinter as tk
 # import zipfile as zf
 from tkinter.messagebox import *
 import os
-import cairosvg
-import io
-import json
-import time
-
-
-# Basic functions
-# Those functions are used for basic sprite tasks. They will probably be moved to scratch.py.
-# Load SVG in pygame
-def loadSvg(svg_bytes):
-    newBites = cairosvg.svg2png(bytestring=svg_bytes)
-    byteIo = io.BytesIO(newBites)
-    return pygame.image.load(byteIo)
-
-
-# Render a sprite at its coordinates
-def render(sprite, x, y, direction):
-    # upscale sprite
-    sprite = pygame.transform.scale(sprite, (sprite.get_width() * 2, sprite.get_height() * 2))
-    # set direction
-    sprite = pygame.transform.rotate(sprite, 90 - direction)
-    # convert Scratch coordinates into Pygame coordinates
-    finalX = x + WIDTH // 2 - sprite.get_width() // 2
-    finalY = HEIGHT // 2 - y - sprite.get_height() // 2
-    display.blit(sprite, (finalX, finalY))
-
-
-# Set the stage background
-def setBackground(bg):
-    render(bg, 0, 0, 90)
+from targetSprite import TargetSprite
 
 
 # Prepare project file
+allSprites = pygame.sprite.Group()
 projectToLoad = "wait_gotoxy.sb3"  # change this to load a different project
 targets, currentBgFile, project = s2p_unpacker.sb3_unpack(projectToLoad)
+for t in targets:
+    allSprites.add(TargetSprite(t))
 wn = tk.Tk()  # Start tkinter for popups
 wn.withdraw()  # Hide main tkinter window
-allSprites = pygame.sprite.Group()
 # when needed
 # wn.deiconify()
 pygame.init()  # Start pygame
 scratch.startProject()
 # Set player size
-HEIGHT = 720
-WIDTH = 960
+HEIGHT = 360
+WIDTH = 480
 projectName = projectToLoad[:-4] # Set the project name
 icon = pygame.image.load("icon.png")
 display = pygame.display.set_mode([WIDTH, HEIGHT])
 pygame.display.set_caption(projectName + " - Scratch2Python" )
 pygame.display.set_icon(icon)
-currentBg = loadSvg(currentBgFile)
+currentBg = scratch.loadSvg(currentBgFile)
 # currentBgFile = project.read(target["costumes"][target["currentCostume"]]["md5ext"])
 projectRunning = True
 
 display.fill((255, 255, 255))
-setBackground(currentBg)
+scratch.setBackground(currentBg, display)
 while projectRunning:
     for event in pygame.event.get():
         # Window quit (ALT-F4 / X button)
@@ -93,22 +66,35 @@ while projectRunning:
                 os.mkdir("assets")
                 project.extractall("assets")
     display.fill((255, 255, 255))
-    setBackground(currentBg)
+    scratch.setBackground(currentBg, display)
     # Move all sprites to current position and direction, run blocks
-    for target in targets:
-        render(loadSvg(target.costumes[target.currentCostume].file), target.x * 2, target.y * 2, target.direction)
-        for _, block in target.blocks.items():
+    for s in allSprites:
+        for _, block in s.target.blocks.items():
             if not block.blockRan:
                 print("DEBUG: Running opcode", block.opcode)
                 print("DEBUG: Running ID", block.blockID)
                 if block.next:
                     print("DEBUG: Next ID", block.next)
-                    nextBlock = target.blocks[block.next]
+                    nextBlock = s.target.blocks[block.next]
                     print("DEBUG: Next opcode", nextBlock.opcode)
                 else:
                     print("DEBUG: Last block")
-                scratch.execute(block, target)
+                scratch.execute(block, s)
                 block.blockRan = True
+    # for target in targets:
+    #     scratch.render(scratch.loadSvg(target.costumes[target.currentCostume].file), target.x * 2, target.y * 2, target.direction, display)
+    #     for _, block in target.blocks.items():
+    #         if not block.blockRan:
+    #             print("DEBUG: Running opcode", block.opcode)
+    #             print("DEBUG: Running ID", block.blockID)
+    #             if block.next:
+    #                 print("DEBUG: Next ID", block.next)
+    #                 nextBlock = target.blocks[block.next]
+    #                 print("DEBUG: Next opcode", nextBlock.opcode)
+    #             else:
+    #                 print("DEBUG: Last block")
+    #             scratch.execute(block, target)
+    #             block.blockRan = True
     allSprites.draw(display)
     allSprites.update()
     pygame.display.flip()
