@@ -21,7 +21,9 @@ allSprites = pygame.sprite.Group()
 projectToLoad = "wait_gotoxy.sb3"  # change this to load a different project
 targets, currentBgFile, project = s2p_unpacker.sb3_unpack(projectToLoad)
 for t in targets:
-    allSprites.add(TargetSprite(t))
+    sprite = TargetSprite(t)
+    t.sprite = sprite
+    allSprites.add(sprite)
 wn = tk.Tk()  # Start tkinter for popups
 wn.withdraw()  # Hide main tkinter window
 # when needed
@@ -31,7 +33,7 @@ scratch.startProject()
 # Set player size
 HEIGHT = 360
 WIDTH = 480
-projectName = projectToLoad[:-4] # Set the project name
+projectName = projectToLoad[:-4]  # Set the project name
 icon = pygame.image.load("icon.png")
 display = pygame.display.set_mode([WIDTH, HEIGHT])
 pygame.display.set_caption(projectName + " - Scratch2Python" )
@@ -40,7 +42,15 @@ currentBg = scratch.loadSvg(currentBgFile)
 # currentBgFile = project.read(target["costumes"][target["currentCostume"]]["md5ext"])
 projectRunning = True
 
+clock = pygame.time.Clock()
 display.fill((255, 255, 255))
+toExecute = []
+
+for s in allSprites:
+    for _, block in s.target.blocks.items():
+        if block.opcode == "event_whenflagclicked":
+            scratch.execute(block, s)
+
 scratch.setBackground(currentBg, display)
 while projectRunning:
     for event in pygame.event.get():
@@ -68,35 +78,24 @@ while projectRunning:
     display.fill((255, 255, 255))
     scratch.setBackground(currentBg, display)
     # Move all sprites to current position and direction, run blocks
-    for s in allSprites:
-        for _, block in s.target.blocks.items():
-            if not block.blockRan:
-                print("DEBUG: Running opcode", block.opcode)
-                print("DEBUG: Running ID", block.blockID)
-                if block.next:
-                    print("DEBUG: Next ID", block.next)
-                    nextBlock = s.target.blocks[block.next]
-                    print("DEBUG: Next opcode", nextBlock.opcode)
-                else:
-                    print("DEBUG: Last block")
-                scratch.execute(block, s)
-                block.blockRan = True
-    # for target in targets:
-    #     scratch.render(scratch.loadSvg(target.costumes[target.currentCostume].file), target.x * 2, target.y * 2, target.direction, display)
-    #     for _, block in target.blocks.items():
-    #         if not block.blockRan:
-    #             print("DEBUG: Running opcode", block.opcode)
-    #             print("DEBUG: Running ID", block.blockID)
-    #             if block.next:
-    #                 print("DEBUG: Next ID", block.next)
-    #                 nextBlock = target.blocks[block.next]
-    #                 print("DEBUG: Next opcode", nextBlock.opcode)
-    #             else:
-    #                 print("DEBUG: Last block")
-    #             scratch.execute(block, target)
-    #             block.blockRan = True
+    nextBlocks = []
+    for block in toExecute:
+        if block.waiting:
+            block.executionTime += clock.get_time()
+            if block.executionTime >= block.timeDelay:
+                block.waiting = False
+                block.executionTime, block.timeDelay = 0, 0
+                print("DEBUG: Wait period ended")
+        if not block.blockRan:
+            print("DEBUG: Running opcode", block.opcode)
+            print("DEBUG: Running ID", block.blockID)
+            nextBlock = scratch.execute(block, block.target.sprite)
+            if nextBlock:
+                nextBlocks.append(nextBlock)
+    toExecute = nextBlocks
     allSprites.draw(display)
     allSprites.update()
     pygame.display.flip()
     wn.update()
+    clock.tick(30)
 pygame.quit()

@@ -25,3 +25,4 @@ class Target:
         self.direction = 90
         self.draggable = False
         self.rotationStyle = "all around"  # all around, left-right or do not rotate
+        self.sprite = None

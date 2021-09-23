@@ -35,14 +35,27 @@ def startProject():
 
 # Run the given block object
 def execute(block, s):
-    # TODO: Multi-threading
     opcode = block.opcode
     id = block.blockID
     blockRan = block.blockRan
     inputs = block.inputs
     fields = block.fields
+    nextBlock = None
     if opcode == "motion_gotoxy":
         s.setXy(int(inputs["X"][1][1]), int(inputs["Y"][1][1]))
-    # if opcode == "control_wait":
-    #     timeDelay = int(round(float(inputs["DURATION"][1][1]) * 1000))
-    #     pygame.time.delay(timeDelay)
+    if opcode == "control_wait":
+        block.timeDelay = int(round(float(inputs["DURATION"][1][1]) * 1000))
+        block.waiting = True
+        block.executionTime = 0
+        print("DEBUG: Waiting for", block.timeDelay, "ms")
+        return block
+    if opcode == "event_whenflagclicked":
+        pass
+    if block.next:
+        print("DEBUG: Next ID", block.next)
+        nextBlock = s.target.blocks[block.next]
+        print("DEBUG: Next opcode", nextBlock.opcode)
+    else:
+        print("DEBUG: Script finished")
+    block.blockRan = True
+    return nextBlock

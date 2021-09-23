@@ -18,3 +18,7 @@ class Block:
         self.shadow = False  # if the block is a reporter or boolean block
         self.topLevel = False  # if the block is a hat block
         self.blockRan = False
+        self.waiting = False
+        self.executionTime = 0
+        self.timeDelay = 0
+        self.target = None

@@ -29,30 +29,31 @@ def sb3_unpack(sb3):
     for target_obj in project_json['targets']:
         if target_obj["isStage"]:
             current_bg_file = project.read(target_obj["costumes"][target_obj["currentCostume"]]["assetId"] + "." + target_obj["costumes"][target_obj["currentCostume"]]["dataFormat"])
-        else:
-            t = target.Target()
+        t = target.Target()
+        if "x" in target_obj:
             t.x = target_obj["x"]
             t.y = target_obj["y"]
             t.direction = target_obj["direction"]
-            t.currentCostume = target_obj["currentCostume"]
-            for costume_obj in target_obj["costumes"]:
-                c = costume.Costume()
-                if "md5ext" in costume_obj:
-                    c.md5ext = costume_obj["md5ext"]
-                c.file = project.read(costume_obj["assetId"] + "." + costume_obj["dataFormat"])
-                t.costumes.append(c)
-            for block_id, block_obj in target_obj["blocks"].items():
-                b = block.Block()
-                b.blockID = block_id
-                b.opcode = block_obj["opcode"]
-                b.next = block_obj["next"]
-                b.parent = block_obj["parent"]
-                b.shadow = block_obj["shadow"]
-                b.topLevel = block_obj["topLevel"]
-                b.inputs = block_obj["inputs"]
-                b.fields = block_obj["inputs"]
-                b.blockRan = False
-                t.blocks[block_id] = b
-            targets.append(t)
+        t.currentCostume = target_obj["currentCostume"]
+        for costume_obj in target_obj["costumes"]:
+            c = costume.Costume()
+            if "md5ext" in costume_obj:
+                c.md5ext = costume_obj["md5ext"]
+            c.file = project.read(costume_obj["assetId"] + "." + costume_obj["dataFormat"])
+            t.costumes.append(c)
+        for block_id, block_obj in target_obj["blocks"].items():
+            b = block.Block()
+            b.blockID = block_id
+            b.opcode = block_obj["opcode"]
+            b.next = block_obj["next"]
+            b.parent = block_obj["parent"]
+            b.shadow = block_obj["shadow"]
+            b.topLevel = block_obj["topLevel"]
+            b.inputs = block_obj["inputs"]
+            b.fields = block_obj["inputs"]
+            b.blockRan = False
+            b.target = t
+            t.blocks[block_id] = b
+        targets.append(t)
     return targets, current_bg_file, project
 
