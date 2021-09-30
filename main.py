@@ -18,7 +18,7 @@ from targetSprite import TargetSprite
 
 # Prepare project file
 allSprites = pygame.sprite.Group()
-projectToLoad = "wait_gotoxy.sb3"  # change this to load a different project
+projectToLoad = "gobo_cat.sb3"  # change this to load a different project
 targets, currentBgFile, project = s2p_unpacker.sb3_unpack(projectToLoad)
 for t in targets:
     sprite = TargetSprite(t)
@@ -49,7 +49,11 @@ toExecute = []
 for s in allSprites:
     for _, block in s.target.blocks.items():
         if block.opcode == "event_whenflagclicked":
-            scratch.execute(block, s)
+            print("DEBUG: Running opcode", block.opcode)
+            print("DEBUG: Running ID", block.blockID)
+            nextBlock = scratch.execute(block, block.target.sprite)
+            if nextBlock:
+                toExecute.append(nextBlock)
 
 scratch.setBackground(currentBg, display)
 while projectRunning:
@@ -81,9 +85,12 @@ while projectRunning:
     nextBlocks = []
     for block in toExecute:
         if block.waiting:
+            print("DEBUG: Block execution time is", block.executionTime, "delay is", block.timeDelay)
             block.executionTime += clock.get_time()
             if block.executionTime >= block.timeDelay:
                 block.waiting = False
+                block.blockRan = True
+                nextBlocks.append(block.target.blocks[block.next])
                 block.executionTime, block.timeDelay = 0, 0
                 print("DEBUG: Wait period ended")
         if not block.blockRan:
@@ -91,8 +98,9 @@ while projectRunning:
             print("DEBUG: Running ID", block.blockID)
             nextBlock = scratch.execute(block, block.target.sprite)
             if nextBlock:
+                print("DEBUG: Next block is", nextBlock.opcode)
                 nextBlocks.append(nextBlock)
-    toExecute = nextBlocks
+    toExecute = nextBlocks[:]
     allSprites.draw(display)
     allSprites.update()
     pygame.display.flip()

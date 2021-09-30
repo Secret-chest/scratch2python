@@ -44,10 +44,11 @@ def execute(block, s):
     if opcode == "motion_gotoxy":
         s.setXy(int(inputs["X"][1][1]), int(inputs["Y"][1][1]))
     if opcode == "control_wait":
-        block.timeDelay = int(round(float(inputs["DURATION"][1][1]) * 1000))
-        block.waiting = True
-        block.executionTime = 0
-        print("DEBUG: Waiting for", block.timeDelay, "ms")
+        if not block.waiting:
+            block.timeDelay = int(round(float(inputs["DURATION"][1][1]) * 1000))
+            block.waiting = True
+            block.executionTime = 0
+            print("DEBUG: Waiting for", block.timeDelay, "ms")
         return block
     if opcode == "event_whenflagclicked":
         pass
