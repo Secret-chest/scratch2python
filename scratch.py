@@ -43,6 +43,14 @@ def execute(block, s):
     nextBlock = None
     if opcode == "motion_gotoxy":
         s.setXy(int(inputs["X"][1][1]), int(inputs["Y"][1][1]))
+    if opcode == "motion_setx":
+        s.setXy(int(inputs["X"][1][1]), s.y)
+    if opcode == "motion_changexby":
+        s.setXy(s.x + int(inputs["DX"][1][1]), s.y)
+    if opcode == "motion_sety":
+        s.setXy(s.x, int(inputs["Y"][1][1]))
+    if opcode == "motion_changeyby":
+        s.setXy(s.x, s.y + int(inputs["DY"][1][1]))
     if opcode == "control_wait":
         if not block.waiting:
             block.timeDelay = int(round(float(inputs["DURATION"][1][1]) * 1000))

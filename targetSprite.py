@@ -14,9 +14,13 @@ class TargetSprite(pygame.sprite.Sprite):
         self.image = sprite
         self.rect = self.image.get_rect()
         # convert Scratch coordinates into Pygame coordinates
+        self.x = target.x
+        self.y = target.y
         self.rect.x = target.x + scratch.WIDTH // 2 - self.rect.width // 2
         self.rect.y = scratch.HEIGHT // 2 - target.y - self.rect.height // 2
 
     def setXy(self, x, y):
+        self.x = x
+        self.y = y
         self.rect.x = x + scratch.WIDTH // 2 - self.rect.width // 2
         self.rect.y = scratch.HEIGHT // 2 - y - self.rect.height // 2

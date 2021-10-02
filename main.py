@@ -18,7 +18,7 @@ from targetSprite import TargetSprite
 
 # Prepare project file
 allSprites = pygame.sprite.Group()
-projectToLoad = "gobo_cat.sb3"  # change this to load a different project
+projectToLoad = "cosmicat.sb3"  # change this to load a different project
 targets, currentBgFile, project = s2p_unpacker.sb3_unpack(projectToLoad)
 for t in targets:
     sprite = TargetSprite(t)
