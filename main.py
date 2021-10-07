@@ -36,7 +36,7 @@ WIDTH = 480
 projectName = projectToLoad[:-4]  # Set the project name
 icon = pygame.image.load("icon.png")
 display = pygame.display.set_mode([WIDTH, HEIGHT])
-pygame.display.set_caption(projectName + " - Scratch2Python" )
+pygame.display.set_caption(projectName + " - Scratch2Python")
 pygame.display.set_icon(icon)
 currentBg = scratch.loadSvg(currentBgFile)
 # currentBgFile = project.read(target["costumes"][target["currentCostume"]]["md5ext"])
