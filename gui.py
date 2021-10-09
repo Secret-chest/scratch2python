@@ -4,12 +4,12 @@ import tkinter.ttk as ttk
 mainWindow = Tk()
 
 style = ttk.Style()
+style.theme_use("alt")
 style.configure("TLabel", foreground="#212121", background="#ffffff", font=("Roboto", 12))
 style.configure("TNotebook", font=("Roboto", 16), background="#00bcd4")
-style.configure("TNotebook.tab", font=("Comic Neue", 16), background="#eeeeee")
 style.configure("TFrame", font=("Roboto", 16), background="#ffffff")
 style.map("TNotebook.Tab", background=[("selected", "#ffffff")], foreground=[("selected", "#212121")]);
-style.configure("TNotebook.Tab", background="#00bcd4", foreground="#212121", font=("Roboto", 12), borderwidth=0);
+style.configure("TNotebook.Tab", background="#00bcd4", foreground="#212121", font=("Roboto", 12), borderwidth=0)
 root = ttk.Notebook(mainWindow, height=480, width=720)
 
 featuredPage = ttk.Frame(root)
