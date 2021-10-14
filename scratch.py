@@ -60,6 +60,20 @@ def execute(block, s):
         return block
     if opcode == "event_whenflagclicked":
         pass
+    if opcode == "control_forever":
+        block.blockRan = False
+        if inputs["SUBSTACK"][1]:
+            nextBlock = s.target.blocks[inputs["SUBSTACK"][1]]
+            nb = s.target.blocks[inputs["SUBSTACK"][1]]
+            while nb.next and nb.next != block.blockID:
+                # TODO: Caution: Don't loop the program
+                nb.blockRan = False
+                nb.waiting = False
+                nb.timeDelay = 0
+                nb.executionTime = 0
+                nb = s.target.blocks[nb.next]
+            nb.next = block.blockID
+            return nextBlock
     if block.next:
         print("DEBUG: Next ID", block.next)
         nextBlock = s.target.blocks[block.next]
