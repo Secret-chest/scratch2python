@@ -35,6 +35,7 @@ def startProject():
 
 # Run the given block object
 def execute(block, s):
+    # Get block properties
     opcode = block.opcode
     id = block.blockID
     blockRan = block.blockRan
@@ -63,6 +64,8 @@ def execute(block, s):
     if opcode == "control_forever":
         block.blockRan = False
         if inputs["SUBSTACK"][1]:
+            for b in block.substack:
+                s.target.blocks[b].blockRan = False
             nextBlock = s.target.blocks[inputs["SUBSTACK"][1]]
             nb = s.target.blocks[inputs["SUBSTACK"][1]]
             while nb.next and nb.next != block.blockID:
@@ -72,6 +75,7 @@ def execute(block, s):
                 nb.timeDelay = 0
                 nb.executionTime = 0
                 nb = s.target.blocks[nb.next]
+                block.substack.add(nb.blockID)
             nb.next = block.blockID
             return nextBlock
     if block.next:

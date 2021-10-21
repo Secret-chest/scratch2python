@@ -22,3 +22,4 @@ class Block:
         self.executionTime = 0
         self.timeDelay = 0
         self.target = None
+        self.substack = set()

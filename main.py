@@ -2,6 +2,21 @@
 Main Scratch2Python file
 
 This file is used to run Scratch2Python and build the project based on the data given by s2p_unpacker.py
+
+Copyright (C) 2021 Secret-chest
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 # Remember to install pygame and CairoSVG
 import s2p_unpacker
@@ -15,10 +30,11 @@ from tkinter.messagebox import *
 import os
 from targetSprite import TargetSprite
 
+version = "M5"
 
 # Prepare project file
 allSprites = pygame.sprite.Group()
-projectToLoad = "forever.sb3"  # change this to load a different project
+projectToLoad = "projects/forever.sb3"  # change this to load a different project
 targets, currentBgFile, project = s2p_unpacker.sb3_unpack(projectToLoad)
 for t in targets:
     sprite = TargetSprite(t)
@@ -26,14 +42,12 @@ for t in targets:
     allSprites.add(sprite)
 wn = tk.Tk()  # Start tkinter for popups
 wn.withdraw()  # Hide main tkinter window
-# when needed
-# wn.deiconify()
 pygame.init()  # Start pygame
 scratch.startProject()
 # Set player size
 HEIGHT = 360
 WIDTH = 480
-projectName = projectToLoad[:-4]  # Set the project name
+projectName = projectToLoad[:-4]  # Set the project name for use in the titlebar
 icon = pygame.image.load("icon.png")
 display = pygame.display.set_mode([WIDTH, HEIGHT])
 pygame.display.set_caption(projectName + " - Scratch2Python")
