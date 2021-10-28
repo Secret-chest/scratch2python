@@ -63,7 +63,7 @@ WIDTH = 480
 
 # Get project name and set icon
 projectName = Path(PROJECT).stem
-icon = pygame.image.load("icon.png")
+icon = pygame.image.load("icon.svg")
 
 # Create project player and window
 display = pygame.display.set_mode([WIDTH, HEIGHT])
