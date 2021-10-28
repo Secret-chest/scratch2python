@@ -8,7 +8,6 @@ class TargetSprite(pygame.sprite.Sprite):
     def __init__(self, target):
         pygame.sprite.Sprite.__init__(self)
         self.target = target
-        # l
         # Load and upscale
         sprite = scratch.loadSvg(target.costumes[target.currentCostume].file)
         sprite = pygame.transform.rotate(sprite, 90 - target.direction)

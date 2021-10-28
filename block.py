@@ -23,3 +23,6 @@ class Block:
         self.timeDelay = 0
         self.target = None
         self.substack = set()
+
+    def getInputValue(self, inputId, lookIn=(1, 1)):
+        return self.inputs[inputId.upper()][lookIn[0]][lookIn[1]]

@@ -16,9 +16,9 @@ def loadSvg(svg_bytes):
 
 # Render a sprite at its coordinates
 def render(sprite, x, y, direction, display):
-    # set direction
+    # Set direction
     sprite = pygame.transform.rotate(sprite, 90 - direction)
-    # convert Scratch coordinates into Pygame coordinates
+    # Convert Scratch coordinates into Pygame coordinates
     finalX = x + WIDTH // 2 - sprite.get_width() // 2
     finalY = HEIGHT // 2 - y - sprite.get_height() // 2
     display.blit(sprite, (finalX, finalY))
@@ -29,41 +29,56 @@ def setBackground(bg, display):
     render(bg, 0, 0, 90, display)
 
 
+# Project start event
 def startProject():
     print("DEBUG: Project start event")
 
 
 # Run the given block object
 def execute(block, s):
-    # Get block properties
+    # Get block values
     opcode = block.opcode
     id = block.blockID
     blockRan = block.blockRan
     inputs = block.inputs
     fields = block.fields
     nextBlock = None
-    if opcode == "motion_gotoxy":
-        s.setXy(int(inputs["X"][1][1]), int(inputs["Y"][1][1]))
-    if opcode == "motion_setx":
-        s.setXy(int(inputs["X"][1][1]), s.y)
-    if opcode == "motion_changexby":
-        s.setXy(s.x + int(inputs["DX"][1][1]), s.y)
-    if opcode == "motion_sety":
-        s.setXy(s.x, int(inputs["Y"][1][1]))
-    if opcode == "motion_changeyby":
-        s.setXy(s.x, s.y + int(inputs["DY"][1][1]))
-    if opcode == "control_wait":
+
+    if opcode == "motion_gotoxy":  # go to x: () y: ()
+        s.setXy(int(block.getInputValue("x")), int(block.getInputValue("y")))
+
+    if opcode == "motion_setx":  # set x to ()
+        s.setXy(int(block.getInputValue("x")), s.y)
+
+    if opcode == "motion_changexby":  # change x by ()
+        s.setXy(s.x + int(block.getInputValue("x")), s.y)
+
+    if opcode == "motion_sety":  # set y to ()
+        s.setXy(s.x, int(block.getInputValue("y")))
+
+    if opcode == "motion_changeyby":  # change y by ()
+        s.setXy(s.x, s.y + int(block.getInputValue("y")))
+
+    if opcode == "control_wait":  # wait () seconds
+        # If not already waiting
         if not block.waiting:
-            block.timeDelay = int(round(float(inputs["DURATION"][1][1]) * 1000))
+            # Get time delay and convert it to milliseconds
+            block.timeDelay = int(round(float(int(block.getInputValue("duration"))) * 1000))
             block.waiting = True
             block.executionTime = 0
             print("DEBUG: Waiting for", block.timeDelay, "ms")
         return block
-    if opcode == "event_whenflagclicked":
+
+    if opcode == "event_whenflagclicked":  # when green flag clicked
         pass
-    if opcode == "control_forever":
+
+    if opcode == "control_forever":  # forever {}
+        # Don't mark the loop as ran
         block.blockRan = False
+
+        # If there are blocks, get them
         if inputs["SUBSTACK"][1]:
+            # No blocks will be flagged as ran inside a forever loop
             for b in block.substack:
                 s.target.blocks[b].blockRan = False
             nextBlock = s.target.blocks[inputs["SUBSTACK"][1]]
@@ -78,6 +93,8 @@ def execute(block, s):
                 block.substack.add(nb.blockID)
             nb.next = block.blockID
             return nextBlock
+
+    # If there is a block below, print some debug messages and return it, otherwise
     if block.next:
         print("DEBUG: Next ID", block.next)
         nextBlock = s.target.blocks[block.next]

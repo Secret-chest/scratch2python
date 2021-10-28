@@ -24,57 +24,91 @@ import shutil
 import scratch
 import pygame
 import tkinter as tk
+from pathlib import Path
 # import zipfile as zf
 from tkinter.messagebox import *
 import os
 from targetSprite import TargetSprite
 
-version = "M5"
+VERSION = "M6"
 
-# Prepare project file
+# Change this to a different project file
+PROJECT = "projects/forever.sb3"
+
+# Get project data and create sprites
+targets, currentBgFile, project = s2p_unpacker.sb3_unpack(PROJECT)
 allSprites = pygame.sprite.Group()
-projectToLoad = "projects/forever.sb3"  # change this to load a different project
-targets, currentBgFile, project = s2p_unpacker.sb3_unpack(projectToLoad)
 for t in targets:
     sprite = TargetSprite(t)
     t.sprite = sprite
     allSprites.add(sprite)
-wn = tk.Tk()  # Start tkinter for popups
-wn.withdraw()  # Hide main tkinter window
-pygame.init()  # Start pygame
+
+# Start tkinter for showing some popups, and hide main window
+wn = tk.Tk()
+wn.withdraw()
+
+# Start Pygame, load fonts and print a debug message
+pygame.init()
+font = pygame.font.SysFont("sans-serif", 16)
+fontXl = pygame.font.SysFont("sans-serif", 36)
 scratch.startProject()
+
+# Create paused message
+paused = fontXl.render("Paused (Press F6 to resume)", 1, (0, 0, 0))
+pausedWidth, pausedHeight = fontXl.size("Paused (Press F6 to resume)")
+
 # Set player size
 HEIGHT = 360
 WIDTH = 480
-projectName = projectToLoad[:-4]  # Set the project name for use in the titlebar
-icon = pygame.image.load("icon.png")
-display = pygame.display.set_mode([WIDTH, HEIGHT])
-pygame.display.set_caption(projectName + " - Scratch2Python")
-pygame.display.set_icon(icon)
-currentBg = scratch.loadSvg(currentBgFile)
-# currentBgFile = project.read(target["costumes"][target["currentCostume"]]["md5ext"])
-projectRunning = True
 
+# Get project name and set icon
+projectName = Path(PROJECT).stem
+icon = pygame.image.load("icon.png")
+
+# Create project player and window
+display = pygame.display.set_mode([WIDTH, HEIGHT])
+pygame.display.set_caption(projectName + " - Scratch2Python" + " " + VERSION)
+pygame.display.set_icon(icon)
+
+# Get background image
+currentBg = scratch.loadSvg(currentBgFile)
+
+# Set running state
+projectRunning = True
+isPaused = False
+
+# Initialize clock
 clock = pygame.time.Clock()
+
+# Clear display
 display.fill((255, 255, 255))
+
+# Create a block execution queue
 toExecute = []
 
+# Start green flag scripts
 for s in allSprites:
     for _, block in s.target.blocks.items():
         if block.opcode == "event_whenflagclicked":
             print("DEBUG: Running opcode", block.opcode)
             print("DEBUG: Running ID", block.blockID)
             nextBlock = scratch.execute(block, block.target.sprite)
+            # Error-proof by checking if the scripts are not empty
             if nextBlock:
+                # Add the next block to the queue
                 toExecute.append(nextBlock)
 
+# Display the background
 scratch.setBackground(currentBg, display)
+
+# Mainloop
 while projectRunning:
+    # Process Pygame events
     for event in pygame.event.get():
         # Window quit (ALT-F4 / X button)
         if event.type == pygame.QUIT:
             projectRunning = False
-        # Some controls
+        # Debug and utility functions
         keys = pygame.key.get_pressed()
         if keys[pygame.K_F1]:  # Help
             showinfo("Work in progress", "Help not currently available")
@@ -85,37 +119,42 @@ while projectRunning:
             print(project.namelist())
         if keys[pygame.K_F4]:  # Project info
             showinfo("Work in progress", "Project info coming soon")
-        if keys[pygame.K_F5]:  # Project info
+        if keys[pygame.K_F5]:  # Extract
             confirm = askyesno("Extract", "Extract all project files?")
             if confirm:
                 print("DEBUG: Extracting project")
                 shutil.rmtree("assets")
                 os.mkdir("assets")
                 project.extractall("assets")
+        if keys[pygame.K_F6]:  # Pause
+            isPaused = not isPaused
     display.fill((255, 255, 255))
-    scratch.setBackground(currentBg, display)
-    # Move all sprites to current position and direction, run blocks
-    nextBlocks = []
-    for block in toExecute:
-        if block.waiting:
-            print("DEBUG: Block execution time is", block.executionTime, "delay is", block.timeDelay)
-            block.executionTime += clock.get_time()
-            if block.executionTime >= block.timeDelay:
-                block.waiting = False
-                block.blockRan = True
-                nextBlocks.append(block.target.blocks[block.next])
-                block.executionTime, block.timeDelay = 0, 0
-                print("DEBUG: Wait period ended")
-        if not block.blockRan:
-            print("DEBUG: Running opcode", block.opcode)
-            print("DEBUG: Running ID", block.blockID)
-            nextBlock = scratch.execute(block, block.target.sprite)
-            if nextBlock:
-                print("DEBUG: Next block is", nextBlock.opcode)
-                nextBlocks.append(nextBlock)
-    toExecute = nextBlocks[:]
-    allSprites.draw(display)
-    allSprites.update()
+    if not isPaused:
+        scratch.setBackground(currentBg, display)
+        # Move all sprites to current position and direction, run blocks
+        nextBlocks = []
+        for block in toExecute:
+            if block.waiting:
+                print("DEBUG: Block execution time is", block.executionTime, "delay is", block.timeDelay)
+                block.executionTime += clock.get_time()
+                if block.executionTime >= block.timeDelay:
+                    block.waiting = False
+                    block.blockRan = True
+                    nextBlocks.append(block.target.blocks[block.next])
+                    block.executionTime, block.timeDelay = 0, 0
+                    print("DEBUG: Wait period ended")
+            if not block.blockRan:
+                print("DEBUG: Running opcode", block.opcode)
+                print("DEBUG: Running ID", block.blockID)
+                nextBlock = scratch.execute(block, block.target.sprite)
+                if nextBlock:
+                    print("DEBUG: Next block is", nextBlock.opcode)
+                    nextBlocks.append(nextBlock)
+        toExecute = nextBlocks[:]
+        allSprites.draw(display)
+        allSprites.update()
+    else:
+        display.blit(paused, (WIDTH // 2 - pausedWidth // 2, WIDTH // 2 - pausedHeight // 2))
     pygame.display.flip()
     wn.update()
     clock.tick(30)
