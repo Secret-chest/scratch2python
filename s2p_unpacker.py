@@ -59,7 +59,7 @@ def sb3_unpack(sb3):
             b.shadow = block_obj["shadow"]
             b.topLevel = block_obj["topLevel"]
             b.inputs = block_obj["inputs"]
-            b.fields = block_obj["inputs"]
+            b.fields = block_obj["fields"]
             b.blockRan = False
             b.target = t
             t.blocks[block_id] = b

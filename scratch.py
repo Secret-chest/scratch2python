@@ -1,3 +1,7 @@
+"""
+This file runs Scratch blocks, and stuff like that. Basically
+it simulates Scratch using the Scratch2Python file, hence tha name.
+"""
 # Scratch project functions
 # Green flag event
 import pygame.time
@@ -42,10 +46,24 @@ def execute(block, s):
     blockRan = block.blockRan
     inputs = block.inputs
     fields = block.fields
+    shadow = block.shadow
     nextBlock = None
 
     if opcode == "motion_gotoxy":  # go to x: () y: ()
         s.setXy(int(block.getInputValue("x")), int(block.getInputValue("y")))
+
+    if opcode == "motion_goto":
+        nextBlock = block.getBlockInputValue("to")
+        return s.target.blocks[nextBlock]
+
+    if opcode == "motion_goto_menu":
+        print(block.getFieldValue("to"))
+        if block.getFieldValue("to") == "_mouse_":  # go to [mouse pointer v]
+            newX, newY = pygame.mouse.get_pos()
+            newX = newX - WIDTH // 2
+            newY = HEIGHT // 2 - newY
+            s.setXy(newX, newY)
+            return s.target.blocks[s.target.blocks[block.parent].next]
 
     if opcode == "motion_setx":  # set x to ()
         s.setXy(int(block.getInputValue("x")), s.y)
@@ -72,9 +90,10 @@ def execute(block, s):
     if opcode == "event_whenflagclicked":  # when green flag clicked
         pass
 
-    if opcode == "control_forever":  # forever {}
-        # Don't mark the loop as ran
+    if opcode == "control_forever":  # forever {..}
+        # Don't mark the loop as ran, and do a screen refresh
         block.blockRan = False
+        block.screenRefresh = True
 
         # If there are blocks, get them
         if inputs["SUBSTACK"][1]:
@@ -94,7 +113,7 @@ def execute(block, s):
             nb.next = block.blockID
             return nextBlock
 
-    # If there is a block below, print some debug messages and return it, otherwise
+    # If there is a block below, print some debug messages and return it
     if block.next:
         print("DEBUG: Next ID", block.next)
         nextBlock = s.target.blocks[block.next]

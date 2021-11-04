@@ -23,6 +23,20 @@ class Block:
         self.timeDelay = 0
         self.target = None
         self.substack = set()
+        self.screenRefresh = False
 
+    # Returns block input value
     def getInputValue(self, inputId, lookIn=(1, 1)):
         return self.inputs[inputId.upper()][lookIn[0]][lookIn[1]]
+
+    # Returns dropdown menu value (menus are separate blocks)
+    def getMenuValue(self, menuId):
+        return self.inputs[menuId.upper()][1].fields[menuId.upper()][0]
+
+    # Returns field value (menus are separate blocks)
+    def getFieldValue(self, fieldId, lookIn=0):
+        return self.fields[fieldId.upper()][lookIn]
+
+    # Returns block input value
+    def getBlockInputValue(self, inputId):
+        return self.inputs[inputId.upper()][1]

@@ -3,7 +3,7 @@ Main Scratch2Python file
 
 This file is used to run Scratch2Python and build the project based on the data given by s2p_unpacker.py
 
-Copyright (C) 2021 Secret-chest
+Copyright (C) 2021 Secret-chest (copyright applies for all files)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -30,10 +30,10 @@ from tkinter.messagebox import *
 import os
 from targetSprite import TargetSprite
 
-VERSION = "M6"
+VERSION = "M7"
 
 # Change this to a different project file
-PROJECT = "projects/forever.sb3"
+PROJECT = "projects/mouse-follow.sb3"
 
 # Get project data and create sprites
 targets, currentBgFile, project = s2p_unpacker.sb3_unpack(PROJECT)
@@ -49,8 +49,8 @@ wn.withdraw()
 
 # Start Pygame, load fonts and print a debug message
 pygame.init()
-font = pygame.font.SysFont("sans-serif", 16)
-fontXl = pygame.font.SysFont("sans-serif", 36)
+font = pygame.font.SysFont("pygame.font.get_default_font()", 16)
+fontXl = pygame.font.SysFont("pygame.font.get_default_font()", 36)
 scratch.startProject()
 
 # Create paused message
@@ -120,7 +120,7 @@ while projectRunning:
         if keys[pygame.K_F4]:  # Project info
             showinfo("Work in progress", "Project info coming soon")
         if keys[pygame.K_F5]:  # Extract
-            confirm = askyesno("Extract", "Extract all project files?")
+            confirm = askokcancel("Extract", "Extract all project files?")
             if confirm:
                 print("DEBUG: Extracting project")
                 shutil.rmtree("assets")
@@ -150,6 +150,12 @@ while projectRunning:
                 if nextBlock:
                     print("DEBUG: Next block is", nextBlock.opcode)
                     nextBlocks.append(nextBlock)
+            if block.screenRefresh:
+                toExecute = nextBlocks[:]
+                allSprites.draw(display)
+                allSprites.update()
+                pygame.display.flip()
+                clock.tick(30)
         toExecute = nextBlocks[:]
         allSprites.draw(display)
         allSprites.update()
