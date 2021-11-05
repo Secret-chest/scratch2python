@@ -14,25 +14,31 @@ Run the following commands:
     sudo pip3 install pygame
     sudo pip3 install CairoSVG
 ## Files
-The files in the project are:
-* `main.py` - run Scratch2Python, mainloop.
-* `s2p_unpacker.py`  - unpack sb3 files and generate a dictionary from the project.json file
-* `scratch.py` - contains various Scratch-related functions
-* classes
-  * `target.py`
-  * `block.py`
-  * `costume.py`
-  * `monitor.py`
-  * `sound.py`
-  * `variable.py`
-* many demo sb3 files
-* README
+The table below lists all files in the project.
+
+| File              | Description                                                                                      |
+|-------------------|--------------------------------------------------------------------------------------------------|
+| `main.py`         | Build the project based on the data, run blocks, listen to events                                |
+| `s2p_unpacker.py` | Generate a dictionary from project.json, put objects in it and set them to the correct values    |
+| `scratch.py`      | Scratch emulator, runs blocks on request, contains various Scratch-related functions             |
+| `target.py`       | Sprite class                                                                                     |
+| `block.py`        | Block class                                                                                      |
+| `costume.py`      | Costume class                                                                                    |
+| `monitor.py`      | Variable monitor class (currently unused)                                                        | 
+| `sound.py`        | Sound class (currently unused)                                                                   |
+| `variable.py`     | Variable class (currently unused)                                                                |
+| `targetSprite.py` | Targets as pygame sprites                                                                        |
+| `projects/*.sb3`  | Projects used for testing                                                                        |
+| `README.md`       | This file                                                                                        |
+| `LICENSE`         | GPL-3.0 license                                                                                  |
+
 ## Naming conventions
-Always use `mixedCase` (first letter is always lowercase) for variable and function names.
-Use `Uppercase` for class names.
+Always use `mixedCase` (first letter is always lowercase) for variable, object, parameter, file, function and method names.
+Use `CamelCase` (first letter is uppercase) for class names.
 
 Note: Use underscores if the name may become unclear. For example: use `sb3_unpack` instead of `sb3Unpack`
+
 ## How to use 
-Assuming that you installed all necessary requirements, place your sb3 files in the scratch2python folder where main.py is located.
+Assuming that you installed all necessary requirements, place your sb3 files somewhere accesible, or in the Scratch2Python folder. You can use an absolute or relative path.
 Then, change the projectToLoad variable to your project file.
 Now, just run `python3 main.py` and the project will start!
