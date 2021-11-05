@@ -3,7 +3,7 @@ Main Scratch2Python file
 
 This file is used to run Scratch2Python and build the project based on the data given by s2p_unpacker.py
 
-Copyright (C) 2021 Secret-chest (copyright applies for all files)
+Copyright (C) 2021 Secret-chest and other contributors (copyright applies for all files)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
