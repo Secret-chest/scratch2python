@@ -5,14 +5,10 @@
 
 # Scratch2Python
 Scratch2Python is a Python program that converts Scratch projects to Pygame code.
+
 ## Requirements
-Run the following commands:
-### Windows
-    pip install pygame
-    pip install CairoSVG
-### Linux
-    sudo pip3 install pygame
-    sudo pip3 install CairoSVG
+Install from requirements.txt (Scratch2Python also needs Python 3.6 or newer).
+
 ## Files
 The table below lists all files in the project.
 
@@ -29,6 +25,7 @@ The table below lists all files in the project.
 | `variable.py`     | Variable class (currently unused)                                                                |
 | `targetSprite.py` | Targets as pygame sprites                                                                        |
 | `projects/*.sb3`  | Projects used for testing                                                                        |
+| `requirements.txt`| List of requirements (install from this file)                                                    |
 | `README.md`       | This file                                                                                        |
 | `LICENSE`         | GPL-3.0 license                                                                                  |
 
