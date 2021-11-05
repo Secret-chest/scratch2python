@@ -57,7 +57,6 @@ def execute(block, s):
         return s.target.blocks[nextBlock]
 
     if opcode == "motion_goto_menu":
-        print(block.getFieldValue("to"))
         if block.getFieldValue("to") == "_mouse_":  # go to [mouse pointer v]
             newX, newY = pygame.mouse.get_pos()
             newX = newX - WIDTH // 2
