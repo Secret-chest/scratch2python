@@ -9,6 +9,9 @@ Scratch2Python is a Python program that converts Scratch projects to Pygame code
 ## Requirements
 Install from requirements.txt (Scratch2Python also needs Python 3.6 or newer).
 
+## Docs
+[Read the wiki here](https://github.com/Secret-chest/scratch2python/wiki).
+
 ## Files
 The table below lists all files in the project.
 
