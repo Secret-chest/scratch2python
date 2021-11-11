@@ -109,6 +109,7 @@ def execute(block, s, keys=[]):
                 nb.executionTime = 0
                 nb = s.target.blocks[nb.next]
                 block.script.add(nb.blockID)
+                # TODO
             nextBlock = s.target.blocks[block.next]
             return [block, nextBlock]
         else:
