@@ -23,6 +23,7 @@ class Block:
         self.timeDelay = 0
         self.target = None
         self.substack = set()
+        self.script = set()
         self.screenRefresh = False
 
     # Returns block input value

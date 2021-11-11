@@ -9,6 +9,15 @@ import cairosvg
 import io
 HEIGHT = 360
 WIDTH = 480
+KEY_MAPPING = {
+    "up arrow": pygame.K_UP,
+    "down arrow": pygame.K_DOWN,
+    "left arrow": pygame.K_LEFT,
+    "right arrow": pygame.K_RIGHT,
+    "enter": pygame.K_RETURN,
+    "space": pygame.K_SPACE,
+    # TODO: Add ASCII
+}
 
 
 # Load SVG
@@ -39,7 +48,7 @@ def startProject():
 
 
 # Run the given block object
-def execute(block, s):
+def execute(block, s, keys=[]):
     # Get block values
     opcode = block.opcode
     id = block.blockID
@@ -68,13 +77,13 @@ def execute(block, s):
         s.setXy(int(block.getInputValue("x")), s.y)
 
     if opcode == "motion_changexby":  # change x by ()
-        s.setXy(s.x + int(block.getInputValue("x")), s.y)
+        s.setXy(s.x + int(block.getInputValue("dx")), s.y)
 
     if opcode == "motion_sety":  # set y to ()
         s.setXy(s.x, int(block.getInputValue("y")))
 
     if opcode == "motion_changeyby":  # change y by ()
-        s.setXy(s.x, s.y + int(block.getInputValue("y")))
+        s.setXy(s.x, s.y + int(block.getInputValue("dy")))
 
     if opcode == "control_wait":  # wait () seconds
         # If not already waiting
@@ -88,6 +97,22 @@ def execute(block, s):
 
     if opcode == "event_whenflagclicked":  # when green flag clicked
         pass
+
+    if opcode == "event_whenkeypressed":  # when key [... v] pressed
+        key = block.getFieldValue("key_option", lookIn=0)
+        if keys[KEY_MAPPING[key]] and block.next:
+            nb = block  # s.target.blocks[block.next]
+            while nb.next and nb.next != block.blockID:
+                nb.blockRan = False
+                nb.waiting = False
+                nb.timeDelay = 0
+                nb.executionTime = 0
+                nb = s.target.blocks[nb.next]
+                block.script.add(nb.blockID)
+            nextBlock = s.target.blocks[block.next]
+            return [block, nextBlock]
+        else:
+            return block
 
     if opcode == "control_forever":  # forever {..}
         # Don't mark the loop as ran, and do a screen refresh
@@ -112,11 +137,9 @@ def execute(block, s):
             nb.next = block.blockID
             return nextBlock
 
-    # If there is a block below, print some debug messages and return it
+    # If there is a block below, return it
     if block.next:
-        print("DEBUG: Next ID", block.next)
         nextBlock = s.target.blocks[block.next]
-        print("DEBUG: Next opcode", nextBlock.opcode)
     else:
         print("DEBUG: Script finished")
     block.blockRan = True

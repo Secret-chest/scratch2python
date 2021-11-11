@@ -33,7 +33,7 @@ from targetSprite import TargetSprite
 VERSION = "M8"
 
 # Change this to a different project file
-PROJECT = "projects/mouse-follow.sb3"
+PROJECT = "projects/arrows.sb3"
 
 # Get project data and create sprites
 targets, currentBgFile, project = s2p_unpacker.sb3_unpack(PROJECT)
@@ -91,13 +91,13 @@ toExecute = []
 for s in allSprites:
     for _, block in s.target.blocks.items():
         if block.opcode == "event_whenflagclicked":
-            print("DEBUG: Running opcode", block.opcode)
-            print("DEBUG: Running ID", block.blockID)
             nextBlock = scratch.execute(block, block.target.sprite)
             # Error-proof by checking if the scripts are not empty
             if nextBlock:
                 # Add the next block to the queue
                 toExecute.append(nextBlock)
+        if block.opcode == "event_whenkeypressed":
+            toExecute.append(block)
 
 # Display the background
 scratch.setBackground(currentBg, display)
@@ -109,6 +109,7 @@ while projectRunning:
         # Window quit (ALT-F4 / X button)
         if event.type == pygame.QUIT:
             projectRunning = False
+
         # Debug and utility functions
         keys = pygame.key.get_pressed()
         if keys[pygame.K_F1]:  # Help
@@ -129,6 +130,7 @@ while projectRunning:
                 project.extractall("assets")
         if keys[pygame.K_F6]:  # Pause
             isPaused = not isPaused
+
     display.fill((255, 255, 255))
     if not isPaused:
         scratch.setBackground(currentBg, display)
@@ -145,12 +147,12 @@ while projectRunning:
                     block.executionTime, block.timeDelay = 0, 0
                     print("DEBUG: Wait period ended")
             if not block.blockRan:
-                print("DEBUG: Running opcode", block.opcode)
-                print("DEBUG: Running ID", block.blockID)
-                nextBlock = scratch.execute(block, block.target.sprite)
+                nextBlock = scratch.execute(block, block.target.sprite, keys)
                 if nextBlock:
-                    print("DEBUG: Next block is", nextBlock.opcode)
-                    nextBlocks.append(nextBlock)
+                    if isinstance(nextBlock, list):
+                        nextBlocks.extend(nextBlock)
+                    else:
+                        nextBlocks.append(nextBlock)
             if block.screenRefresh:
                 toExecute = nextBlocks[:]
                 allSprites.draw(display)
