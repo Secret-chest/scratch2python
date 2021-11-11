@@ -1,6 +1,6 @@
 """
 This file runs Scratch blocks, and stuff like that. Basically
-it simulates Scratch using the Scratch2Python file, hence tha name.
+it simulates Scratch using the Scratch2Python file, hence the name.
 """
 # Scratch project functions
 # Green flag event
@@ -16,7 +16,68 @@ KEY_MAPPING = {
     "right arrow": pygame.K_RIGHT,
     "enter": pygame.K_RETURN,
     "space": pygame.K_SPACE,
-    # TODO: Add ASCII
+    "a": pygame.K_a,
+    "b": pygame.K_b,
+    "c": pygame.K_c,
+    "d": pygame.K_d,
+    "e": pygame.K_e,
+    "f": pygame.K_f,
+    "g": pygame.K_g,
+    "h": pygame.K_h,
+    "i": pygame.K_i,
+    "j": pygame.K_j,
+    "k": pygame.K_k,
+    "l": pygame.K_l,
+    "m": pygame.K_m,
+    "n": pygame.K_n,
+    "o": pygame.K_o,
+    "p": pygame.K_p,
+    "q": pygame.K_q,
+    "r": pygame.K_r,
+    "s": pygame.K_s,
+    "t": pygame.K_t,
+    "u": pygame.K_u,
+    "v": pygame.K_v,
+    "w": pygame.K_w,
+    "x": pygame.K_x,
+    "y": pygame.K_y,
+    "z": pygame.K_z,
+    "0": pygame.K_0,
+    "1": pygame.K_1,
+    "2": pygame.K_2,
+    "3": pygame.K_3,
+    "4": pygame.K_4,
+    "5": pygame.K_5,
+    "6": pygame.K_6,
+    "7": pygame.K_7,
+    "8": pygame.K_8,
+    "9": pygame.K_9,
+    "<": pygame.K_LESS,
+    ">": pygame.K_GREATER,
+    "+": pygame.K_PLUS,
+    "-": pygame.K_MINUS,
+    "=": pygame.K_EQUALS,
+    ".": pygame.K_PERIOD,
+    ",": pygame.K_COMMA,
+    "%": pygame.K_PERCENT,
+    "$": pygame.K_DOLLAR,
+    "#": pygame.K_HASH,
+    "@": pygame.K_AT,
+    "!": pygame.K_EXCLAIM,
+    "^": pygame.K_CARET,
+    "&": pygame.K_AMPERSAND,
+    "*": pygame.K_ASTERISK,
+    "(": pygame.K_LEFTPAREN,
+    ")": pygame.K_RIGHTPAREN,
+    "[": pygame.K_LEFTBRACKET,
+    "]": pygame.K_RIGHTBRACKET,
+    "?": pygame.K_QUESTION,
+    "\\": pygame.K_BACKSLASH,
+    "/": pygame.K_SLASH,
+    "?": pygame.K_QUESTION,
+    "'": pygame.K_QUOTE,
+    "\"": pygame.K_QUOTEDBL,
+    "`": pygame.K_BACKQUOTE,
 }
 
 
@@ -100,20 +161,36 @@ def execute(block, s, keys=[]):
 
     if opcode == "event_whenkeypressed":  # when key [... v] pressed
         key = block.getFieldValue("key_option", lookIn=0)
-        if keys[KEY_MAPPING[key]] and block.next:
-            nb = block  # s.target.blocks[block.next]
-            while nb.next and nb.next != block.blockID:
-                nb.blockRan = False
-                nb.waiting = False
-                nb.timeDelay = 0
-                nb.executionTime = 0
-                nb = s.target.blocks[nb.next]
-                block.script.add(nb.blockID)
-                # TODO
-            nextBlock = s.target.blocks[block.next]
-            return [block, nextBlock]
+        if key == "any":
+            if keys:
+                nb = block  # s.target.blocks[block.next]
+                while nb.next and nb.next != block.blockID:
+                    nb.blockRan = False
+                    nb.waiting = False
+                    nb.timeDelay = 0
+                    nb.executionTime = 0
+                    nb = s.target.blocks[nb.next]
+                    block.script.add(nb.blockID)
+                    # TODO
+                nextBlock = s.target.blocks[block.next]
+                return [block, nextBlock]
+            else:
+                return block
         else:
-            return block
+            if keys[KEY_MAPPING[key]] and block.next:
+                nb = block  # s.target.blocks[block.next]
+                while nb.next and nb.next != block.blockID:
+                    nb.blockRan = False
+                    nb.waiting = False
+                    nb.timeDelay = 0
+                    nb.executionTime = 0
+                    nb = s.target.blocks[nb.next]
+                    block.script.add(nb.blockID)
+                    # TODO
+                nextBlock = s.target.blocks[block.next]
+                return [block, nextBlock]
+            else:
+                return block
 
     if opcode == "control_forever":  # forever {..}
         # Don't mark the loop as ran, and do a screen refresh
