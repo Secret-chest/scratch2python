@@ -30,7 +30,7 @@ from tkinter.messagebox import *
 import os
 from targetSprite import TargetSprite
 
-VERSION = "M7"
+VERSION = "M8"
 
 # Change this to a different project file
 PROJECT = "projects/mouse-follow.sb3"
@@ -42,6 +42,7 @@ for t in targets:
     sprite = TargetSprite(t)
     t.sprite = sprite
     allSprites.add(sprite)
+    sprite.setXy(t.x, t.y)
 
 # Start tkinter for showing some popups, and hide main window
 wn = tk.Tk()

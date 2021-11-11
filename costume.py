@@ -11,6 +11,6 @@ class Costume:
     def __init__(self):
         self.md5ext = ""
         self.dataFormat = "svg"
-        self.rotationCenterX = 240
-        self.rotationCenterY = 180
+        self.rotationCenterX = 0
+        self.rotationCenterY = 0
         self.file = None
