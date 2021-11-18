@@ -74,7 +74,6 @@ KEY_MAPPING = {
     "?": pygame.K_QUESTION,
     "\\": pygame.K_BACKSLASH,
     "/": pygame.K_SLASH,
-    "?": pygame.K_QUESTION,
     "'": pygame.K_QUOTE,
     "\"": pygame.K_QUOTEDBL,
     "`": pygame.K_BACKQUOTE,
@@ -164,6 +163,7 @@ def execute(block, s, keys=[]):
         if key == "any":
             if keys:
                 nb = block  # s.target.blocks[block.next]
+                nb.blockRan = False
                 while nb.next and nb.next != block.blockID:
                     nb.blockRan = False
                     nb.waiting = False
@@ -171,26 +171,34 @@ def execute(block, s, keys=[]):
                     nb.executionTime = 0
                     nb = s.target.blocks[nb.next]
                     block.script.add(nb.blockID)
+                    if not nb.next:
+                        nb.next = block.blockID
                     # TODO
+                nb.blockRan = False
                 nextBlock = s.target.blocks[block.next]
+                block.blockRan = False
                 return [block, nextBlock]
             else:
+                block.blockRan = False
                 return block
+        elif keys[KEY_MAPPING[key]] and block.next:
+            nb = block  # s.target.blocks[block.next]
+            nb.blockRan = False
+            while nb.next and nb.next != block.blockID:
+                nb.blockRan = False
+                nb.waiting = False
+                nb.timeDelay = 0
+                nb.executionTime = 0
+                nb = s.target.blocks[nb.next]
+                block.script.add(nb.blockID)
+                if not nb.next:
+                    nb.next = block.blockID
+                # TODO: Check if inEventLoop is true and event is last in loop
+            nb.blockRan = False
+            nextBlock = s.target.blocks[block.next]
+            return [block, nextBlock]
         else:
-            if keys[KEY_MAPPING[key]] and block.next:
-                nb = block  # s.target.blocks[block.next]
-                while nb.next and nb.next != block.blockID:
-                    nb.blockRan = False
-                    nb.waiting = False
-                    nb.timeDelay = 0
-                    nb.executionTime = 0
-                    nb = s.target.blocks[nb.next]
-                    block.script.add(nb.blockID)
-                    # TODO
-                nextBlock = s.target.blocks[block.next]
-                return [block, nextBlock]
-            else:
-                return block
+            return block
 
     if opcode == "control_forever":  # forever {..}
         # Don't mark the loop as ran, and do a screen refresh

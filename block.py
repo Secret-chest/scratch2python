@@ -25,6 +25,7 @@ class Block:
         self.substack = set()
         self.script = set()
         self.screenRefresh = False
+        self.inEventLoop = False
 
     # Returns block input value
     def getInputValue(self, inputId, lookIn=(1, 1)):

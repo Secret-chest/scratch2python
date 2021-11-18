@@ -58,9 +58,10 @@ scratch.startProject()
 paused = fontXl.render("Paused (Press F6 to resume)", 1, (0, 0, 0))
 pausedWidth, pausedHeight = fontXl.size("Paused (Press F6 to resume)")
 
-# Set player size
+# Set player size and fps
 HEIGHT = 360
 WIDTH = 480
+FPS = 30
 
 # Get project name and set icon
 projectName = Path(PROJECT).stem
@@ -158,7 +159,7 @@ while projectRunning:
                 allSprites.draw(display)
                 allSprites.update()
                 pygame.display.flip()
-                clock.tick(30)
+                clock.tick(FPS)
         toExecute = nextBlocks[:]
         allSprites.draw(display)
         allSprites.update()
@@ -166,5 +167,5 @@ while projectRunning:
         display.blit(paused, (WIDTH // 2 - pausedWidth // 2, WIDTH // 2 - pausedHeight // 2))
     pygame.display.flip()
     wn.update()
-    clock.tick(30)
+    clock.tick(FPS)
 pygame.quit()
