@@ -23,6 +23,7 @@ from s2p_unpacker import *
 import shutil
 import scratch
 import pygame
+import time
 import tkinter as tk
 from pathlib import Path
 # import zipfile as zf
@@ -62,6 +63,7 @@ pausedWidth, pausedHeight = fontXl.size("Paused (Press F6 to resume)")
 HEIGHT = 360
 WIDTH = 480
 FPS = 30
+KEY_DELAY = 500
 
 # Get project name and set icon
 projectName = Path(PROJECT).stem
@@ -112,24 +114,26 @@ while projectRunning:
             projectRunning = False
 
         # Debug and utility functions
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_F1]:  # Help
+        keys = set()
+        # if event.type == pygame.KEYDOWN:
+
+        if pygame.K_F1 in keys:  # Help
             showinfo("Work in progress", "Help not currently available")
-        if keys[pygame.K_F2]:  # Scratch2Python options
+        if pygame.K_F2 in keys:  # Scratch2Python options
             showinfo("Work in progress", "Options coming soon")
-        if keys[pygame.K_F3]:  # Debug
+        if pygame.K_F3 in keys:  # Debug
             showinfo("Debug", "Showing debug info. Check the terminal.")
             print(project.namelist())
-        if keys[pygame.K_F4]:  # Project info
+        if pygame.K_F4 in keys:  # Project info
             showinfo("Work in progress", "Project info coming soon")
-        if keys[pygame.K_F5]:  # Extract
+        if pygame.K_F5 in keys:  # Extract
             confirm = askokcancel("Extract", "Extract all project files?")
             if confirm:
                 print("DEBUG: Extracting project")
                 shutil.rmtree("assets")
                 os.mkdir("assets")
                 project.extractall("assets")
-        if keys[pygame.K_F6]:  # Pause
+        if pygame.K_F6 in keys:  # Pause
             isPaused = not isPaused
 
     display.fill((255, 255, 255))
@@ -137,13 +141,17 @@ while projectRunning:
         scratch.setBackground(currentBg, display)
         # Move all sprites to current position and direction, run blocks
         nextBlocks = []
+        print("DEBUG:", len(toExecute), "blocks in queue", [block.opcode for block in toExecute])
         for block in toExecute:
             if block.waiting:
                 print("DEBUG: Block execution time is", block.executionTime, "delay is", block.timeDelay)
                 block.executionTime += clock.get_time()
                 if block.executionTime >= block.timeDelay:
                     block.waiting = False
-                    block.blockRan = True
+                    if block.opcode.startswith("event"):
+                        block.blockRan = False
+                    else:
+                        block.blockRan = True
                     nextBlocks.append(block.target.blocks[block.next])
                     block.executionTime, block.timeDelay = 0, 0
                     print("DEBUG: Wait period ended")
@@ -160,7 +168,7 @@ while projectRunning:
                 allSprites.update()
                 pygame.display.flip()
                 clock.tick(FPS)
-        toExecute = nextBlocks[:]
+        toExecute = list(set(nextBlocks))
         allSprites.draw(display)
         allSprites.update()
     else:

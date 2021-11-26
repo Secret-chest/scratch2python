@@ -146,7 +146,6 @@ def execute(block, s, keys=[]):
         s.setXy(s.x, s.y + int(block.getInputValue("dy")))
 
     if opcode == "control_wait":  # wait () seconds
-        # If not already waiting
         if not block.waiting:
             # Get time delay and convert it to milliseconds
             block.timeDelay = int(round(float(int(block.getInputValue("duration"))) * 1000))
@@ -159,6 +158,12 @@ def execute(block, s, keys=[]):
         pass
 
     if opcode == "event_whenkeypressed":  # when key [... v] pressed
+        # if not block.waiting:
+        #     # Get time delay and convert it to milliseconds
+        #     block.timeDelay = 500
+        #     block.waiting = True
+        #     block.executionTime = 0
+        #     print("DEBUG: Waiting for", block.timeDelay, "ms")
         key = block.getFieldValue("key_option", lookIn=0)
         if key == "any":
             if keys:
@@ -166,7 +171,6 @@ def execute(block, s, keys=[]):
                 nb.blockRan = False
                 while nb.next and nb.next != block.blockID:
                     nb.blockRan = False
-                    nb.waiting = False
                     nb.timeDelay = 0
                     nb.executionTime = 0
                     nb = s.target.blocks[nb.next]
@@ -181,12 +185,11 @@ def execute(block, s, keys=[]):
             else:
                 block.blockRan = False
                 return block
-        elif keys[KEY_MAPPING[key]] and block.next:
+        elif KEY_MAPPING[key] in keys and block.next:
             nb = block  # s.target.blocks[block.next]
             nb.blockRan = False
             while nb.next and nb.next != block.blockID:
                 nb.blockRan = False
-                nb.waiting = False
                 nb.timeDelay = 0
                 nb.executionTime = 0
                 nb = s.target.blocks[nb.next]
