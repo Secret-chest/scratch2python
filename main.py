@@ -87,8 +87,9 @@ clock = pygame.time.Clock()
 # Clear display
 display.fill((255, 255, 255))
 
-# Create a block execution queue
+# Create block execution queues
 toExecute = []
+eventHandlers = []
 
 # Start green flag scripts
 for s in allSprites:
@@ -99,8 +100,8 @@ for s in allSprites:
             if nextBlock:
                 # Add the next block to the queue
                 toExecute.append(nextBlock)
-        if block.opcode == "event_whenkeypressed":
-            toExecute.append(block)
+        elif block.opcode.startswith("event_"):  # add "when I start as a clone" code later
+            eventHandlers.append(block)
 
 # Display the background
 scratch.setBackground(currentBg, display)
@@ -114,8 +115,8 @@ while projectRunning:
             projectRunning = False
 
         # Debug and utility functions
-        keys = set()
-        # if event.type == pygame.KEYDOWN:
+        keysRaw = pygame.key.get_pressed()
+        keys = set(k for k in scratch.KEY_MAPPING.values() if keysRaw[k])
 
         if pygame.K_F1 in keys:  # Help
             showinfo("Work in progress", "Help not currently available")
@@ -137,11 +138,14 @@ while projectRunning:
             isPaused = not isPaused
 
     display.fill((255, 255, 255))
+    if toExecute:
+        for block in toExecute:
+            print("DEBUG: Block", block.blockID, "in queue")
     if not isPaused:
         scratch.setBackground(currentBg, display)
-        # Move all sprites to current position and direction, run blocks
+
+        # Run blocks
         nextBlocks = []
-        print("DEBUG:", len(toExecute), "blocks in queue", [block.opcode for block in toExecute])
         for block in toExecute:
             if block.waiting:
                 print("DEBUG: Block execution time is", block.executionTime, "delay is", block.timeDelay)
@@ -168,7 +172,16 @@ while projectRunning:
                 allSprites.update()
                 pygame.display.flip()
                 clock.tick(FPS)
+        for e in eventHandlers:
+            if e.opcode == "event_whenkeypressed" and keys:
+                nextBlock = scratch.execute(block, block.target.sprite, keys)
+                if nextBlock:
+                    if isinstance(nextBlock, list):
+                        nextBlocks.extend(nextBlock)
+                    else:
+                        nextBlocks.append(nextBlock)
         toExecute = list(set(nextBlocks))
+
         allSprites.draw(display)
         allSprites.update()
     else:

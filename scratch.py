@@ -77,6 +77,21 @@ KEY_MAPPING = {
     "'": pygame.K_QUOTE,
     "\"": pygame.K_QUOTEDBL,
     "`": pygame.K_BACKQUOTE,
+
+    # Scratch2Python only
+    "backspace": pygame.K_BACKSPACE,
+    "f1": pygame.K_F1,
+    "f2": pygame.K_F2,
+    "f3": pygame.K_F3,
+    "f4": pygame.K_F4,
+    "f5": pygame.K_F5,
+    "f6": pygame.K_F6,
+    "f7": pygame.K_F7,
+    "f8": pygame.K_F8,
+    "f9": pygame.K_F9,
+    "f10": pygame.K_F10,
+    "f11": pygame.K_F11,
+    "f12": pygame.K_F12
 }
 
 
@@ -165,6 +180,7 @@ def execute(block, s, keys=[]):
         #     block.executionTime = 0
         #     print("DEBUG: Waiting for", block.timeDelay, "ms")
         key = block.getFieldValue("key_option", lookIn=0)
+
         if key == "any":
             if keys:
                 nb = block  # s.target.blocks[block.next]
@@ -181,11 +197,9 @@ def execute(block, s, keys=[]):
                 nb.blockRan = False
                 nextBlock = s.target.blocks[block.next]
                 block.blockRan = False
-                return [block, nextBlock]
-            else:
-                block.blockRan = False
-                return block
+                return nextBlock
         elif KEY_MAPPING[key] in keys and block.next:
+            print("DEBUG: Handling key", key)
             nb = block  # s.target.blocks[block.next]
             nb.blockRan = False
             while nb.next and nb.next != block.blockID:
@@ -199,9 +213,7 @@ def execute(block, s, keys=[]):
                 # TODO: Check if inEventLoop is true and event is last in loop
             nb.blockRan = False
             nextBlock = s.target.blocks[block.next]
-            return [block, nextBlock]
-        else:
-            return block
+            return nextBlock
 
     if opcode == "control_forever":  # forever {..}
         # Don't mark the loop as ran, and do a screen refresh
@@ -229,7 +241,7 @@ def execute(block, s, keys=[]):
     # If there is a block below, return it
     if block.next:
         nextBlock = s.target.blocks[block.next]
-    else:
-        print("DEBUG: Script finished")
+    # else:
+    #     print("DEBUG: Script finished")
     block.blockRan = True
     return nextBlock
