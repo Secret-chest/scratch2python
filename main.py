@@ -34,7 +34,7 @@ from targetSprite import TargetSprite
 VERSION = "M8"
 
 # Change this to a different project file
-PROJECT = "projects/arrows.sb3"
+PROJECT = "projects/wait_gotoxy.sb3"
 
 # Get project data and create sprites
 targets, currentBgFile, project = s2p_unpacker.sb3_unpack(PROJECT)
@@ -90,6 +90,7 @@ display.fill((255, 255, 255))
 # Create block execution queues
 toExecute = []
 eventHandlers = []
+doScreenRefresh = False
 
 # Start green flag scripts
 for s in allSprites:
@@ -143,35 +144,32 @@ while projectRunning:
             print("DEBUG: Block", block.blockID, "in queue")
     if not isPaused:
         scratch.setBackground(currentBg, display)
-
-        # Run blocks
-        nextBlocks = []
-        for block in toExecute:
-            if block.waiting:
-                print("DEBUG: Block execution time is", block.executionTime, "delay is", block.timeDelay)
-                block.executionTime += clock.get_time()
-                if block.executionTime >= block.timeDelay:
-                    block.waiting = False
-                    if block.opcode.startswith("event"):
-                        block.blockRan = False
-                    else:
-                        block.blockRan = True
-                    nextBlocks.append(block.target.blocks[block.next])
-                    block.executionTime, block.timeDelay = 0, 0
-                    print("DEBUG: Wait period ended")
-            if not block.blockRan:
-                nextBlock = scratch.execute(block, block.target.sprite, keys)
-                if nextBlock:
-                    if isinstance(nextBlock, list):
-                        nextBlocks.extend(nextBlock)
-                    else:
-                        nextBlocks.append(nextBlock)
-            if block.screenRefresh:
-                toExecute = nextBlocks[:]
-                allSprites.draw(display)
-                allSprites.update()
-                pygame.display.flip()
-                clock.tick(FPS)
+        while toExecute and not doScreenRefresh:
+            # Run blocks
+            nextBlocks = []
+            for block in toExecute:
+                if block.waiting:
+                    print("DEBUG: Block execution time is", block.executionTime, "delay is", block.timeDelay)
+                    block.executionTime += clock.get_time()
+                    if block.executionTime >= block.timeDelay:
+                        block.waiting = False
+                        if block.opcode.startswith("event"):
+                            block.blockRan = False
+                        else:
+                            block.blockRan = True
+                        nextBlocks.append(block.target.blocks[block.next])
+                        block.executionTime, block.timeDelay = 0, 0
+                        print("DEBUG: Wait period ended")
+                if not block.blockRan:
+                    nextBlock = scratch.execute(block, block.target.sprite, keys)
+                    if nextBlock:
+                        if isinstance(nextBlock, list):
+                            nextBlocks.extend(nextBlock)
+                        else:
+                            nextBlocks.append(nextBlock)
+                if block.screenRefresh:
+                    doScreenRefresh = True
+            toExecute = list(set(nextBlocks))
         for e in eventHandlers:
             if e.opcode == "event_whenkeypressed" and keys:
                 nextBlock = scratch.execute(block, block.target.sprite, keys)
@@ -180,13 +178,14 @@ while projectRunning:
                         nextBlocks.extend(nextBlock)
                     else:
                         nextBlocks.append(nextBlock)
-        toExecute = list(set(nextBlocks))
 
         allSprites.draw(display)
         allSprites.update()
     else:
         display.blit(paused, (WIDTH // 2 - pausedWidth // 2, WIDTH // 2 - pausedHeight // 2))
+    print("DEBUG: Queue length is", len(toExecute))
     pygame.display.flip()
     wn.update()
+    doScreenRefresh = False
     clock.tick(FPS)
 pygame.quit()

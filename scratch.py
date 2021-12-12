@@ -161,6 +161,7 @@ def execute(block, s, keys=[]):
         s.setXy(s.x, s.y + int(block.getInputValue("dy")))
 
     if opcode == "control_wait":  # wait () seconds
+        block.screenRefresh = True
         if not block.waiting:
             # Get time delay and convert it to milliseconds
             block.timeDelay = int(round(float(int(block.getInputValue("duration"))) * 1000))
