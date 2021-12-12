@@ -183,7 +183,6 @@ while projectRunning:
         allSprites.update()
     else:
         display.blit(paused, (WIDTH // 2 - pausedWidth // 2, WIDTH // 2 - pausedHeight // 2))
-    print("DEBUG: Queue length is", len(toExecute))
     pygame.display.flip()
     wn.update()
     doScreenRefresh = False
