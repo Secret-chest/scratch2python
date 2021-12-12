@@ -16,8 +16,8 @@ class TargetSprite(pygame.sprite.Sprite):
         # Convert Scratch coordinates into Pygame coordinates
         self.x = target.x
         self.y = target.y
-        self.rect.x = target.x + scratch.WIDTH // 2 - self.rect.width // 2
-        self.rect.y = scratch.HEIGHT // 2 - target.y - self.rect.height // 2
+        self.rect.x = target.x + scratch.WIDTH // 2 - self.target.costumes[self.target.currentCostume].rotationCenterX
+        self.rect.y = scratch.HEIGHT // 2 - target.y - self.target.costumes[self.target.currentCostume].rotationCenterY
 
     # Set self position
     def setXy(self, x, y):
@@ -33,5 +33,5 @@ class TargetSprite(pygame.sprite.Sprite):
         # Set X and Y
         self.x = x
         self.y = y
-        self.rect.x = x + scratch.WIDTH // 2 - self.rect.width // 2
-        self.rect.y = scratch.HEIGHT // 2 - y - self.rect.height // 2
+        self.rect.x = x + scratch.WIDTH // 2 - self.target.costumes[self.target.currentCostume].rotationCenterX
+        self.rect.y = scratch.HEIGHT // 2 - y - self.target.costumes[self.target.currentCostume].rotationCenterY

@@ -1,6 +1,6 @@
 """
 This file runs Scratch blocks, and stuff like that. Basically
-it simulates Scratch using the Scratch2Python file, hence tha name.
+it simulates Scratch using the Scratch2Python file, hence the name.
 """
 # Scratch project functions
 # Green flag event
@@ -9,6 +9,90 @@ import cairosvg
 import io
 HEIGHT = 360
 WIDTH = 480
+KEY_MAPPING = {
+    "up arrow": pygame.K_UP,
+    "down arrow": pygame.K_DOWN,
+    "left arrow": pygame.K_LEFT,
+    "right arrow": pygame.K_RIGHT,
+    "enter": pygame.K_RETURN,
+    "space": pygame.K_SPACE,
+    "a": pygame.K_a,
+    "b": pygame.K_b,
+    "c": pygame.K_c,
+    "d": pygame.K_d,
+    "e": pygame.K_e,
+    "f": pygame.K_f,
+    "g": pygame.K_g,
+    "h": pygame.K_h,
+    "i": pygame.K_i,
+    "j": pygame.K_j,
+    "k": pygame.K_k,
+    "l": pygame.K_l,
+    "m": pygame.K_m,
+    "n": pygame.K_n,
+    "o": pygame.K_o,
+    "p": pygame.K_p,
+    "q": pygame.K_q,
+    "r": pygame.K_r,
+    "s": pygame.K_s,
+    "t": pygame.K_t,
+    "u": pygame.K_u,
+    "v": pygame.K_v,
+    "w": pygame.K_w,
+    "x": pygame.K_x,
+    "y": pygame.K_y,
+    "z": pygame.K_z,
+    "0": pygame.K_0,
+    "1": pygame.K_1,
+    "2": pygame.K_2,
+    "3": pygame.K_3,
+    "4": pygame.K_4,
+    "5": pygame.K_5,
+    "6": pygame.K_6,
+    "7": pygame.K_7,
+    "8": pygame.K_8,
+    "9": pygame.K_9,
+    "<": pygame.K_LESS,
+    ">": pygame.K_GREATER,
+    "+": pygame.K_PLUS,
+    "-": pygame.K_MINUS,
+    "=": pygame.K_EQUALS,
+    ".": pygame.K_PERIOD,
+    ",": pygame.K_COMMA,
+    "%": pygame.K_PERCENT,
+    "$": pygame.K_DOLLAR,
+    "#": pygame.K_HASH,
+    "@": pygame.K_AT,
+    "!": pygame.K_EXCLAIM,
+    "^": pygame.K_CARET,
+    "&": pygame.K_AMPERSAND,
+    "*": pygame.K_ASTERISK,
+    "(": pygame.K_LEFTPAREN,
+    ")": pygame.K_RIGHTPAREN,
+    "[": pygame.K_LEFTBRACKET,
+    "]": pygame.K_RIGHTBRACKET,
+    "?": pygame.K_QUESTION,
+    "\\": pygame.K_BACKSLASH,
+    "/": pygame.K_SLASH,
+    "'": pygame.K_QUOTE,
+    "\"": pygame.K_QUOTEDBL,
+    "`": pygame.K_BACKQUOTE,
+
+    # Scratch2Python only
+    "backspace": pygame.K_BACKSPACE,
+    "f1": pygame.K_F1,
+    "f2": pygame.K_F2,
+    "f3": pygame.K_F3,
+    "f4": pygame.K_F4,
+    "f5": pygame.K_F5,
+    "f6": pygame.K_F6,
+    "f7": pygame.K_F7,
+    "f8": pygame.K_F8,
+    "f9": pygame.K_F9,
+    "f10": pygame.K_F10,
+    "f11": pygame.K_F11,
+    "f12": pygame.K_F12
+}
 
 
 # Load SVG
@@ -39,7 +123,7 @@ def startProject():
 
 
 # Run the given block object
-def execute(block, s):
+def execute(block, s, keys=[]):
     # Get block values
     opcode = block.opcode
     id = block.blockID
@@ -68,16 +152,16 @@ def execute(block, s):
         s.setXy(int(block.getInputValue("x")), s.y)
 
     if opcode == "motion_changexby":  # change x by ()
-        s.setXy(s.x + int(block.getInputValue("x")), s.y)
+        s.setXy(s.x + int(block.getInputValue("dx")), s.y)
 
     if opcode == "motion_sety":  # set y to ()
         s.setXy(s.x, int(block.getInputValue("y")))
 
     if opcode == "motion_changeyby":  # change y by ()
-        s.setXy(s.x, s.y + int(block.getInputValue("y")))
+        s.setXy(s.x, s.y + int(block.getInputValue("dy")))
 
     if opcode == "control_wait":  # wait () seconds
-        # If not already waiting
+        block.screenRefresh = True
         if not block.waiting:
             # Get time delay and convert it to milliseconds
             block.timeDelay = int(round(float(int(block.getInputValue("duration"))) * 1000))
@@ -88,6 +172,49 @@ def execute(block, s):
 
     if opcode == "event_whenflagclicked":  # when green flag clicked
         pass
+
+    if opcode == "event_whenkeypressed":  # when key [... v] pressed
+        # if not block.waiting:
+        #     # Get time delay and convert it to milliseconds
+        #     block.timeDelay = 500
+        #     block.waiting = True
+        #     block.executionTime = 0
+        #     print("DEBUG: Waiting for", block.timeDelay, "ms")
+        key = block.getFieldValue("key_option", lookIn=0)
+
+        if key == "any":
+            if keys:
+                nb = block  # s.target.blocks[block.next]
+                nb.blockRan = False
+                while nb.next and nb.next != block.blockID:
+                    nb.blockRan = False
+                    nb.timeDelay = 0
+                    nb.executionTime = 0
+                    nb = s.target.blocks[nb.next]
+                    block.script.add(nb.blockID)
+                    if not nb.next:
+                        nb.next = block.blockID
+                    # TODO
+                nb.blockRan = False
+                nextBlock = s.target.blocks[block.next]
+                block.blockRan = False
+                return nextBlock
+        elif KEY_MAPPING[key] in keys and block.next:
+            print("DEBUG: Handling key", key)
+            nb = block  # s.target.blocks[block.next]
+            nb.blockRan = False
+            while nb.next and nb.next != block.blockID:
+                nb.blockRan = False
+                nb.timeDelay = 0
+                nb.executionTime = 0
+                nb = s.target.blocks[nb.next]
+                block.script.add(nb.blockID)
+                if not nb.next:
+                    nb.next = block.blockID
+                # TODO: Check if inEventLoop is true and event is last in loop
+            nb.blockRan = False
+            nextBlock = s.target.blocks[block.next]
+            return nextBlock
 
     if opcode == "control_forever":  # forever {..}
         # Don't mark the loop as ran, and do a screen refresh
@@ -112,12 +239,10 @@ def execute(block, s):
             nb.next = block.blockID
             return nextBlock
 
-    # If there is a block below, print some debug messages and return it
+    # If there is a block below, return it
     if block.next:
-        print("DEBUG: Next ID", block.next)
         nextBlock = s.target.blocks[block.next]
-        print("DEBUG: Next opcode", nextBlock.opcode)
-    else:
-        print("DEBUG: Script finished")
+    # else:
+    #     print("DEBUG: Script finished")
     block.blockRan = True
     return nextBlock

@@ -46,6 +46,7 @@ def sb3_unpack(sb3):
             c = costume.Costume()
             if "md5ext" in costume_obj:
                 c.md5ext = costume_obj["md5ext"]
+                c.rotationCenterX, c.rotationCenterY = costume_obj["rotationCenterX"], costume_obj["rotationCenterY"]
             c.file = project.read(costume_obj["assetId"] + "." + costume_obj["dataFormat"])
             t.costumes.append(c)
 
