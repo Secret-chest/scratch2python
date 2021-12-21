@@ -31,10 +31,10 @@ from tkinter.messagebox import *
 import os
 from targetSprite import TargetSprite
 
-VERSION = "M8"
+VERSION = "M9 (developement version)"
 
 # Change this to a different project file
-PROJECT = "projects/wait_gotoxy.sb3"
+PROJECT = "projects/gotomouse-up.sb3"
 
 # Get project data and create sprites
 targets, currentBgFile, project = s2p_unpacker.sb3_unpack(PROJECT)
