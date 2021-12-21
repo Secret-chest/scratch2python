@@ -34,7 +34,7 @@ from targetSprite import TargetSprite
 VERSION = "M9 (developement version)"
 
 # Change this to a different project file
-PROJECT = "projects/gotomouse-up.sb3"
+PROJECT = "projects/arrows.sb3"
 
 # Get project data and create sprites
 targets, currentBgFile, project = s2p_unpacker.sb3_unpack(PROJECT)
@@ -143,6 +143,14 @@ while projectRunning:
         for block in toExecute:
             print("DEBUG: Block", block.blockID, "in queue")
     if not isPaused:
+        for e in eventHandlers:
+            if e.opcode == "event_whenkeypressed" and keys:
+                nextBlock = scratch.execute(block, block.target.sprite, keys)
+                if nextBlock:
+                    if isinstance(nextBlock, list):
+                        nextBlocks.extend(nextBlock)
+                    else:
+                        nextBlocks.append(nextBlock)
         scratch.setBackground(currentBg, display)
         while toExecute and not doScreenRefresh:
             # Run blocks
@@ -170,14 +178,6 @@ while projectRunning:
                 if block.screenRefresh:
                     doScreenRefresh = True
             toExecute = list(set(nextBlocks))
-        for e in eventHandlers:
-            if e.opcode == "event_whenkeypressed" and keys:
-                nextBlock = scratch.execute(block, block.target.sprite, keys)
-                if nextBlock:
-                    if isinstance(nextBlock, list):
-                        nextBlocks.extend(nextBlock)
-                    else:
-                        nextBlocks.append(nextBlock)
 
         allSprites.draw(display)
         allSprites.update()
