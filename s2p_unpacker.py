@@ -12,7 +12,9 @@ import zipfile as zf
 import json
 import target, costume, sound, block, variable, monitor  # , broadcast
 from pathlib import Path
-from io import StringIO
+import io
+import pygame
+import scratch
 
 
 def sb3_unpack(sb3):
@@ -23,49 +25,46 @@ def sb3_unpack(sb3):
 
     print("DEBUG: Loading project")
     project = zf.ZipFile(sb3, "r")
-    project_json = json.loads(project.read("project.json"))
+    projectJSON = json.loads(project.read("project.json"))
     targets = []
 
-    print("DEBUG: Project JSON output:", project_json)
+    print("DEBUG: Project JSON output:", projectJSON)
     # Generate the dictionary based on the contents of project.json
-    for target_obj in project_json['targets']:
-        # If stage, get background
-        if target_obj["isStage"]:
-            current_bg_file = project.read(target_obj["costumes"][target_obj["currentCostume"]]["assetId"] + "." + target_obj["costumes"][target_obj["currentCostume"]]["dataFormat"])
+    for targetObj in projectJSON['targets']:
         t = target.Target()
 
         # Set sprite values
-        if "x" in target_obj:
-            t.x = target_obj["x"]
-            t.y = target_obj["y"]
-            t.direction = target_obj["direction"]
-        t.currentCostume = target_obj["currentCostume"]
+        if "x" in targetObj:
+            t.x = targetObj["x"]
+            t.y = targetObj["y"]
+            t.direction = targetObj["direction"]
+        t.currentCostume = targetObj["currentCostume"]
 
         # Get costumes
-        for costume_obj in target_obj["costumes"]:
+        for costumeObj in targetObj["costumes"]:
             c = costume.Costume()
-            if "md5ext" in costume_obj:
-                c.md5ext = costume_obj["md5ext"]
-                c.rotationCenterX, c.rotationCenterY = costume_obj["rotationCenterX"], costume_obj["rotationCenterY"]
-            c.file = project.read(costume_obj["assetId"] + "." + costume_obj["dataFormat"])
+            if "md5ext" in costumeObj:
+                c.md5ext = costumeObj["md5ext"]
+                c.rotationCenterX, c.rotationCenterY = costumeObj["rotationCenterX"], costumeObj["rotationCenterY"]
+            c.dataFormat = costumeObj["dataFormat"]
+            c.file = project.read(costumeObj["assetId"] + "." + costumeObj["dataFormat"])
+            c.bitmapResolution = int(costumeObj["bitmapResolution"])
             t.costumes.append(c)
 
         # Set blocks to their correct values
-        for block_id, block_obj in target_obj["blocks"].items():
+        for blockId, blockObj in targetObj["blocks"].items():
             b = block.Block()
-            b.blockID = block_id
-            b.opcode = block_obj["opcode"]
-            b.next = block_obj["next"]
-            b.parent = block_obj["parent"]
-            b.shadow = block_obj["shadow"]
-            b.topLevel = block_obj["topLevel"]
-            b.inputs = block_obj["inputs"]
-            b.fields = block_obj["fields"]
+            b.blockID = blockId
+            b.opcode = blockObj["opcode"]
+            b.next = blockObj["next"]
+            b.parent = blockObj["parent"]
+            b.shadow = blockObj["shadow"]
+            b.topLevel = blockObj["topLevel"]
+            b.inputs = blockObj["inputs"]
+            b.fields = blockObj["fields"]
             b.blockRan = False
             b.target = t
-            t.blocks[block_id] = b
+            t.blocks[blockId] = b
         targets.append(t)
 
-    # Send to main.py
-    return targets, current_bg_file, project
-
+    return targets, project

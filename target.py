@@ -1,5 +1,5 @@
 """
-Target(sprite) class
+Target (sprite) class
 
 ======= CLASS INFO =======
 The various files with classes are used by s2p_unpacker and the correct data is
