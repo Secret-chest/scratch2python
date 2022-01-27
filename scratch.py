@@ -96,25 +96,10 @@ KEY_MAPPING = {
 
 
 # Load SVG
-def loadSvg(svg_bytes):
-    newBites = cairosvg.svg2png(bytestring=svg_bytes)
-    byteIo = io.BytesIO(newBites)
+def loadSvg(svgBytes):
+    newBytes = cairosvg.svg2png(bytestring=svgBytes)
+    byteIo = io.BytesIO(newBytes)
     return pygame.image.load(byteIo)
-
-
-# Render a sprite at its coordinates
-def render(sprite, x, y, direction, display):
-    # Set direction
-    sprite = pygame.transform.rotate(sprite, 90 - direction)
-    # Convert Scratch coordinates into Pygame coordinates
-    finalX = x + WIDTH // 2 - sprite.get_width() // 2
-    finalY = HEIGHT // 2 - y - sprite.get_height() // 2
-    display.blit(sprite, (finalX, finalY))
-
-
-# Set the stage background
-def setBackground(bg, display):
-    render(bg, 0, 0, 90, display)
 
 
 # Project start event

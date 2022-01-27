@@ -18,6 +18,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
+import io
 import s2p_unpacker
 from s2p_unpacker import *
 import shutil
@@ -31,13 +32,13 @@ from tkinter.messagebox import *
 import os
 from targetSprite import TargetSprite
 
-VERSION = "M9 (developement version)"
+VERSION = "M10 (development version)"
 
 # Change this to a different project file
-PROJECT = "projects/gotomouse-up.sb3"
+PROJECT = "projects/Garden-rock.sb3"
 
 # Get project data and create sprites
-targets, currentBgFile, project = s2p_unpacker.sb3_unpack(PROJECT)
+targets, project = s2p_unpacker.sb3_unpack(PROJECT)
 allSprites = pygame.sprite.Group()
 for t in targets:
     sprite = TargetSprite(t)
@@ -74,9 +75,6 @@ display = pygame.display.set_mode([WIDTH, HEIGHT])
 pygame.display.set_caption(projectName + " - Scratch2Python" + " " + VERSION)
 pygame.display.set_icon(icon)
 
-# Get background image
-currentBg = scratch.loadSvg(currentBgFile)
-
 # Set running state
 projectRunning = True
 isPaused = False
@@ -103,9 +101,6 @@ for s in allSprites:
                 toExecute.append(nextBlock)
         elif block.opcode.startswith("event_"):  # add "when I start as a clone" code later
             eventHandlers.append(block)
-
-# Display the background
-scratch.setBackground(currentBg, display)
 
 # Mainloop
 while projectRunning:
@@ -151,7 +146,6 @@ while projectRunning:
                         nextBlocks.extend(nextBlock)
                     else:
                         nextBlocks.append(nextBlock)
-        scratch.setBackground(currentBg, display)
         while toExecute and not doScreenRefresh:
             # Run blocks
             nextBlocks = []
