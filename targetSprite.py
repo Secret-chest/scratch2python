@@ -1,5 +1,5 @@
 """
-TargetSprite class
+targetSprite
 
 Targets as pygame sprites
 """
@@ -24,13 +24,15 @@ class TargetSprite(pygame.sprite.Sprite):
             sprite = pygame.transform.smoothscale(sprite, (sprite.get_width() // target.costumes[target.currentCostume].bitmapResolution, sprite.get_height() // target.costumes[target.currentCostume].bitmapResolution))
             self.padX = initialWidth - sprite.get_width()
             self.padY = initialHeight - sprite.get_height()
+            print(self.padX, self.padY)
         else:
             sprite = scratch.loadSvg(target.costumes[target.currentCostume].file)
         sprite = pygame.transform.rotate(sprite, 90 - target.direction)
-        self.x = target.x + self.padX
-        self.y = target.y + self.padY
+        self.x = target.x + self.padX // 2
+        self.y = target.y - self.padY // 2
         self.image = sprite
         self.rect = self.image.get_rect()
+        self.isStage = target.isStage
 
         # Convert Scratch coordinates into Pygame coordinates
         self.rect.x = (self.x + scratch.WIDTH // 2 - self.target.costumes[self.target.currentCostume].rotationCenterX)
@@ -38,6 +40,7 @@ class TargetSprite(pygame.sprite.Sprite):
 
     # Set self position
     def setXy(self, x, y):
+        print(x, y)
         # Do sprite fencing
         if x > 240:
             x = 240
@@ -48,7 +51,7 @@ class TargetSprite(pygame.sprite.Sprite):
         if x < -240:
             x = -240
         # Set X and Y
-        self.x = x + self.padX
-        self.y = y + self.padY
-        self.rect.x = x + scratch.WIDTH // 2 - self.target.costumes[self.target.currentCostume].rotationCenterX
-        self.rect.y = scratch.HEIGHT // 2 - y - self.target.costumes[self.target.currentCostume].rotationCenterY
+        self.x = x + self.padX // 2
+        self.y = y - self.padY // 2
+        self.rect.x = self.x + scratch.WIDTH // 2 - self.target.costumes[self.target.currentCostume].rotationCenterX
+        self.rect.y = scratch.HEIGHT // 2 - self.y - self.target.costumes[self.target.currentCostume].rotationCenterY
