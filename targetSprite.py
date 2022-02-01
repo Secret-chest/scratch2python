@@ -24,7 +24,6 @@ class TargetSprite(pygame.sprite.Sprite):
             sprite = pygame.transform.smoothscale(sprite, (sprite.get_width() // target.costumes[target.currentCostume].bitmapResolution, sprite.get_height() // target.costumes[target.currentCostume].bitmapResolution))
             self.padX = initialWidth - sprite.get_width()
             self.padY = initialHeight - sprite.get_height()
-            print(self.padX, self.padY)
         else:
             sprite = scratch.loadSvg(target.costumes[target.currentCostume].file)
         sprite = pygame.transform.rotate(sprite, 90 - target.direction)
@@ -40,7 +39,6 @@ class TargetSprite(pygame.sprite.Sprite):
 
     # Set self position
     def setXy(self, x, y):
-        print(x, y)
         # Do sprite fencing
         if x > 240:
             x = 240
