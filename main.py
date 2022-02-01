@@ -1,7 +1,7 @@
 """
 Main Scratch2Python file
 
-This file is used to run Scratch2Python and build the project based on the data given by s2p_unpacker.py
+This file is used to run Scratch2Python and build the project based on the data given by sb3Unpacker.py
 
 Copyright (C) 2022 Secret-chest and other contributors (copyright applies for all files)
 
@@ -19,8 +19,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import io
-import s2p_unpacker
-from s2p_unpacker import *
+import sb3Unpacker
+from sb3Unpacker import *
 import shutil
 import scratch
 import pygame
@@ -32,13 +32,13 @@ from tkinter.messagebox import *
 import os
 from targetSprite import TargetSprite
 
-VERSION = "M10 (development version)"
+VERSION = "M11 (development version)"
 
 # Change this to a different project file
-PROJECT = "projects/Garden-rock.sb3"
+PROJECT = "projects/gotomouse-up.sb3"
 
 # Get project data and create sprites
-targets, project = s2p_unpacker.sb3_unpack(PROJECT)
+targets, project = sb3Unpacker.sb3Unpack(PROJECT)
 allSprites = pygame.sprite.Group()
 for t in targets:
     sprite = TargetSprite(t)
@@ -52,12 +52,11 @@ wn.withdraw()
 
 # Start Pygame, load fonts and print a debug message
 pygame.init()
-font = pygame.font.SysFont("pygame.font.get_default_font()", 16)
-fontXl = pygame.font.SysFont("pygame.font.get_default_font()", 36)
-scratch.startProject()
+font = pygame.font.SysFont(pygame.font.get_default_font(), 16)
+fontXl = pygame.font.SysFont(pygame.font.get_default_font(), 36)
 
 # Create paused message
-paused = fontXl.render("Paused (Press F6 to resume)", 1, (0, 0, 0))
+paused = fontXl.render("Paused (Press F6 to resume)", True, (0, 0, 0))
 pausedWidth, pausedHeight = fontXl.size("Paused (Press F6 to resume)")
 
 # Set player size and fps
@@ -85,11 +84,12 @@ clock = pygame.time.Clock()
 # Clear display
 display.fill((255, 255, 255))
 
-# Create block execution queues
-toExecute = []
-eventHandlers = []
 doScreenRefresh = False
 
+# Start project
+toExecute = []
+eventHandlers = []
+print("Project started")
 # Start green flag scripts
 for s in allSprites:
     for _, block in s.target.blocks.items():
@@ -108,6 +108,7 @@ while projectRunning:
     for event in pygame.event.get():
         # Window quit (ALT-F4 / X button)
         if event.type == pygame.QUIT:
+            print("Player closed")
             projectRunning = False
 
         # Debug and utility functions
@@ -115,18 +116,17 @@ while projectRunning:
         keys = set(k for k in scratch.KEY_MAPPING.values() if keysRaw[k])
 
         if pygame.K_F1 in keys:  # Help
-            showinfo("Work in progress", "Help not currently available")
+            showinfo("Help", "Nothing to see here")
         if pygame.K_F2 in keys:  # Scratch2Python options
-            showinfo("Work in progress", "Options coming soon")
+            showinfo("Options", "Nothing to see here")
         if pygame.K_F3 in keys:  # Debug
-            showinfo("Debug", "Showing debug info. Check the terminal.")
-            print(project.namelist())
+            showinfo("Debug", "Nothing to see here")
         if pygame.K_F4 in keys:  # Project info
-            showinfo("Work in progress", "Project info coming soon")
+            showinfo("Project info", "Nothing to see here")
         if pygame.K_F5 in keys:  # Extract
             confirm = askokcancel("Extract", "Extract all project files?")
             if confirm:
-                print("DEBUG: Extracting project")
+                print("Extracting project")
                 shutil.rmtree("assets")
                 os.mkdir("assets")
                 project.extractall("assets")
@@ -136,7 +136,8 @@ while projectRunning:
     display.fill((255, 255, 255))
     if toExecute:
         for block in toExecute:
-            print("DEBUG: Block", block.blockID, "in queue")
+            pass
+            # print("Running block", block.blockID, "of type", block.opcode)
     if not isPaused:
         for e in eventHandlers:
             if e.opcode == "event_whenkeypressed" and keys:
@@ -151,7 +152,6 @@ while projectRunning:
             nextBlocks = []
             for block in toExecute:
                 if block.waiting:
-                    print("DEBUG: Block execution time is", block.executionTime, "delay is", block.timeDelay)
                     block.executionTime += clock.get_time()
                     if block.executionTime >= block.timeDelay:
                         block.waiting = False
@@ -161,7 +161,6 @@ while projectRunning:
                             block.blockRan = True
                         nextBlocks.append(block.target.blocks[block.next])
                         block.executionTime, block.timeDelay = 0, 0
-                        print("DEBUG: Wait period ended")
                 if not block.blockRan:
                     nextBlock = scratch.execute(block, block.target.sprite, keys)
                     if nextBlock:

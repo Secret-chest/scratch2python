@@ -17,11 +17,10 @@ import pygame
 import scratch
 
 
-def sb3_unpack(sb3):
+def sb3Unpack(sb3):
     # If project does not exist, quit with exit code 1
     if not Path(sb3).exists():
-        print("ERROR: Project file does not exist")
-        exit(1)
+        raise OSError("Project file does not exist")
 
     print("DEBUG: Loading project")
     project = zf.ZipFile(sb3, "r")
@@ -48,7 +47,10 @@ def sb3_unpack(sb3):
                 c.rotationCenterX, c.rotationCenterY = costumeObj["rotationCenterX"], costumeObj["rotationCenterY"]
             c.dataFormat = costumeObj["dataFormat"]
             c.file = project.read(costumeObj["assetId"] + "." + costumeObj["dataFormat"])
-            c.bitmapResolution = int(costumeObj["bitmapResolution"])
+            if costumeObj["dataFormat"] != "svg":
+                c.bitmapResolution = int(costumeObj["bitmapResolution"])
+            else:
+                c.bitmapResolution = 1
             t.costumes.append(c)
 
         # Set blocks to their correct values

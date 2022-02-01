@@ -1,20 +1,19 @@
 """
-This file runs Scratch blocks, and stuff like that. Basically
-it simulates Scratch using the Scratch2Python file, hence the name.
+This module runs Scratch blocks on demand.
+Basically it emulates Scratch in Pygame, hence the name.
 """
-# Scratch project functions
-# Green flag event
 import pygame.time
 import cairosvg
 import io
 HEIGHT = 360
 WIDTH = 480
+
+# Key maps to convert the key option in blocks to Pygame constants
 KEY_MAPPING = {
     "up arrow": pygame.K_UP,
     "down arrow": pygame.K_DOWN,
     "left arrow": pygame.K_LEFT,
     "right arrow": pygame.K_RIGHT,
-    "enter": pygame.K_RETURN,
     "space": pygame.K_SPACE,
     "a": pygame.K_a,
     "b": pygame.K_b,
@@ -52,6 +51,9 @@ KEY_MAPPING = {
     "7": pygame.K_7,
     "8": pygame.K_8,
     "9": pygame.K_9,
+
+    # Scratch supports these keys internally
+    "enter": pygame.K_RETURN,
     "<": pygame.K_LESS,
     ">": pygame.K_GREATER,
     "+": pygame.K_PLUS,
@@ -100,11 +102,6 @@ def loadSvg(svgBytes):
     newBytes = cairosvg.svg2png(bytestring=svgBytes)
     byteIo = io.BytesIO(newBytes)
     return pygame.image.load(byteIo)
-
-
-# Project start event
-def startProject():
-    print("DEBUG: Project start event")
 
 
 # Run the given block object
