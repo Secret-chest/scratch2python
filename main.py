@@ -27,15 +27,15 @@ import pygame
 import time
 import tkinter as tk
 from pathlib import Path
-# import zipfile as zf
 from tkinter.messagebox import *
 import os
 from targetSprite import TargetSprite
+import sys
 
 VERSION = "M11 (development version)"
 
 # Change this to a different project file
-PROJECT = "projects/gotomouse-up.sb3"
+PROJECT = "projects/arrows.sb3"
 
 # Get project data and create sprites
 targets, project = sb3Unpacker.sb3Unpack(PROJECT)

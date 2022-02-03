@@ -22,12 +22,11 @@ def sb3Unpack(sb3):
     if not Path(sb3).exists():
         raise OSError("Project file does not exist")
 
-    print("DEBUG: Loading project")
+    print("Loading project")
     project = zf.ZipFile(sb3, "r")
     projectJSON = json.loads(project.read("project.json"))
     targets = []
 
-    print("DEBUG: Project JSON output:", projectJSON)
     # Generate the dictionary based on the contents of project.json
     for targetObj in projectJSON['targets']:
         t = target.Target()

@@ -2,6 +2,8 @@
 This module runs Scratch blocks on demand.
 Basically it emulates Scratch in Pygame, hence the name.
 """
+import sys
+
 import pygame.time
 import cairosvg
 import io
@@ -149,7 +151,7 @@ def execute(block, s, keys=[]):
             block.timeDelay = int(round(float(int(block.getInputValue("duration"))) * 1000))
             block.waiting = True
             block.executionTime = 0
-            print("DEBUG: Waiting for", block.timeDelay, "ms")
+            print("DEBUG: Waiting for", block.timeDelay, "ms", file=sys.stderr)
         return block
 
     if opcode == "event_whenflagclicked":  # when green flag clicked
@@ -165,6 +167,7 @@ def execute(block, s, keys=[]):
         key = block.getFieldValue("key_option", lookIn=0)
 
         if key == "any":
+            print("DEBUG: Handling key", key, file=sys.stderr)
             if keys:
                 nb = block  # s.target.blocks[block.next]
                 nb.blockRan = False
@@ -182,7 +185,7 @@ def execute(block, s, keys=[]):
                 block.blockRan = False
                 return nextBlock
         elif KEY_MAPPING[key] in keys and block.next:
-            print("DEBUG: Handling key", key)
+            print("DEBUG: Handling key", key, file=sys.stderr)
             nb = block  # s.target.blocks[block.next]
             nb.blockRan = False
             while nb.next and nb.next != block.blockID:
@@ -224,7 +227,6 @@ def execute(block, s, keys=[]):
     # If there is a block below, return it
     if block.next:
         nextBlock = s.target.blocks[block.next]
-    # else:
-    #     print("DEBUG: Script finished")
     block.blockRan = True
+
     return nextBlock
