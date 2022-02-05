@@ -5,7 +5,7 @@ This file is used to run Scratch2Python and build the project based on the data 
 
 Copyright (C) 2022 Secret-chest and other contributors (copyright applies for all files)
 
-This program is free software: you can redistribute it and/or modify
+Scratch2Python is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
@@ -18,6 +18,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
+
+__version__ = "M11 (development version)"
+__author__ = "Secret-chest"
+
 import io
 import sb3Unpacker
 from sb3Unpacker import *
@@ -31,8 +35,6 @@ from tkinter.messagebox import *
 import os
 from targetSprite import TargetSprite
 import sys
-
-VERSION = "M11 (development version)"
 
 # Change this to a different project file
 PROJECT = "projects/arrows.sb3"
@@ -71,7 +73,7 @@ icon = pygame.image.load("icon.svg")
 
 # Create project player and window
 display = pygame.display.set_mode([WIDTH, HEIGHT])
-pygame.display.set_caption(projectName + " - Scratch2Python" + " " + VERSION)
+pygame.display.set_caption(projectName + " - Scratch2Python" + " " + __version__)
 pygame.display.set_icon(icon)
 
 # Set running state
