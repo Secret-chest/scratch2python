@@ -22,6 +22,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 __version__ = "M11 (development version)"
 __author__ = "Secret-chest"
 
+import config
 import io
 import sb3Unpacker
 from sb3Unpacker import *
@@ -36,11 +37,18 @@ import os
 from targetSprite import TargetSprite
 import sys
 
-# Change this to a different project file
-PROJECT = "projects/arrows.sb3"
+if config.projectLoadMethod == "manual":
+    setProject = config.projectFileName
+if config.projectLoadMethod == "cmdline":
+    try:
+        setProject = sys.argv[1]
+    except IndexError:
+        raise OSError("No project file name passed")
+if config.projectLoadMethod == "interactive":
+    setProject = input("Project file name: ")
 
 # Get project data and create sprites
-targets, project = sb3Unpacker.sb3Unpack(PROJECT)
+targets, project = sb3Unpacker.sb3Unpack(setProject)
 allSprites = pygame.sprite.Group()
 for t in targets:
     sprite = TargetSprite(t)
@@ -61,20 +69,26 @@ fontXl = pygame.font.SysFont(pygame.font.get_default_font(), 36)
 paused = fontXl.render("Paused (Press F6 to resume)", True, (0, 0, 0))
 pausedWidth, pausedHeight = fontXl.size("Paused (Press F6 to resume)")
 
-# Set player size and fps
-HEIGHT = 360
-WIDTH = 480
-FPS = 30
+# Set player size and key delay
+HEIGHT = config.screenHeight
+WIDTH = config.screenWidth
 KEY_DELAY = 500
 
 # Get project name and set icon
-projectName = Path(PROJECT).stem
+projectName = Path(setProject).stem
 icon = pygame.image.load("icon.svg")
 
 # Create project player and window
 display = pygame.display.set_mode([WIDTH, HEIGHT])
 pygame.display.set_caption(projectName + " - Scratch2Python" + " " + __version__)
 pygame.display.set_icon(icon)
+
+# Extract if requested
+if config.extractOnProjectRun:
+    print("Extracting project")
+    shutil.rmtree("assets")
+    os.mkdir("assets")
+    project.extractall("assets")
 
 # Set running state
 projectRunning = True
@@ -181,5 +195,5 @@ while projectRunning:
     pygame.display.flip()
     wn.update()
     doScreenRefresh = False
-    clock.tick(FPS)
+    clock.tick(config.maxFPS)
 pygame.quit()

@@ -7,8 +7,11 @@ import sys
 import pygame.time
 import cairosvg
 import io
-HEIGHT = 360
-WIDTH = 480
+
+import config
+
+HEIGHT = config.screenHeight
+WIDTH = config.screenWidth
 
 # Key maps to convert the key option in blocks to Pygame constants
 KEY_MAPPING = {

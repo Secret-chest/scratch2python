@@ -20,7 +20,7 @@ import scratch
 def sb3Unpack(sb3):
     # If project does not exist, quit with exit code 1
     if not Path(sb3).exists():
-        raise OSError("Project file does not exist")
+        raise FileNotFoundError("Project file does not exist")
 
     print("Loading project")
     project = zf.ZipFile(sb3, "r")

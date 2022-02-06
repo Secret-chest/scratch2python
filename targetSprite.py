@@ -8,6 +8,7 @@ import pygame
 import cairosvg
 import io
 import scratch
+import config
 
 
 class TargetSprite(pygame.sprite.Sprite):
@@ -40,14 +41,15 @@ class TargetSprite(pygame.sprite.Sprite):
     # Set self position
     def setXy(self, x, y):
         # Do sprite fencing
-        if x > 240:
-            x = 240
-        if x < -240:
-            x = -240
-        if y > 180:
-            y = 180
-        if x < -240:
-            x = -240
+        if not config.allowOffScreenSprites:
+            if x > config.screenWidth - config.screenWidth / 2:
+                x = config.screenWidth - config.screenWidth / 2
+            if x < config.screenWidth / 2 - config.screenWidth:
+                x = config.screenWidth / 2 - config.screenWidth
+            if y > config.screenHeight - config.screenHeight / 2:
+                y = config.screenHeight - config.screenHeight / 2
+            if y < config.screenHeight / 2 - config.screenHeight:
+                y = config.screenHeight / 2 - config.screenHeight
         # Set X and Y
         self.x = x + self.padX // 2
         self.y = y - self.padY // 2
