@@ -11,30 +11,30 @@ Each option has its own description. Have fun!
 # interactive: use input().
 # cmdline: use command argument.
 # There will be a GUI, and it will be the default, but for now it's easier to test using manual mode.
-projectLoadMethod = "manual"
+projectLoadMethod: str = "manual"
 
 # Project file name
 # If the "manual" mode is chosen, set the Scratch project file to load.
-projectFileName = "projects/gotomouse-up.sb3"
+projectFileName: str = "projects/gotomouse-up.sb3"
 
 # Extract on project run
 # Set whether to extract the project assets on run.
-extractOnProjectRun = True
+extractOnProjectRun: bool = True
 
 # Max FPS
 # Set maximum frame rate. Most projects won't break, but they
 # might be too fast (or too slow) as they may rely on screen refresh.
 # Vanilla is 30.
-maxFPS = 30
+maxFPS: int = 30
 
 # Screen width/height
 # Stage size. You can change that, but most projects won't work with it.
 # A scaling mode will be added later.
 # Vanilla is 480x640.
-screenWidth = 480
-screenHeight = 360
+screenWidth: int = 480
+screenHeight: int = 360
 
 # Allow off-screen sprites
 # Again, most projects will break.
 # Vanilla is false.
-allowOffScreenSprites = False
+allowOffScreenSprites: bool = False
