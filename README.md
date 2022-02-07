@@ -7,7 +7,7 @@
 Scratch2Python is a Python program that converts Scratch projects to Pygame code.
 
 ## Requirements
-Install from requirements.txt (Scratch2Python also needs Python 3.6 or newer).
+Install from requirements.txt (Scratch2Python also needs Python 3.8 or newer).
 
 ## Docs
 [Read the wiki here](https://github.com/Secret-chest/scratch2python/wiki).
@@ -18,7 +18,7 @@ The table below lists all files in the project.
 | File              | Description                                                                                      |
 |-------------------|--------------------------------------------------------------------------------------------------|
 | `main.py`         | Build the project based on the data, run blocks, listen to events                                |
-| `s2p_unpacker.py` | Generate a dictionary from project.json, put objects in it and set them to the correct values    |
+| `sb3Unpacker.py` | Generate a dictionary from project.json, put objects in it and set them to the correct values    |
 | `scratch.py`      | Scratch emulator, runs blocks on request, contains various Scratch-related functions             |
 | `target.py`       | Sprite class                                                                                     |
 | `block.py`        | Block class                                                                                      |
