@@ -45,10 +45,12 @@ Note: Use underscores if the name may become unclear. For example: use `sb3_unpa
 
 ## How to use 
 Assuming that you installed all necessary requirements, place your sb3 files somewhere accesible, or in the Scratch2Python folder. You can use an absolute or relative path.
-Then, change the projectToLoad variable to your project file.
+Then, go to `config.py` and change the projectFileName variable to your project file.
+There you can also choose to use a command-line argument, or an interactive prompt. The variable option is the default as it's more useful for testing.
+
 Now, just run `python3 main.py` and the project will start!
 
 ### Config
-The `config.py` file contains some configuration options.
+The `config.py` file contains some more configuration options.
 
 Each of them is nicely explained, so why not just check it out?
