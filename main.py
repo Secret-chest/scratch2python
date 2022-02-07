@@ -22,8 +22,22 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 __version__ = "M11 (development version)"
 __author__ = "Secret-chest"
 
+from platform import system
 import os
-os.environ['path'] += r';cairolibs'
+
+if system() == "Linux":
+    OS = "linux"
+elif system() == "Darwin":
+    OS = "macOSX"
+elif system() == "Windows":
+    OS = "windows"
+else:
+    OS = "unknown"
+
+print("Running on", OS)
+
+if OS == "windows":
+    os.environ['path'] += r';cairolibs'
 
 import config
 import io
