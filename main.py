@@ -36,7 +36,6 @@ import time
 import tkinter as tk
 from pathlib import Path
 from tkinter.messagebox import *
-import os
 from targetSprite import TargetSprite
 import sys
 
