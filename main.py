@@ -22,6 +22,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 __version__ = "M11 (development version)"
 __author__ = "Secret-chest"
 
+import os
+os.environ['path'] += r';cairolibs'
+
 import config
 import io
 import sb3Unpacker
@@ -33,7 +36,6 @@ import time
 import tkinter as tk
 from pathlib import Path
 from tkinter.messagebox import *
-import os
 from targetSprite import TargetSprite
 import sys
 
