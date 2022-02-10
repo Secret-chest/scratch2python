@@ -1,6 +1,7 @@
 ## Coding Style
 
 Use `mixedCase` for most names. For class names, use `CamelCase`.
+Always use DOUBLE QUOTES (like ")!
 
 ## Methods
 

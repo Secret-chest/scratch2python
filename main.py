@@ -37,7 +37,7 @@ else:
 print("Running on", OS)
 
 if OS == "windows":
-    os.environ['path'] += r';cairolibs'
+    os.environ['path'] += r";cairolibs"
 
 import config
 import io
