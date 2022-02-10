@@ -30,7 +30,7 @@ maxFPS: int = 30
 # Screen width/height
 # Stage size. You can change that, but most projects won't work with it.
 # A scaling mode will be added later.
-# Vanilla is 480x640.
+# Vanilla is 480x360.
 screenWidth: int = 480
 screenHeight: int = 360
 
