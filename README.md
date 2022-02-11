@@ -10,8 +10,7 @@ Scratch2Python is a Python program that converts Scratch projects to Pygame code
 Install from requirements.txt (Scratch2Python also needs Python 3.8 or newer).
 
 On Windows, Scratch2Python needs to be installed in a non-protected folder.
-You can install it in your `C:\Users\Username` folder, or on the desktop. Basically
-anywhere not in My Documents.
+By default the "Documents" folder is protected. Installing it anywhere else will work.
 
 ## Docs
 [Read the wiki here](https://github.com/Secret-chest/scratch2python/wiki).
