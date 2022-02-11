@@ -15,7 +15,7 @@ projectLoadMethod: str = "manual"
 
 # Project file name
 # If the "manual" mode is chosen, set the Scratch project file to load.
-projectFileName: str = "projects/gotomouse-up.sb3"
+projectFileName: str = "projects/random-position.sb3"
 
 # Extract on project run
 # Set whether to extract the project assets on run.

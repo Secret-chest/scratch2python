@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-__version__ = "M11 (development version)"
+__version__ = "M12 (development version)"
 __author__ = "Secret-chest"
 
 from platform import system
@@ -173,12 +173,13 @@ while projectRunning:
     if not isPaused:
         for e in eventHandlers:
             if e.opcode == "event_whenkeypressed" and keys:
-                nextBlock = scratch.execute(block, block.target.sprite, keys)
-                if nextBlock:
-                    if isinstance(nextBlock, list):
-                        nextBlocks.extend(nextBlock)
-                    else:
-                        nextBlocks.append(nextBlock)
+                # nextBlock = scratch.execute(block, block.target.sprite, keys)
+                # if nextBlock:
+                #     if isinstance(nextBlock, list):
+                #         nextBlocks.extend(nextBlock)
+                #     else:
+                #         nextBlocks.append(nextBlock)
+                pass
         while toExecute and not doScreenRefresh:
             # Run blocks
             nextBlocks = []
