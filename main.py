@@ -154,7 +154,7 @@ doScreenRefresh = False
 
 # Define a dialog class for screen resolution
 class SizeDialog(tkinter.simpledialog.Dialog):
-    def __init__(self, parent: tk.Misc | None, title):
+    def __init__(self, parent, title):
         super().__init__(parent, title)
 
     def body(self, master) -> tuple[str, str]:
