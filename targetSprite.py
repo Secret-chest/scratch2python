@@ -42,14 +42,14 @@ class TargetSprite(pygame.sprite.Sprite):
     def setXy(self, x, y):
         # Do sprite fencing
         if not config.allowOffScreenSprites:
-            if x > config.screenWidth - config.screenWidth / 2:
-                x = config.screenWidth - config.screenWidth / 2
-            if x < config.screenWidth / 2 - config.screenWidth:
-                x = config.screenWidth / 2 - config.screenWidth
-            if y > config.screenHeight - config.screenHeight / 2:
-                y = config.screenHeight - config.screenHeight / 2
-            if y < config.screenHeight / 2 - config.screenHeight:
-                y = config.screenHeight / 2 - config.screenHeight
+            if x > scratch.WIDTH - scratch.WIDTH / 2:
+                x = scratch.WIDTH - scratch.WIDTH / 2
+            if x < scratch.WIDTH / 2 - scratch.WIDTH:
+                x = scratch.WIDTH / 2 - scratch.WIDTH
+            if y > scratch.HEIGHT - scratch.HEIGHT / 2:
+                y = scratch.HEIGHT - scratch.HEIGHT / 2
+            if y < scratch.HEIGHT / 2 - scratch.HEIGHT:
+                y = scratch.HEIGHT / 2 - scratch.HEIGHT
         # Set X and Y
         self.x = x + self.padX // 2
         self.y = y - self.padY // 2

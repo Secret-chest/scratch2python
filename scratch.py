@@ -3,16 +3,22 @@ This module runs Scratch blocks on demand.
 Basically it emulates Scratch in Pygame, hence the name.
 """
 import sys
+import os
 import random
-
 import pygame.time
 import cairosvg
 import io
-
 import config
 
-HEIGHT = config.screenHeight
-WIDTH = config.screenWidth
+
+if not config.enableDebugMessages:
+    sys.stderr = open(os.devnull, "w")
+if not config.enableTerminalOutput:
+    sys.stdout = open(os.devnull, "w")
+
+
+HEIGHT = config.projectScreenHeight
+WIDTH = config.projectScreenWidth
 
 # Key maps to convert the key option in blocks to Pygame constants
 KEY_MAPPING = {
@@ -108,6 +114,14 @@ def loadSvg(svgBytes):
     newBytes = cairosvg.svg2png(bytestring=svgBytes)
     byteIo = io.BytesIO(newBytes)
     return pygame.image.load(byteIo)
+
+
+# Refresh screen resolution
+def refreshScreenResolution():
+    global HEIGHT
+    global WIDTH
+    HEIGHT = config.projectScreenHeight
+    WIDTH = config.projectScreenWidth
 
 
 # Run the given block object

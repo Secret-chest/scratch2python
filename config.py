@@ -10,7 +10,8 @@ Each option has its own description. Have fun!
 # manual: use the project file name defined in the "projectFileName" variable.
 # interactive: use input().
 # cmdline: use command argument.
-# There will be a GUI, and it will be the default, but for now it's easier to test using manual mode.
+# filechooser: graphical file chooser.
+# For now, it's easier to test using manual mode, so it's the default.
 projectLoadMethod: str = "manual"
 
 # Project file name
@@ -20,6 +21,14 @@ projectFileName: str = "projects/random-position.sb3"
 # Extract on project run
 # Set whether to extract the project assets on run.
 extractOnProjectRun: bool = True
+
+# Enable terminal output
+# Set whether any output messages should be allowed.
+enableTerminalOutput = True
+
+# Enable debug messages
+# Set whether debug messages (messages to stderr) should be allowed.
+enableDebugMessages = True
 
 # Max FPS
 # Set maximum frame rate. Most projects won't break, but they
@@ -38,3 +47,18 @@ screenHeight: int = 360
 # Again, most projects will break.
 # Vanilla is false.
 allowOffScreenSprites: bool = False
+
+
+# "For this project" values
+# Don't edit these. They will break Scratch2Python controls.
+# Edit your defaults above instead. The values here inherit them.
+projectMaxFPS = maxFPS
+projectScreenWidth = screenWidth
+projectScreenHeight = screenHeight
+projectAllowOffScreenSprites = allowOffScreenSprites
+
+
+# ConfigError class
+# Error for invalid settings.
+class ConfigError(Exception):
+    pass

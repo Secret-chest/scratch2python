@@ -22,8 +22,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 __version__ = "M12 (development version)"
 __author__ = "Secret-chest"
 
-from platform import system
+import platform
+import tkinter.simpledialog
+from platform import system, platform
 import os
+import sys
+from typing import Tuple
+
+import config
 
 if system() == "Linux":
     OS = "linux"
@@ -34,12 +40,22 @@ elif system() == "Windows":
 else:
     OS = "unknown"
 
-print("Running on", OS)
+
+if not config.enableTerminalOutput:
+    sys.stdout = open(os.devnull, "w")
+    sys.stderr = open(os.devnull, "w")
+if not config.enableDebugMessages:
+    sys.stderr = open(os.devnull, "w")
+
+print(f"Scratch2Python {__version__} running on {OS}")
 
 if OS == "windows":
-    os.environ['path'] += r";cairolibs"
+    os.environ["path"] += r";cairolibs"
 
-import config
+if OS == "unknown":
+    print(f"Sorry, Scratch2Python does not recognize your OS. Your platform string is: {platform()}", file=sys.stderr)
+
+sys.stdout = open(os.devnull, "w")
 import io
 import sb3Unpacker
 from sb3Unpacker import *
@@ -50,18 +66,39 @@ import time
 import tkinter as tk
 from pathlib import Path
 from tkinter.messagebox import *
+from tkinter.simpledialog import *
+from tkinter import filedialog
 from targetSprite import TargetSprite
-import sys
+sys.stdout = sys.__stdout__
+
+if not config.enableTerminalOutput:
+    sys.stdout = open(os.devnull, "w")
+    sys.stderr = open(os.devnull, "w")
+if not config.enableDebugMessages:
+    sys.stderr = open(os.devnull, "w")
+
+# Start tkinter for showing some popups, and hide main window
+mainWindow = tk.Tk()
+mainWindow.withdraw()
 
 if config.projectLoadMethod == "manual":
     setProject = config.projectFileName
-if config.projectLoadMethod == "cmdline":
+elif config.projectLoadMethod == "cmdline":
     try:
         setProject = sys.argv[1]
     except IndexError:
         raise OSError("No project file name passed")
-if config.projectLoadMethod == "interactive":
+elif config.projectLoadMethod == "interactive":
     setProject = input("Project file name: ")
+elif config.projectLoadMethod == "filechooser":
+    fileTypes = [("Scratch 3 projects", ".sb3"), ("All files", ".*")]
+    setProject = filedialog.askopenfilename(parent=mainWindow,
+                                            initialdir=os.getcwd(),
+                                            title="Choose a project to load",
+                                            filetypes=fileTypes)
+else:
+    sys.stderr = sys.__stderr__
+    raise config.ConfigError("Invalid setting: projectLoadMethod")
 
 # Get project data and create sprites
 targets, project = sb3Unpacker.sb3Unpack(setProject)
@@ -72,11 +109,7 @@ for t in targets:
     allSprites.add(sprite)
     sprite.setXy(t.x, t.y)
 
-# Start tkinter for showing some popups, and hide main window
-wn = tk.Tk()
-wn.withdraw()
-
-# Start Pygame, load fonts and print a debug message
+# Start pygame, load fonts and print a debug message
 pygame.init()
 font = pygame.font.SysFont(pygame.font.get_default_font(), 16)
 fontXl = pygame.font.SysFont(pygame.font.get_default_font(), 36)
@@ -86,8 +119,8 @@ paused = fontXl.render("Paused (Press F6 to resume)", True, (0, 0, 0))
 pausedWidth, pausedHeight = fontXl.size("Paused (Press F6 to resume)")
 
 # Set player size and key delay
-HEIGHT = config.screenHeight
-WIDTH = config.screenWidth
+HEIGHT = config.projectScreenHeight
+WIDTH = config.projectScreenWidth
 KEY_DELAY = 500
 
 # Get project name and set icon
@@ -117,6 +150,40 @@ clock = pygame.time.Clock()
 display.fill((255, 255, 255))
 
 doScreenRefresh = False
+
+
+# Define a dialog class for screen resolution
+class SizeDialog(tkinter.simpledialog.Dialog):
+    def __init__(self, parent: tk.Misc | None, title):
+        super().__init__(parent, title)
+
+    def body(self, master) -> tuple[str, str]:
+        tk.Label(master, text="Width: ").grid(row=0)
+        tk.Label(master, text="Height: ").grid(row=1)
+
+        self.width = tk.Entry(master)
+        self.height = tk.Entry(master)
+
+        self.width.grid(row=0, column=1)
+        self.height.grid(row=1, column=1)
+
+        return self.width
+
+    def okPressed(self):
+        self.setWidth = self.width.get()
+        self.setHeight = self.height.get()
+        self.destroy()
+
+    def cancelPressed(self):
+        self.destroy()
+
+    def buttonbox(self):
+        self.okButton = tk.Button(self, text='OK', width=5, command=self.okPressed)
+        self.okButton.pack(side="left")
+        cancelButton = tk.Button(self, text='Cancel', width=5, command=self.cancelPressed)
+        cancelButton.pack(side="right")
+        self.bind("<Return>", lambda event: self.okPressed())
+        self.bind("<Escape>", lambda event: self.cancelPressed())
 
 # Start project
 toExecute = []
@@ -164,6 +231,29 @@ while projectRunning:
                 project.extractall("assets")
         if pygame.K_F6 in keys:  # Pause
             isPaused = not isPaused
+        if pygame.K_F7 in keys:  # Set new FPS
+            # Open dialog
+            newFPS = askinteger(title="FPS", prompt="Enter new FPS")
+            if newFPS is not None:
+                print("FPS set to", newFPS)
+                config.projectMaxFPS = newFPS
+        if pygame.K_F8 in keys:  # Set new screen resolution
+            try:
+                # Open special dialog
+                dialog = SizeDialog(mainWindow, title="Screen resolution")
+                config.projectScreenWidth = int(dialog.setWidth)
+                config.projectScreenHeight = int(dialog.setHeight)
+
+                # Redraw everything and recalculate sprite operations
+                display = pygame.display.set_mode([config.projectScreenWidth, config.projectScreenHeight])
+                HEIGHT = config.projectScreenHeight
+                WIDTH = config.projectScreenWidth
+                scratch.refreshScreenResolution()
+                for s in allSprites:
+                    s.setXy(s.x, s.y)
+                print("Screen resolution set to", str(HEIGHT) + "x" + str(WIDTH))
+            except ValueError:
+                pass
 
     display.fill((255, 255, 255))
     if toExecute:
@@ -173,6 +263,7 @@ while projectRunning:
     if not isPaused:
         for e in eventHandlers:
             if e.opcode == "event_whenkeypressed" and keys:
+                # TODO
                 # nextBlock = scratch.execute(block, block.target.sprite, keys)
                 # if nextBlock:
                 #     if isinstance(nextBlock, list):
@@ -210,7 +301,7 @@ while projectRunning:
     else:
         display.blit(paused, (WIDTH // 2 - pausedWidth // 2, WIDTH // 2 - pausedHeight // 2))
     pygame.display.flip()
-    wn.update()
+    mainWindow.update()
     doScreenRefresh = False
-    clock.tick(config.maxFPS)
+    clock.tick(config.projectMaxFPS)
 pygame.quit()

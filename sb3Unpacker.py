@@ -6,15 +6,22 @@ It also loads the project file set in main.py.
 The various files with classes are used by this program and the correct data is
 set. Those are then used to build the project in main.py.
 """
-# This is the Scratch2Python unpacker.
-# The main file you probably want to run is located at main.py.
 import zipfile as zf
 import json
+import config
 import target, costume, sound, block, variable, monitor  # , broadcast
 from pathlib import Path
 import io
 import pygame
 import scratch
+import sys
+import os
+
+
+if not config.enableDebugMessages:
+    sys.stderr = open(os.devnull, "w")
+if not config.enableTerminalOutput:
+    sys.stdout = open(os.devnull, "w")
 
 
 def sb3Unpack(sb3):
