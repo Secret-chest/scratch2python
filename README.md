@@ -11,7 +11,7 @@ Install from requirements.txt (Scratch2Python also needs Python 3.8 or newer).
 
 On Windows, Scratch2Python needs to be installed in a non-protected folder.
 You can install it in your `C:\Users\Username` folder, or on the desktop. Basically
-anywhere not in My Documents.
+anywhere not in the Documents folder.
 
 ## Docs
 [Read the wiki here](https://github.com/Secret-chest/scratch2python/wiki).
