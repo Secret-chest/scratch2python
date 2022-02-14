@@ -46,14 +46,14 @@ class TargetSprite(pygame.sprite.Sprite):
         # Do sprite fencing
         if not config.allowOffScreenSprites:
             if self.rect.width > 32:
-                if x > scratch.WIDTH - scratch.WIDTH / 2 + self.rect.width - 16:
-                    x = scratch.WIDTH - scratch.WIDTH / 2 + self.rect.width - 16
-                if x < scratch.WIDTH / 2 - scratch.WIDTH - self.rect.width + 16:
-                    x = scratch.WIDTH / 2 - scratch.WIDTH - self.rect.width + 16
-                if y > scratch.HEIGHT - scratch.HEIGHT / 2 + self.rect.height - 16:
-                    y = scratch.HEIGHT - scratch.HEIGHT / 2 + self.rect.height - 16
-                if y < scratch.HEIGHT / 2 - scratch.HEIGHT - self.rect.height + 16:
-                    y = scratch.HEIGHT / 2 - scratch.HEIGHT - self.rect.height + 16
+                if x > scratch.WIDTH - scratch.WIDTH / 2 + (self.rect.width / 2 - 16):
+                    x = scratch.WIDTH - scratch.WIDTH / 2 + (self.rect.width / 2 - 16)
+                if x < scratch.WIDTH / 2 - scratch.WIDTH - (self.rect.width / 2 + 16):
+                    x = scratch.WIDTH / 2 - scratch.WIDTH - (self.rect.width / 2 + 16)
+                if y > scratch.HEIGHT - scratch.HEIGHT / 2 + (self.rect.height / 2 - 16):
+                    y = scratch.HEIGHT - scratch.HEIGHT / 2 + (self.rect.height / 2 - 16)
+                if y < scratch.HEIGHT / 2 - scratch.HEIGHT - (self.rect.height / 2 + 16):
+                    y = scratch.HEIGHT / 2 - scratch.HEIGHT - (self.rect.height / 2 + 16)
             else:
                 if x > scratch.WIDTH - scratch.WIDTH / 2:
                     x = scratch.WIDTH - scratch.WIDTH / 2

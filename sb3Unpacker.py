@@ -72,7 +72,7 @@ def sb3Unpack(sb3):
             b.topLevel = blockObj["topLevel"]
             b.inputs = blockObj["inputs"]
             b.fields = blockObj["fields"]
-            if "mutation" in blockObj:
+            if b.opcode == "procedures_call":
                 b.proccode = blockObj["mutation"]["proccode"]
                 b.warp = blockObj["mutation"]["warp"]
             b.blockRan = False

@@ -175,7 +175,7 @@ def execute(block, s, keys=[]):
         block.screenRefresh = True
         if not block.waiting:
             # Get time delay and convert it to milliseconds
-            block.timeDelay = int(round(float(int(block.getInputValue("duration"))) * 1000))
+            block.timeDelay = int(round(float(float(block.getInputValue("duration"))) * 1000))
             block.waiting = True
             block.executionTime = 0
             print("DEBUG: Waiting for", block.timeDelay, "ms", file=sys.stderr)
