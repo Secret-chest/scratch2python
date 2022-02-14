@@ -26,3 +26,4 @@ class Target:
         self.draggable = False
         self.rotationStyle = "all around"  # all around, left-right or do not rotate
         self.sprite = None
+        self.name = ""

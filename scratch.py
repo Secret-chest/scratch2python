@@ -251,6 +251,15 @@ def execute(block, s, keys=[]):
                 block.substack.add(nb.blockID)
             nb.next = block.blockID
             return nextBlock
+    elif opcode == "procedures_call":
+        if block.proccode == "​​log​​ %s":  # Scratch Addons log ()
+            print("PROJECT LOG:", block.getCustomInputValue(0), file=sys.stderr)
+        elif block.proccode == "​​warn​​ %s":  # Scratch Addons warn ()
+            print("PROJECT WARN:", block.getCustomInputValue(0), file=sys.stderr)
+        elif block.proccode == "​​error​​ %s":  # Scratch Addons error ()
+            print("PROJECT ERROR:", block.getCustomInputValue(0), file=sys.stderr)
+    else:
+        print("Unknown opcode:", opcode)
 
     # If there is a block below, return it
     if block.next:

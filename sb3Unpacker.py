@@ -43,7 +43,9 @@ def sb3Unpack(sb3):
             t.x = targetObj["x"]
             t.y = targetObj["y"]
             t.direction = targetObj["direction"]
+            t.size = targetObj["size"]
         t.currentCostume = targetObj["currentCostume"]
+        t.name = targetObj["name"]
 
         # Get costumes
         for costumeObj in targetObj["costumes"]:
@@ -70,6 +72,9 @@ def sb3Unpack(sb3):
             b.topLevel = blockObj["topLevel"]
             b.inputs = blockObj["inputs"]
             b.fields = blockObj["fields"]
+            if "mutation" in blockObj:
+                b.proccode = blockObj["mutation"]["proccode"]
+                b.warp = blockObj["mutation"]["warp"]
             b.blockRan = False
             b.target = t
             t.blocks[blockId] = b

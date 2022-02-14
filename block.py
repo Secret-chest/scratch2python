@@ -31,6 +31,10 @@ class Block:
     def getInputValue(self, inputId, lookIn=(1, 1)):
         return self.inputs[inputId.upper()][lookIn[0]][lookIn[1]]
 
+    # Returns custom block input value
+    def getCustomInputValue(self, number, lookIn=(1, 1)):
+        return self.inputs["arg" + str(number)][lookIn[0]][lookIn[1]]
+
     # Returns dropdown menu value (menus are separate blocks)
     def getMenuValue(self, menuId):
         return self.inputs[menuId.upper()][1].fields[menuId.upper()][0]

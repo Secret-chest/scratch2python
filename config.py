@@ -16,7 +16,7 @@ projectLoadMethod: str = "manual"
 
 # Project file name
 # If the "manual" mode is chosen, set the Scratch project file to load.
-projectFileName: str = "projects/random-position.sb3"
+projectFileName: str = "projects/sa-logs.sb3"
 
 # Extract on project run
 # Set whether to extract the project assets on run.
@@ -46,7 +46,7 @@ screenHeight: int = 360
 # Allow off-screen sprites
 # Again, most projects will break.
 # Vanilla is false.
-allowOffScreenSprites: bool = False
+allowOffScreenSprites: bool = True
 
 
 # "For this project" values
