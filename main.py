@@ -157,7 +157,7 @@ class SizeDialog(tkinter.simpledialog.Dialog):
     def __init__(self, parent, title):
         super().__init__(parent, title)
 
-    def body(self, master) -> tuple[str, str]:
+    def body(self, master):
         tk.Label(master, text="Width: ").grid(row=0)
         tk.Label(master, text="Height: ").grid(row=1)
 
