@@ -163,13 +163,13 @@ def execute(block, s, keys=[]):
         s.setXy(int(block.getInputValue("x")), s.y)
 
     elif opcode == "motion_changexby":  # change x by ()
-        s.setXy(s.x + int(block.getInputValue("dx")), s.y)
+        s.setXyDelta(int(block.getInputValue("dx")), 0)
 
     elif opcode == "motion_sety":  # set y to ()
         s.setXy(s.x, int(block.getInputValue("y")))
 
     elif opcode == "motion_changeyby":  # change y by ()
-        s.setXy(s.x, s.y + int(block.getInputValue("dy")))
+        s.setXyDelta(0, int(block.getInputValue("dy")))
 
     elif opcode == "control_wait":  # wait () seconds
         block.screenRefresh = True

@@ -218,11 +218,9 @@ while projectRunning:
             showinfo("Help", "Nothing to see here")
         if pygame.K_F2 in keys:  # Scratch2Python options
             showinfo("Options", "Nothing to see here")
-        if pygame.K_F3 in keys:  # Debug
-            showinfo("Debug", "Nothing to see here")
         if pygame.K_F4 in keys:  # Project info
             showinfo("Project info", "Nothing to see here")
-        if pygame.K_F5 in keys:  # Extract
+        if pygame.K_F3 in keys:  # Extract
             confirm = askokcancel("Extract", "Extract all project files?")
             if confirm:
                 print("Extracting project")
@@ -254,6 +252,15 @@ while projectRunning:
                 print("Screen resolution set to", str(HEIGHT) + "x" + str(WIDTH))
             except ValueError:
                 pass
+        if pygame.K_F5 in keys:  # Redraw
+            # Redraw everything and recalculate sprite operations
+            display = pygame.display.set_mode([config.projectScreenWidth, config.projectScreenHeight])
+            HEIGHT = config.projectScreenHeight
+            WIDTH = config.projectScreenWidth
+            scratch.refreshScreenResolution()
+            for s in allSprites:
+                s.setXy(s.x, s.y)
+            print("Screen resolution set to", str(HEIGHT) + "x" + str(WIDTH))
 
     display.fill((255, 255, 255))
     if toExecute:
