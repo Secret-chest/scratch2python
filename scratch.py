@@ -241,6 +241,7 @@ def execute(block, s, keys=[]):
                 s.target.blocks[b].blockRan = False
             nextBlock = s.target.blocks[inputs["SUBSTACK"][1]]
             nb = s.target.blocks[inputs["SUBSTACK"][1]]
+            block.substack.add(nb.blockID)
             while nb.next and nb.next != block.blockID:
                 # TODO: Caution: Don't loop the program
                 nb.blockRan = False
@@ -252,12 +253,13 @@ def execute(block, s, keys=[]):
             nb.next = block.blockID
             return nextBlock
     elif opcode == "procedures_call":
-        if block.proccode == "​​log​​ %s":  # Scratch Addons log ()
-            print("PROJECT LOG:", block.getCustomInputValue(0), file=sys.stderr)
-        elif block.proccode == "​​warn​​ %s":  # Scratch Addons warn ()
-            print("PROJECT WARN:", block.getCustomInputValue(0), file=sys.stderr)
-        elif block.proccode == "​​error​​ %s":  # Scratch Addons error ()
-            print("PROJECT ERROR:", block.getCustomInputValue(0), file=sys.stderr)
+        if config.showSALogs:
+            if block.proccode == "​​log​​ %s":  # Scratch Addons log ()
+                print("PROJECT LOG:", block.getCustomInputValue(0), file=sys.stderr)
+            elif block.proccode == "​​warn​​ %s":  # Scratch Addons warn ()
+                print("PROJECT WARN:", block.getCustomInputValue(0), file=sys.stderr)
+            elif block.proccode == "​​error​​ %s":  # Scratch Addons error ()
+                print("PROJECT ERROR:", block.getCustomInputValue(0), file=sys.stderr)
     else:
         print("Unknown opcode:", opcode)
 

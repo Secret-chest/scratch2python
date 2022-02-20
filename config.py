@@ -24,11 +24,15 @@ extractOnProjectRun: bool = True
 
 # Enable terminal output
 # Set whether any output messages should be allowed.
-enableTerminalOutput = True
+enableTerminalOutput: bool = False
 
 # Enable debug messages
 # Set whether debug messages (messages to stderr) should be allowed.
-enableDebugMessages = True
+enableDebugMessages: bool = True
+
+# Enable Scratch Addons debugger logs
+# This allows projects using Scratch Addons to print messages to the console. Vanilla Scratch doesn't support it.
+showSALogs: bool = True
 
 # Max FPS
 # Set maximum frame rate. Most projects won't break, but they
