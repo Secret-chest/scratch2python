@@ -33,7 +33,7 @@ enableTerminalOutput: bool = True
 
 # Enable debug messages
 # Set whether debug messages (messages to stderr) should be allowed.
-enableDebugMessages: bool = True
+enableDebugMessages: bool = False
 
 # Enable Scratch Addons debugger logs
 # This allows projects using Scratch Addons to print messages to the console. Vanilla Scratch doesn't support it.
