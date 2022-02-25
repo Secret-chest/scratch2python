@@ -196,8 +196,12 @@ def execute(block, s, keys=[]):
         if key == "any":  # when key [any v] pressed
             print("DEBUG: Handling key", key, file=sys.stderr)
             if keys:
+                print("DEBUG: Handling key", key, file=sys.stderr)
+                for b in block.script:
+                    s.target.blocks[b].blockRan = False
                 nb = block  # s.target.blocks[block.next]
                 nb.blockRan = False
+                block.script.add(nb.blockID)
                 while nb.next and nb.next != block.blockID:
                     nb.blockRan = False
                     nb.timeDelay = 0
@@ -206,10 +210,8 @@ def execute(block, s, keys=[]):
                     block.script.add(nb.blockID)
                     if not nb.next:
                         nb.next = block.blockID
-                    # TODO
                 nb.blockRan = False
                 nextBlock = s.target.blocks[block.next]
-                block.blockRan = False
                 return nextBlock
 
         elif KEY_MAPPING[key] in keys and block.next:  # when key [. . . v] pressed
@@ -227,7 +229,6 @@ def execute(block, s, keys=[]):
                 block.script.add(nb.blockID)
                 if not nb.next:
                     nb.next = block.blockID
-                # TODO: Check if inEventLoop is true and event is last in loop
             nb.blockRan = False
             nextBlock = s.target.blocks[block.next]
             return nextBlock
