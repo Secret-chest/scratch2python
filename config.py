@@ -1,8 +1,13 @@
+from configMeta import *
+
 """
 Scratch2Python config
 
 Each option has its own description. Have fun!
 """
+
+# Enable insane values
+INSANE: bool = False
 
 # Project load method
 # Sets the behavior for loading projects.
@@ -37,6 +42,7 @@ showSALogs: bool = True
 # Max FPS
 # Set maximum frame rate. Most projects won't break, but they
 # might be too fast (or too slow) as they may rely on screen refresh.
+# You can also use TURBO to use turbo mode.
 # Vanilla is 30.
 maxFPS: int = 30
 
@@ -44,8 +50,8 @@ maxFPS: int = 30
 # Stage size. You can change that, but most projects won't work with it.
 # A scaling mode will be added later.
 # Vanilla is 480x360.
-screenWidth: int = 24
-screenHeight: int = 24
+screenWidth: int = 480
+screenHeight: int = 360
 
 # Allow off-screen sprites
 # Again, most projects will break.
@@ -66,3 +72,9 @@ projectAllowOffScreenSprites = allowOffScreenSprites
 # Error for invalid settings.
 class ConfigError(Exception):
     pass
+
+if not INSANE:
+    if screenWidth < 240 or screenHeight < 180:
+        raise ConfigError("That resolution is very small. Recommended minimum resolution is at least 240x180. If you want to bypass this error, enable the INSANE variable in config.py.")
+    if screenWidth > 1920 or screenHeight > 1080:
+        raise ConfigError("That resolution is very large. Recommended maximum resolution is 1920x1080. If you want to bypass this error, enable the INSANE variable in config.py.")
