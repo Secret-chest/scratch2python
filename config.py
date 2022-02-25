@@ -16,7 +16,7 @@ projectLoadMethod: str = "manual"
 
 # Project file name
 # If the "manual" mode is chosen, set the Scratch project file to load.
-projectFileName: str = "projects/sprite-fencing2.sb3"
+projectFileName: str = "projects/arrows.sb3"
 
 # Extract on project run
 # Set whether to extract the project assets on run.
@@ -24,7 +24,7 @@ extractOnProjectRun: bool = True
 
 # Enable terminal output
 # Set whether any output messages should be allowed.
-enableTerminalOutput: bool = False
+enableTerminalOutput: bool = True
 
 # Enable debug messages
 # Set whether debug messages (messages to stderr) should be allowed.
@@ -44,8 +44,8 @@ maxFPS: int = 30
 # Stage size. You can change that, but most projects won't work with it.
 # A scaling mode will be added later.
 # Vanilla is 480x360.
-screenWidth: int = 480
-screenHeight: int = 360
+screenWidth: int = 24
+screenHeight: int = 24
 
 # Allow off-screen sprites
 # Again, most projects will break.

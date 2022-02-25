@@ -50,15 +50,17 @@ class TargetSprite(pygame.sprite.Sprite):
                     x = scratch.WIDTH - scratch.WIDTH / 2 + (self.rect.width / 2 - 16)
                 if x < scratch.WIDTH / 2 - scratch.WIDTH - (self.rect.width / 2 + 16):
                     x = scratch.WIDTH / 2 - scratch.WIDTH - (self.rect.width / 2 + 16)
-                if y > scratch.HEIGHT - scratch.HEIGHT / 2 + (self.rect.height / 2 - 16):
-                    y = scratch.HEIGHT - scratch.HEIGHT / 2 + (self.rect.height / 2 - 16)
-                if y < scratch.HEIGHT / 2 - scratch.HEIGHT - (self.rect.height / 2 + 16):
-                    y = scratch.HEIGHT / 2 - scratch.HEIGHT - (self.rect.height / 2 + 16)
             else:
                 if x > scratch.WIDTH - scratch.WIDTH / 2:
                     x = scratch.WIDTH - scratch.WIDTH / 2
                 if x < scratch.WIDTH / 2 - scratch.WIDTH:
                     x = scratch.WIDTH / 2 - scratch.WIDTH
+            if self.rect.height > 32:
+                if y > scratch.HEIGHT - scratch.HEIGHT / 2 + (self.rect.height / 2 - 16):
+                    y = scratch.HEIGHT - scratch.HEIGHT / 2 + (self.rect.height / 2 - 16)
+                if y < scratch.HEIGHT / 2 - scratch.HEIGHT - (self.rect.height / 2 + 16):
+                    y = scratch.HEIGHT / 2 - scratch.HEIGHT - (self.rect.height / 2 + 16)
+            else:
                 if y > scratch.HEIGHT - scratch.HEIGHT / 2:
                     y = scratch.HEIGHT - scratch.HEIGHT / 2
                 if y < scratch.HEIGHT / 2 - scratch.HEIGHT:
@@ -79,17 +81,19 @@ class TargetSprite(pygame.sprite.Sprite):
             if self.rect.width > 32:
                 if x > scratch.WIDTH - scratch.WIDTH / 2 + (self.rect.width / 2 - 16):
                     x = scratch.WIDTH - scratch.WIDTH / 2 + (self.rect.width / 2 - 16)
-                if x < scratch.WIDTH / 2 - scratch.WIDTH - (self.rect.width / 2 + 16):
-                    x = scratch.WIDTH / 2 - scratch.WIDTH - (self.rect.width / 2 + 16)
-                if y > scratch.HEIGHT - scratch.HEIGHT / 2 + (self.rect.height / 2 - 16):
-                    y = scratch.HEIGHT - scratch.HEIGHT / 2 + (self.rect.height / 2 - 16)
-                if y < scratch.HEIGHT / 2 - scratch.HEIGHT - (self.rect.height / 2 + 16):
-                    y = scratch.HEIGHT / 2 - scratch.HEIGHT - (self.rect.height / 2 + 16)
+                if x < -scratch.WIDTH / 2 - (self.rect.width / 2 - 16):
+                    x = -scratch.WIDTH / 2 - (self.rect.width / 2 - 16)
             else:
                 if x > scratch.WIDTH - scratch.WIDTH / 2:
                     x = scratch.WIDTH - scratch.WIDTH / 2
                 if x < scratch.WIDTH / 2 - scratch.WIDTH:
                     x = scratch.WIDTH / 2 - scratch.WIDTH
+            if self.rect.height > 32:
+                if y > scratch.HEIGHT - scratch.HEIGHT / 2 + (self.rect.height / 2 - 16):
+                    y = scratch.HEIGHT - scratch.HEIGHT / 2 + (self.rect.height / 2 - 16)
+                if y < -scratch.HEIGHT / 2 - (self.rect.height / 2 - 16):
+                    y = -scratch.HEIGHT / 2 - (self.rect.height / 2 - 16)
+            else:
                 if y > scratch.HEIGHT - scratch.HEIGHT / 2:
                     y = scratch.HEIGHT - scratch.HEIGHT / 2
                 if y < scratch.HEIGHT / 2 - scratch.HEIGHT:

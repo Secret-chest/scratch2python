@@ -214,8 +214,11 @@ def execute(block, s, keys=[]):
 
         elif KEY_MAPPING[key] in keys and block.next:  # when key [. . . v] pressed
             print("DEBUG: Handling key", key, file=sys.stderr)
+            for b in block.script:
+                s.target.blocks[b].blockRan = False
             nb = block  # s.target.blocks[block.next]
             nb.blockRan = False
+            block.script.add(nb.blockID)
             while nb.next and nb.next != block.blockID:
                 nb.blockRan = False
                 nb.timeDelay = 0

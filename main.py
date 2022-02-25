@@ -121,7 +121,6 @@ pausedWidth, pausedHeight = fontXl.size("Paused (Press F6 to resume)")
 # Set player size and key delay
 HEIGHT = config.projectScreenHeight
 WIDTH = config.projectScreenWidth
-KEY_DELAY = 500
 
 # Get project name and set icon
 projectName = Path(setProject).stem
@@ -239,8 +238,9 @@ while projectRunning:
             try:
                 # Open special dialog
                 dialog = SizeDialog(mainWindow, title="Screen resolution")
-                config.projectScreenWidth = int(dialog.setWidth)
-                config.projectScreenHeight = int(dialog.setHeight)
+                if dialog.setWidth and dialog.setHeight:
+                    config.projectScreenWidth = int(dialog.setWidth)
+                    config.projectScreenHeight = int(dialog.setHeight)
 
                 # Redraw everything and recalculate sprite operations
                 display = pygame.display.set_mode([config.projectScreenWidth, config.projectScreenHeight])
@@ -270,14 +270,13 @@ while projectRunning:
     if not isPaused:
         for e in eventHandlers:
             if e.opcode == "event_whenkeypressed" and keys:
-                # TODO
-                # nextBlock = scratch.execute(block, block.target.sprite, keys)
-                # if nextBlock:
-                #     if isinstance(nextBlock, list):
-                #         nextBlocks.extend(nextBlock)
-                #     else:
-                #         nextBlocks.append(nextBlock)
-                pass
+                nextBlock = scratch.execute(e, e.target.sprite, keys)
+                if nextBlock:
+                    if isinstance(nextBlock, list):
+                        toExecute.extend(nextBlock)
+                    else:
+                        toExecute.append(nextBlock)
+                e.blockRan = True
         while toExecute and not doScreenRefresh:
             # Run blocks
             nextBlocks = []
