@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-__version__ = "M13 (development version)"
+__version__ = "M15 (development version)"
 __author__ = "Secret-chest"
 
 import platform
