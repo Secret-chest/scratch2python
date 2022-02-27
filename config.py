@@ -73,6 +73,7 @@ projectAllowOffScreenSprites = allowOffScreenSprites
 class ConfigError(Exception):
     pass
 
+
 if not INSANE:
     if screenWidth < 240 or screenHeight < 180:
         raise ConfigError("That resolution is very small. Recommended minimum resolution is at least 240x180. If you want to bypass this error, enable the INSANE variable in config.py.")
