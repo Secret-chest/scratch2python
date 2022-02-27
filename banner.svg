@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="1280"
+   height="320"
+   viewBox="0 0 338.66667 84.66667"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="banner.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="true"
+     inkscape:document-units="px"
+     showgrid="false"
+     borderlayer="false"
+     inkscape:showpageshadow="true"
+     units="mm"
+     width="1920px"
+     inkscape:zoom="0.68240741"
+     inkscape:cx="778.86024"
+     inkscape:cy="171.45183"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Strat 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#2196f3;stroke-width:11.5509;stroke-linecap:round;paint-order:markers fill stroke"
+       id="rect844"
+       width="338.66669"
+       height="84.666672"
+       x="-8.8817842e-16"
+       y="8.8817842e-16"
+       rx="0.37041667"
+       ry="0.37041667" />
+    <text
+       xml:space="preserve"
+       style="font-size:38.1px;line-height:1.25;font-family:'Roboto Mono';-inkscape-font-specification:'Roboto Mono';fill:#ffffff;stroke-width:0.264583"
+       x="45.432377"
+       y="42.773598"
+       id="text4640"><tspan
+         sodipodi:role="line"
+         id="tspan4638"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:38.1px;font-family:Catamaran;-inkscape-font-specification:Catamaran;fill:#ffffff;stroke-width:0.264583"
+         x="45.432377"
+         y="42.773598">Scratch2Python</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:12.7px;line-height:1.25;font-family:'Roboto Mono';-inkscape-font-specification:'Roboto Mono';fill:#ffffff;stroke-width:0.264583"
+       x="88.688484"
+       y="65.997665"
+       id="text17666"><tspan
+         sodipodi:role="line"
+         id="tspan17664"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.7px;font-family:Catamaran;-inkscape-font-specification:Catamaran;fill:#ffffff;stroke-width:0.264583"
+         x="88.688484"
+         y="65.997665">Run Scratch projects in Python</tspan></text>
+  </g>
+  <metadata
+     id="metadata2277">
+    <rdf:RDF />
+  </metadata>
+</svg>
