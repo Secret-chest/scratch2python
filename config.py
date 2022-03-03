@@ -21,7 +21,7 @@ projectLoadMethod: str = "manual"
 
 # Project file name
 # If the "manual" mode is chosen, set the Scratch project file to load.
-projectFileName: str = "projects/arrows.sb3"
+projectFileName: str = "projects/Math4.sb3"
 
 # Extract on project run
 # Set whether to extract the project assets on run.
@@ -33,7 +33,7 @@ enableTerminalOutput: bool = True
 
 # Enable debug messages
 # Set whether debug messages (messages to stderr) should be allowed.
-enableDebugMessages: bool = False
+enableDebugMessages: bool = True
 
 # Enable Scratch Addons debugger logs
 # This allows projects using Scratch Addons to print messages to the console. Vanilla Scratch doesn't support it.

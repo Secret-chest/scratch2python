@@ -162,7 +162,7 @@ def execute(block, s, keys=[]):
     elif opcode == "motion_setx":  # set x to ()
         s.setXy(int(block.getInputValue("x")), s.y)
 
-    elif opcode == "motion_changexby":  # change x by ()
+    elif opcode == "motion_changexby":  # change x by ( )
         s.setXyDelta(int(block.getInputValue("dx")), 0)
 
     elif opcode == "motion_sety":  # set y to ()

@@ -35,7 +35,7 @@ def sb3Unpack(sb3):
     targets = []
 
     # Generate the dictionary based on the contents of project.json
-    for targetObj in projectJSON['targets']:
+    for targetObj in projectJSON["targets"]:
         t = target.Target()
 
         # Set sprite values
