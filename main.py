@@ -19,16 +19,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-__version__ = "M16 (development version)"
+__version__ = "M17 (development version)"
 __author__ = "Secret-chest"
 
-import platform
 import tkinter.simpledialog
 from platform import system, platform
 import os
 import sys
-from typing import Tuple
-
+import i18n
 import config
 
 if system() == "Linux":
@@ -40,6 +38,10 @@ elif system() == "Windows":
 else:
     OS = "unknown"
 
+i18n.set("locale", config.language)
+i18n.set("filename_format", "{locale}.{format}")
+i18n.load_path.append("./lang/")
+_ = i18n.t
 
 if not config.enableTerminalOutput:
     sys.stdout = open(os.devnull, "w")
@@ -47,28 +49,28 @@ if not config.enableTerminalOutput:
 if not config.enableDebugMessages:
     sys.stderr = open(os.devnull, "w")
 
-print(f"Scratch2Python {__version__} running on {OS}")
+print(_("start", version=__version__, os=OS))
 
 if OS == "windows":
     os.environ["path"] += r";cairolibs"
 
 if OS == "unknown":
-    print(f"Sorry, Scratch2Python does not recognize your OS. Your platform string is: {platform()}", file=sys.stderr)
+    print(_("unrecognized-os", platform=platform(), url="https://github.com/Secret-chest/scratch2python/issues"),
+          file=sys.stderr)
 
 sys.stdout = open(os.devnull, "w")
-import io
 import sb3Unpacker
 from sb3Unpacker import *
 import shutil
 import scratch
 import pygame
-import time
 import tkinter as tk
 from pathlib import Path
 from tkinter.messagebox import *
 from tkinter.simpledialog import *
 from tkinter import filedialog
 from targetSprite import TargetSprite
+
 sys.stdout = sys.__stdout__
 
 if not config.enableTerminalOutput:
@@ -81,24 +83,25 @@ if not config.enableDebugMessages:
 mainWindow = tk.Tk()
 mainWindow.withdraw()
 
+# Get project file name
 if config.projectLoadMethod == "manual":
     setProject = config.projectFileName
 elif config.projectLoadMethod == "cmdline":
     try:
         setProject = sys.argv[1]
     except IndexError:
-        raise OSError("No project file name passed")
+        raise OSError(_("missing-filename"))
 elif config.projectLoadMethod == "interactive":
-    setProject = input("Project file name: ")
+    setProject = input(_("filename-prompt") + " ")
 elif config.projectLoadMethod == "filechooser":
-    fileTypes = [("Scratch 3 projects", ".sb3"), ("All files", ".*")]
+    fileTypes = [(_("sb3-desc"), ".sb3"), (_("all-files-desc"), ".*")]
     setProject = filedialog.askopenfilename(parent=mainWindow,
                                             initialdir=os.getcwd(),
-                                            title="Choose a project to load",
+                                            title=_("choose-project-title"),
                                             filetypes=fileTypes)
 else:
     sys.stderr = sys.__stderr__
-    raise config.ConfigError("Invalid setting: projectLoadMethod")
+    raise config.ConfigError(_("invalid-setting-error", setting="projectLoadMethod"))
 
 # Get project data and create sprites
 targets, project = sb3Unpacker.sb3Unpack(setProject)
@@ -115,8 +118,8 @@ font = pygame.font.SysFont(pygame.font.get_default_font(), 16)
 fontXl = pygame.font.SysFont(pygame.font.get_default_font(), 36)
 
 # Create paused message
-paused = fontXl.render("Paused (Press F6 to resume)", True, (0, 0, 0))
-pausedWidth, pausedHeight = fontXl.size("Paused (Press F6 to resume)")
+paused = fontXl.render(_("paused-message", keybind="F6"), True, (0, 0, 0))
+pausedWidth, pausedHeight = fontXl.size(_("paused-message", keybind="F6"))
 
 # Set player size and key delay
 HEIGHT = config.projectScreenHeight
@@ -128,12 +131,12 @@ icon = pygame.image.load("icon.svg")
 
 # Create project player and window
 display = pygame.display.set_mode([WIDTH, HEIGHT])
-pygame.display.set_caption(projectName + " - Scratch2Python" + " " + __version__)
+pygame.display.set_caption(_("window-title", projectName=projectName, s2pVersionString="Scratch2Python" + __version__))
 pygame.display.set_icon(icon)
 
 # Extract if requested
 if config.extractOnProjectRun:
-    print("Extracting project")
+    print(_("extracting-project"))
     shutil.rmtree("assets")
     os.mkdir("assets")
     project.extractall("assets")
@@ -150,6 +153,19 @@ display.fill((255, 255, 255))
 
 doScreenRefresh = False
 
+# Define some strings
+widthPrompt = _("screen-width-prompt") + " "
+heightPrompt = _("screen-height-prompt") + " "
+okText = _("ok")
+cancelText = _("cancel")
+playerClosedText = _("player-closed")
+nothingToSeeHere = _("nothing-to-see-here")
+helpTitle, extractTitle, projectInfoTitle, fpsTitle, screenTitle = _("help-title"), _("extract-title"), _("project-info-title"), _("fps-title"), _("screen-title")
+fpsPrompt, fpsMessage = _("fps-prompt"), _("fps-message")
+extractPrompt, extractMessage = _("extract-prompt"), _("extracting-project")
+screenMessage = _("screen-message")
+redrawMessage = _("redraw-message")
+
 
 # Define a dialog class for screen resolution
 class SizeDialog(tkinter.simpledialog.Dialog):
@@ -157,8 +173,8 @@ class SizeDialog(tkinter.simpledialog.Dialog):
         super().__init__(parent, title)
 
     def body(self, master):
-        tk.Label(master, text="Width: ").grid(row=0)
-        tk.Label(master, text="Height: ").grid(row=1)
+        tk.Label(master, text=widthPrompt).grid(row=0)
+        tk.Label(master, text=heightPrompt).grid(row=1)
 
         self.width = tk.Entry(master)
         self.height = tk.Entry(master)
@@ -177,17 +193,18 @@ class SizeDialog(tkinter.simpledialog.Dialog):
         self.destroy()
 
     def buttonbox(self):
-        self.okButton = tk.Button(self, text='OK', width=5, command=self.okPressed)
+        self.okButton = tk.Button(self, text=okText, width=5, command=self.okPressed)
         self.okButton.pack(side="left")
-        cancelButton = tk.Button(self, text='Cancel', width=5, command=self.cancelPressed)
+        cancelButton = tk.Button(self, text=cancelText, width=5, command=self.cancelPressed)
         cancelButton.pack(side="right")
         self.bind("<Return>", lambda event: self.okPressed())
         self.bind("<Escape>", lambda event: self.cancelPressed())
 
+
 # Start project
 toExecute = []
 eventHandlers = []
-print("Project started")
+print(_("project-started"))
 # Start green flag scripts
 for s in allSprites:
     for _, block in s.target.blocks.items():
@@ -200,13 +217,14 @@ for s in allSprites:
         elif block.opcode.startswith("event_"):  # add "when I start as a clone" code later
             eventHandlers.append(block)
 
+
 # Mainloop
 while projectRunning:
     # Process Pygame events
     for event in pygame.event.get():
         # Window quit (ALT-F4 / X button)
         if event.type == pygame.QUIT:
-            print("Player closed")
+            print(playerClosedText)
             projectRunning = False
 
         # Debug and utility functions
@@ -214,15 +232,13 @@ while projectRunning:
         keys = set(k for k in scratch.KEY_MAPPING.values() if keysRaw[k])
 
         if pygame.K_F1 in keys:  # Help
-            showinfo("Help", "Nothing to see here")
-        if pygame.K_F2 in keys:  # Scratch2Python options
-            showinfo("Options", "Nothing to see here")
+            showinfo(helpTitle, nothingToSeeHere)
         if pygame.K_F4 in keys:  # Project info
-            showinfo("Project info", "Nothing to see here")
+            showinfo(projectInfoTitle, nothingToSeeHere)
         if pygame.K_F3 in keys:  # Extract
-            confirm = askokcancel("Extract", "Extract all project files?")
+            confirm = askokcancel(extractTitle, extractPrompt)
             if confirm:
-                print("Extracting project")
+                print(extractMessage)
                 shutil.rmtree("assets")
                 os.mkdir("assets")
                 project.extractall("assets")
@@ -230,14 +246,14 @@ while projectRunning:
             isPaused = not isPaused
         if pygame.K_F7 in keys:  # Set new FPS
             # Open dialog
-            newFPS = askinteger(title="FPS", prompt="Enter new FPS")
+            newFPS = askinteger(title=fpsTitle, prompt=fpsPrompt)
             if newFPS is not None:
-                print("FPS set to", newFPS)
+                print(fpsMessage, newFPS)
                 config.projectMaxFPS = newFPS
         if pygame.K_F8 in keys:  # Set new screen resolution
             try:
                 # Open special dialog
-                dialog = SizeDialog(mainWindow, title="Screen resolution")
+                dialog = SizeDialog(mainWindow, title=screenTitle)
                 if dialog.setWidth and dialog.setHeight:
                     config.projectScreenWidth = int(dialog.setWidth)
                     config.projectScreenHeight = int(dialog.setHeight)
@@ -249,7 +265,7 @@ while projectRunning:
                 scratch.refreshScreenResolution()
                 for s in allSprites:
                     s.setXy(s.x, s.y)
-                print("Screen resolution set to", str(HEIGHT) + "x" + str(WIDTH))
+                print(screenMessage, str(HEIGHT) + "x" + str(WIDTH))
             except ValueError:
                 pass
         if pygame.K_F5 in keys:  # Redraw
@@ -260,7 +276,7 @@ while projectRunning:
             scratch.refreshScreenResolution()
             for s in allSprites:
                 s.setXy(s.x, s.y)
-            print("Screen resolution set to", str(HEIGHT) + "x" + str(WIDTH))
+            print(redrawMessage)
 
     display.fill((255, 255, 255))
     if toExecute:

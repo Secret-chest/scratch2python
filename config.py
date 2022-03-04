@@ -1,4 +1,6 @@
 from configMeta import *
+import i18n
+_ = i18n.t
 
 """
 Scratch2Python config
@@ -8,6 +10,12 @@ Each option has its own description. Have fun!
 
 # Enable insane values
 INSANE: bool = False
+
+# Language
+# Supported languages:
+# 🇬🇧/🇺🇸 English - en
+# 🇷🇴 limba română - ro
+language: str = "en"
 
 # Project load method
 # Sets the behavior for loading projects.
@@ -21,7 +29,7 @@ projectLoadMethod: str = "manual"
 
 # Project file name
 # If the "manual" mode is chosen, set the Scratch project file to load.
-projectFileName: str = "projects/Math4.sb3"
+projectFileName: str = "projects/arrows.sb3"
 
 # Extract on project run
 # Set whether to extract the project assets on run.
@@ -74,8 +82,12 @@ class ConfigError(Exception):
     pass
 
 
+i18n.set("locale", language)
+i18n.set("filename_format", "{locale}.{format}")
+i18n.load_path.append("./lang/")
+
 if not INSANE:
     if screenWidth < 240 or screenHeight < 180:
-        raise ConfigError("That resolution is very small. Recommended minimum resolution is at least 240x180. If you want to bypass this error, enable the INSANE variable in config.py.")
+        raise ConfigError(_("config-warning-screen-too-small", res="240x180"))
     if screenWidth > 1920 or screenHeight > 1080:
-        raise ConfigError("That resolution is very large. Recommended maximum resolution is 1920x1080. If you want to bypass this error, enable the INSANE variable in config.py.")
+        raise ConfigError(_("config-warning-screen-too-large", res="1920x1080"))

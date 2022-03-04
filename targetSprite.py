@@ -10,6 +10,12 @@ import io
 import scratch
 import config
 import sys
+import i18n
+
+i18n.set("locale", config.language)
+i18n.set("filename_format", "{locale}.{format}")
+i18n.load_path.append("./lang/")
+_ = i18n.t
 
 
 class TargetSprite(pygame.sprite.Sprite):
@@ -35,6 +41,10 @@ class TargetSprite(pygame.sprite.Sprite):
         self.image = sprite
         self.rect = self.image.get_rect()
         self.isStage = target.isStage
+        if self.target.name == "Stage":
+            self.name = _("stage")
+        else:
+            self.name = self.target.name
 
         # Convert Scratch coordinates into Pygame coordinates
         self.rect.x = (self.x + scratch.WIDTH // 2 - self.target.costumes[self.target.currentCostume].rotationCenterX)
@@ -68,7 +78,7 @@ class TargetSprite(pygame.sprite.Sprite):
         # Set X and Y
         self.x = x + self.padX // 2
         self.y = y - self.padY // 2
-        print(f"DEBUG: New position ({x}, {y}) set for sprite {self.target.name}", file=sys.stderr)
+        print(_("debug-prefix"), _("new-sprite-position", x=x, y=y, name=self.name), file=sys.stderr)
         self.rect.x = self.x + scratch.WIDTH // 2 - self.target.costumes[self.target.currentCostume].rotationCenterX
         self.rect.y = scratch.HEIGHT // 2 - self.y - self.target.costumes[self.target.currentCostume].rotationCenterY
 
@@ -101,6 +111,6 @@ class TargetSprite(pygame.sprite.Sprite):
         # Set X and Y
         self.x = x + self.padX // 2
         self.y = y - self.padY // 2
-        print(f"DEBUG: New position ({x}, {y}) set for sprite {self.target.name}", file=sys.stderr)
+        print(_("debug-prefix"), _("new-sprite-position", x=x, y=y, name=self.name), file=sys.stderr)
         self.rect.x = self.x + scratch.WIDTH // 2 - self.target.costumes[self.target.currentCostume].rotationCenterX
         self.rect.y = scratch.HEIGHT // 2 - self.y - self.target.costumes[self.target.currentCostume].rotationCenterY

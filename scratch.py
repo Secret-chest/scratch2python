@@ -9,6 +9,12 @@ import pygame.time
 import cairosvg
 import io
 import config
+import i18n
+
+i18n.set("locale", config.language)
+i18n.set("filename_format", "{locale}.{format}")
+i18n.load_path.append("./lang/")
+_ = i18n.t
 
 
 if not config.enableDebugMessages:
@@ -22,90 +28,90 @@ WIDTH = config.projectScreenWidth
 
 # Key maps to convert the key option in blocks to Pygame constants
 KEY_MAPPING = {
-    "up arrow"   : pygame.K_UP,
-    "down arrow" : pygame.K_DOWN,
-    "left arrow" : pygame.K_LEFT,
+    "up arrow": pygame.K_UP,
+    "down arrow": pygame.K_DOWN,
+    "left arrow": pygame.K_LEFT,
     "right arrow": pygame.K_RIGHT,
-    "space"      : pygame.K_SPACE,
-    "a"          : pygame.K_a,
-    "b"          : pygame.K_b,
-    "c"          : pygame.K_c,
-    "d"          : pygame.K_d,
-    "e"          : pygame.K_e,
-    "f"          : pygame.K_f,
-    "g"          : pygame.K_g,
-    "h"          : pygame.K_h,
-    "i"          : pygame.K_i,
-    "j"          : pygame.K_j,
-    "k"          : pygame.K_k,
-    "l"          : pygame.K_l,
-    "m"          : pygame.K_m,
-    "n"          : pygame.K_n,
-    "o"          : pygame.K_o,
-    "p"          : pygame.K_p,
-    "q"          : pygame.K_q,
-    "r"          : pygame.K_r,
-    "s"          : pygame.K_s,
-    "t"          : pygame.K_t,
-    "u"          : pygame.K_u,
-    "v"          : pygame.K_v,
-    "w"          : pygame.K_w,
-    "x"          : pygame.K_x,
-    "y"          : pygame.K_y,
-    "z"          : pygame.K_z,
-    "0"          : pygame.K_0,
-    "1"          : pygame.K_1,
-    "2"          : pygame.K_2,
-    "3"          : pygame.K_3,
-    "4"          : pygame.K_4,
-    "5"          : pygame.K_5,
-    "6"          : pygame.K_6,
-    "7"          : pygame.K_7,
-    "8"          : pygame.K_8,
-    "9"          : pygame.K_9,
+    "space": pygame.K_SPACE,
+    "a": pygame.K_a,
+    "b": pygame.K_b,
+    "c": pygame.K_c,
+    "d": pygame.K_d,
+    "e": pygame.K_e,
+    "f": pygame.K_f,
+    "g": pygame.K_g,
+    "h": pygame.K_h,
+    "i": pygame.K_i,
+    "j": pygame.K_j,
+    "k": pygame.K_k,
+    "l": pygame.K_l,
+    "m": pygame.K_m,
+    "n": pygame.K_n,
+    "o": pygame.K_o,
+    "p": pygame.K_p,
+    "q": pygame.K_q,
+    "r": pygame.K_r,
+    "s": pygame.K_s,
+    "t": pygame.K_t,
+    "u": pygame.K_u,
+    "v": pygame.K_v,
+    "w": pygame.K_w,
+    "x": pygame.K_x,
+    "y": pygame.K_y,
+    "z": pygame.K_z,
+    "0": pygame.K_0,
+    "1": pygame.K_1,
+    "2": pygame.K_2,
+    "3": pygame.K_3,
+    "4": pygame.K_4,
+    "5": pygame.K_5,
+    "6": pygame.K_6,
+    "7": pygame.K_7,
+    "8": pygame.K_8,
+    "9": pygame.K_9,
 
     # Scratch supports these keys internally
-    "enter"      : pygame.K_RETURN,
-    "<"          : pygame.K_LESS,
-    ">"          : pygame.K_GREATER,
-    "+"          : pygame.K_PLUS,
-    "-"          : pygame.K_MINUS,
-    "="          : pygame.K_EQUALS,
-    "."          : pygame.K_PERIOD,
-    ","          : pygame.K_COMMA,
-    "%"          : pygame.K_PERCENT,
-    "$"          : pygame.K_DOLLAR,
-    "#"          : pygame.K_HASH,
-    "@"          : pygame.K_AT,
-    "!"          : pygame.K_EXCLAIM,
-    "^"          : pygame.K_CARET,
-    "&"          : pygame.K_AMPERSAND,
-    "*"          : pygame.K_ASTERISK,
-    "("          : pygame.K_LEFTPAREN,
-    ")"          : pygame.K_RIGHTPAREN,
-    "["          : pygame.K_LEFTBRACKET,
-    "]"          : pygame.K_RIGHTBRACKET,
-    "?"          : pygame.K_QUESTION,
-    "\\"         : pygame.K_BACKSLASH,
-    "/"          : pygame.K_SLASH,
-    "'"          : pygame.K_QUOTE,
-    "\""         : pygame.K_QUOTEDBL,
-    "`"          : pygame.K_BACKQUOTE,
+    "enter": pygame.K_RETURN,
+    "<": pygame.K_LESS,
+    ">": pygame.K_GREATER,
+    "+": pygame.K_PLUS,
+    "-": pygame.K_MINUS,
+    "=": pygame.K_EQUALS,
+    ".": pygame.K_PERIOD,
+    ",": pygame.K_COMMA,
+    "%": pygame.K_PERCENT,
+    "$": pygame.K_DOLLAR,
+    "#": pygame.K_HASH,
+    "@": pygame.K_AT,
+    "!": pygame.K_EXCLAIM,
+    "^": pygame.K_CARET,
+    "&": pygame.K_AMPERSAND,
+    "*": pygame.K_ASTERISK,
+    "(": pygame.K_LEFTPAREN,
+    ")": pygame.K_RIGHTPAREN,
+    "[": pygame.K_LEFTBRACKET,
+    "]": pygame.K_RIGHTBRACKET,
+    "?": pygame.K_QUESTION,
+    "\\": pygame.K_BACKSLASH,
+    "/": pygame.K_SLASH,
+    "'": pygame.K_QUOTE,
+    "\"": pygame.K_QUOTEDBL,
+    "`": pygame.K_BACKQUOTE,
 
     # Scratch2Python only
-    "backspace"  : pygame.K_BACKSPACE,
-    "f1"         : pygame.K_F1,
-    "f2"         : pygame.K_F2,
-    "f3"         : pygame.K_F3,
-    "f4"         : pygame.K_F4,
-    "f5"         : pygame.K_F5,
-    "f6"         : pygame.K_F6,
-    "f7"         : pygame.K_F7,
-    "f8"         : pygame.K_F8,
-    "f9"         : pygame.K_F9,
-    "f10"        : pygame.K_F10,
-    "f11"        : pygame.K_F11,
-    "f12"        : pygame.K_F12
+    "backspace": pygame.K_BACKSPACE,
+    "f1": pygame.K_F1,
+    "f2": pygame.K_F2,
+    "f3": pygame.K_F3,
+    "f4": pygame.K_F4,
+    "f5": pygame.K_F5,
+    "f6": pygame.K_F6,
+    "f7": pygame.K_F7,
+    "f8": pygame.K_F8,
+    "f9": pygame.K_F9,
+    "f10": pygame.K_F10,
+    "f11": pygame.K_F11,
+    "f12": pygame.K_F12
 }
 
 
@@ -178,7 +184,7 @@ def execute(block, s, keys=[]):
             block.timeDelay = int(round(float(float(block.getInputValue("duration"))) * 1000))
             block.waiting = True
             block.executionTime = 0
-            print("DEBUG: Waiting for", block.timeDelay, "ms", file=sys.stderr)
+            print(_("debug-prefix"), _("block-waiting", time=block.timeDelay), file=sys.stderr)
         return block
 
     elif opcode == "event_whenflagclicked":  # when green flag clicked
@@ -194,9 +200,8 @@ def execute(block, s, keys=[]):
         key = block.getFieldValue("key_option", lookIn=0)
 
         if key == "any":  # when key [any v] pressed
-            print("DEBUG: Handling key", key, file=sys.stderr)
             if keys:
-                print("DEBUG: Handling key", key, file=sys.stderr)
+                print(_("debug-prefix"), _("keypress-handling", keyName=_("key-any")), file=sys.stderr)
                 for b in block.script:
                     s.target.blocks[b].blockRan = False
                 nb = block  # s.target.blocks[block.next]
@@ -215,7 +220,19 @@ def execute(block, s, keys=[]):
                 return nextBlock
 
         elif KEY_MAPPING[key] in keys and block.next:  # when key [. . . v] pressed
-            print("DEBUG: Handling key", key, file=sys.stderr)
+            if key == "left arrow":
+                keyName = _("key-left")
+            elif key == "right arrow":
+                keyName = _("key-right")
+            elif key == "up arrow":
+                keyName = _("key-up")
+            elif key == "down arrow":
+                keyName = _("key-down")
+            elif key == "space":
+                keyName = _("key-space")
+            else:
+                keyName = key
+            print(_("debug-prefix"), _("keypress-handling", keyName=keyName), file=sys.stderr)
             for b in block.script:
                 s.target.blocks[b].blockRan = False
             nb = block  # s.target.blocks[block.next]
@@ -259,13 +276,13 @@ def execute(block, s, keys=[]):
     elif opcode == "procedures_call":
         if config.showSALogs:
             if block.proccode == "​​log​​ %s":  # Scratch Addons log ()
-                print("PROJECT LOG:", block.getCustomInputValue(0), file=sys.stderr)
+                print(_("project-log"), block.getCustomInputValue(0), file=sys.stderr)
             elif block.proccode == "​​warn​​ %s":  # Scratch Addons warn ()
-                print("PROJECT WARN:", block.getCustomInputValue(0), file=sys.stderr)
+                print(_("project-warn"), block.getCustomInputValue(0), file=sys.stderr)
             elif block.proccode == "​​error​​ %s":  # Scratch Addons error ()
-                print("PROJECT ERROR:", block.getCustomInputValue(0), file=sys.stderr)
+                print(_("project-error"), block.getCustomInputValue(0), file=sys.stderr)
     else:
-        print("Unknown opcode:", opcode)
+        print(_("unknown-opcode"), opcode)
 
     # If there is a block below, return it
     if block.next:

@@ -34,13 +34,13 @@ class Block:
         if self.opcode == "operator_add":  # () + ()
             self.value = float(self.getInputValue("num1")) + float(self.getInputValue("num2"))
             return self.value
-        if self.opcode == "operator_subtract":  # () - ()
+        elif self.opcode == "operator_subtract":  # () - ()
             self.value = float(self.getInputValue("num1")) - float(self.getInputValue("num2"))
             return self.value
-        if self.opcode == "operator_multiply":  # () * ()
+        elif self.opcode == "operator_multiply":  # () * ()
             self.value = float(self.getInputValue("num1")) * float(self.getInputValue("num2"))
             return self.value
-        if self.opcode == "operator_divide":  # () / ()
+        elif self.opcode == "operator_divide":  # () / ()
             try:
                 self.value = float(self.getInputValue("num1")) / float(self.getInputValue("num2"))
             except ZeroDivisionError:

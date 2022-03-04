@@ -16,6 +16,13 @@ import pygame
 import scratch
 import sys
 import os
+import config
+import i18n
+
+i18n.set("locale", config.language)
+i18n.set("filename_format", "{locale}.{format}")
+i18n.load_path.append("./lang/")
+_ = i18n.t
 
 
 if not config.enableDebugMessages:
@@ -27,9 +34,9 @@ if not config.enableTerminalOutput:
 def sb3Unpack(sb3):
     # If project does not exist, quit with exit code 1
     if not Path(sb3).exists():
-        raise FileNotFoundError("Project file does not exist")
+        raise FileNotFoundError(_("project-file-not-found"))
 
-    print("Loading project")
+    print(_("loading-project"))
     project = zf.ZipFile(sb3, "r")
     projectJSON = json.loads(project.read("project.json"))
     targets = []
