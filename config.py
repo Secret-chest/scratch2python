@@ -84,7 +84,7 @@ class ConfigError(Exception):
 
 i18n.set("locale", language)
 i18n.set("filename_format", "{locale}.{format}")
-i18n.load_path.append("./lang/")
+i18n.load_path.append("lang/")
 
 if not INSANE:
     if screenWidth < 240 or screenHeight < 180:

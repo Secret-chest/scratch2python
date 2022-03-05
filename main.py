@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-__version__ = "M17 (development version)"
+__version__ = "M18 (development version)"
 __author__ = "Secret-chest"
 
 import tkinter.simpledialog
@@ -40,7 +40,7 @@ else:
 
 i18n.set("locale", config.language)
 i18n.set("filename_format", "{locale}.{format}")
-i18n.load_path.append("./lang/")
+i18n.load_path.append("lang/")
 _ = i18n.t
 
 if not config.enableTerminalOutput:

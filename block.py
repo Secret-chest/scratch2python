@@ -13,7 +13,7 @@ import math
 
 i18n.set("locale", config.language)
 i18n.set("filename_format", "{locale}.{format}")
-i18n.load_path.append("./lang/")
+i18n.load_path.append("lang/")
 _ = i18n.t
 
 
