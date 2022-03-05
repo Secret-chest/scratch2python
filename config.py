@@ -13,7 +13,7 @@ INSANE: bool = False
 
 # Language
 # Supported languages:
-# 🇬🇧/🇺🇸 English - en
+# 🇬🇧 English - en
 # 🇷🇴 limba română - ro
 language: str = "en"
 
