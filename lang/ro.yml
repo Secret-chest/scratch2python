@@ -46,3 +46,4 @@ ro:
   unknown-opcode: "Tip de bloc necunoscut:"
   new-sprite-position: "Poziție nouă (%{x}, %{y}) setată pentru personajul %{name}"
   stage: "Scena"
+  zero-division-error: "Proiectul a încercat să împartă la 0"

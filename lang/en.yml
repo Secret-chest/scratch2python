@@ -46,3 +46,4 @@ en:
   unknown-opcode: "Unknown opcode:"
   new-sprite-position: "New position (%{x}, %{y}) set for sprite %{name}"
   stage: "Stage"
+  zero-division-error: "Project was trying to divide by 0"

@@ -7,6 +7,16 @@ set. Those are then used to build the project in main.py.
 """
 
 import random
+import i18n
+import config
+import math
+
+i18n.set("locale", config.language)
+i18n.set("filename_format", "{locale}.{format}")
+i18n.load_path.append("./lang/")
+_ = i18n.t
+
+
 
 class Block:
     def __init__(self):
@@ -44,7 +54,16 @@ class Block:
             try:
                 self.value = float(self.getInputValue("num1")) / float(self.getInputValue("num2"))
             except ZeroDivisionError:
-                raise ZeroDivisionError("Project was trying to divide by 0")
+                raise ZeroDivisionError(_("zero-division-error"))
+            return self.value
+        elif self.opcode == "operator_random":  # () * ()
+            decimals1 = len(str(math.modf(float(self.getInputValue("from"))))) - 2
+            decimals2 = len(str(math.modf(float(self.getInputValue("to"))))) - 2
+            if decimals1 > decimals2:
+                decimals = decimals1
+            else:
+                decimals = decimals2
+            self.value = random.randint(int(self.getInputValue("from")) * 10 ** decimals, int(self.getInputValue("to")) * 10 ** decimals) / 10 ** decimals
             return self.value
 
     # Returns block input value
