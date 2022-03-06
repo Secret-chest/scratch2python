@@ -1,6 +1,6 @@
 ro:
   start: "Scratch2Python %{version} rulând pe %{os}"
-  unrecognized-os: "Scuze, Scratch2Python nu recunoaște sistemul tău de operare. Platforma ta este: %{platform}. Dacă Scratch2Python crapă, raportează aici: %{url}"
+  unrecognized-os: "Scuze, Scratch2Python nu recunoaște sistemul tău de operare. Platforma ta este: %{platform}. Dacă Scratch2Python se oprește, raportează aici: %{url}"
   missing-filename: "Nu a fost primit niciun nume de fișier. Rulează Scratch2Python ca și „<nume executabil> <nume fișier proiect>” sau alege alt mod de încărcare."
   filename-prompt: "Nume de fișier pentru proiect:"
   sb3-desc: "Proiecte Scratch 3"
@@ -32,7 +32,7 @@ ro:
   project-file-not-found: "Fișierul proiectului nu există"
   loading-project: "Se încarcă proiectul"
   debug-prefix: "DEPANARE:"
-  block-waiting: "Se așteaptă pentru %{time} ms"
+  block-waiting: "Se așteaptă %{time} ms"
   keypress-handling: "Se gestionează tasta %{keyName}"
   key-any: "oricare"
   key-left: "săgeată stânga"
