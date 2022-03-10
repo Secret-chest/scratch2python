@@ -57,7 +57,7 @@ class Block:
             except ZeroDivisionError:
                 raise ZeroDivisionError(_("zero-division-error"))
             return self.value
-        elif self.opcode == "operator_random":  # () * ()
+        elif self.opcode == "operator_random":  # pick random from () to ()
             decimals1 = len(str(math.modf(float(self.getInputValue("from"))))) - 2
             decimals2 = len(str(math.modf(float(self.getInputValue("to"))))) - 2
             if decimals1 > decimals2:
@@ -65,6 +65,12 @@ class Block:
             else:
                 decimals = decimals2
             self.value = random.randint(int(self.getInputValue("from")) * 10 ** decimals, int(self.getInputValue("to")) * 10 ** decimals) / 10 ** decimals
+            return self.value
+        elif self.opcode == "motion_xposition":  # x position
+            self.value = self.target.x
+            return self.value
+        elif self.opcode == "motion_xposition":  # y position
+            self.value = self.target.y
             return self.value
 
     # Returns block input value

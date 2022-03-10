@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-__version__ = "M18 (development version)"
+__version__ = "M19 (development version)"
 __author__ = "Secret-chest"
 
 import tkinter.simpledialog
@@ -131,7 +131,7 @@ icon = pygame.image.load("icon.svg")
 
 # Create project player and window
 display = pygame.display.set_mode([WIDTH, HEIGHT])
-pygame.display.set_caption(_("window-title", projectName=projectName, s2pVersionString="Scratch2Python" + __version__))
+pygame.display.set_caption(_("window-title", projectName=projectName, s2pVersionString="Scratch2Python " + __version__))
 pygame.display.set_icon(icon)
 
 # Extract if requested

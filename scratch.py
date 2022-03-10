@@ -277,12 +277,15 @@ def execute(block, s, keys=[]):
         if block.repeatCounter is None:
             block.repeatCounter = int(block.getInputValue("times"))
         # Don't mark the loop as ran until done, and do a screen refresh
-        if block.repeatCounter > 0:
+        if block.repeatCounter > 1:
             block.blockRan = False
         else:
             block.blockRan = True
             block.repeatCounter = None
         block.screenRefresh = True
+
+        if block.repeatCounter is not None:
+            block.repeatCounter -= 1
 
         # If there are blocks, get them
         if inputs["SUBSTACK"][1]:
@@ -300,8 +303,6 @@ def execute(block, s, keys=[]):
                 nb = s.target.blocks[nb.next]
                 block.substack.add(nb.blockID)
             nb.next = block.blockID
-            if block.repeatCounter is not None:
-                block.repeatCounter -= 1
             return nextBlock
 
     elif opcode == "procedures_call":
