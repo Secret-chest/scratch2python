@@ -264,7 +264,6 @@ def execute(block, s, keys=[]):
             nb = s.target.blocks[inputs["SUBSTACK"][1]]
             block.substack.add(nb.blockID)
             while nb.next and nb.next != block.blockID:
-                # TODO: Caution: Don't loop the program
                 nb.blockRan = False
                 nb.waiting = False
                 nb.timeDelay = 0
@@ -273,6 +272,38 @@ def execute(block, s, keys=[]):
                 block.substack.add(nb.blockID)
             nb.next = block.blockID
             return nextBlock
+
+    elif opcode == "control_repeat":  # repeat (10) {..}
+        if block.repeatCounter is None:
+            block.repeatCounter = int(block.getInputValue("times"))
+        # Don't mark the loop as ran until done, and do a screen refresh
+        if block.repeatCounter > 0:
+            block.blockRan = False
+        else:
+            block.blockRan = True
+            block.repeatCounter = None
+        block.screenRefresh = True
+
+        # If there are blocks, get them
+        if inputs["SUBSTACK"][1]:
+            # No blocks will be flagged as ran inside a forever loop
+            for b in block.substack:
+                s.target.blocks[b].blockRan = False
+            nextBlock = s.target.blocks[inputs["SUBSTACK"][1]]
+            nb = s.target.blocks[inputs["SUBSTACK"][1]]
+            block.substack.add(nb.blockID)
+            while nb.next and nb.next != block.blockID:
+                nb.blockRan = False
+                nb.waiting = False
+                nb.timeDelay = 0
+                nb.executionTime = 0
+                nb = s.target.blocks[nb.next]
+                block.substack.add(nb.blockID)
+            nb.next = block.blockID
+            if block.repeatCounter is not None:
+                block.repeatCounter -= 1
+            return nextBlock
+
     elif opcode == "procedures_call":
         if config.showSALogs:
             if block.proccode == "​​log​​ %s":  # Scratch Addons log ()

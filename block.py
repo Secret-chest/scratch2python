@@ -38,6 +38,7 @@ class Block:
         self.screenRefresh = False  # do a screen refresh
         self.inEventLoop = False
         self.value = None  # reported value
+        self.repeatCounter = None  # for repeat block
 
     # Evaluates block value (for reporters)
     def evaluateBlockValue(self):
@@ -72,7 +73,7 @@ class Block:
 
     # Returns block input value
     def getInputValue(self, inputId, lookIn=(1, 1)):
-        if self.inputs[inputId.upper()][lookIn[0]][0] in {4, 0, 5}:
+        if self.inputs[inputId.upper()][lookIn[0]][0] in {4, 0, 5, 6}:
             return self.inputs[inputId.upper()][lookIn[0]][1] or 0
         elif self.inputs[inputId.upper()][0] == 3:
             blockLink = self.inputs[inputId.upper()][1]
