@@ -17,7 +17,6 @@ i18n.load_path.append("lang/")
 _ = i18n.t
 
 
-
 class Block:
     def __init__(self):
         self.blockID = ""
