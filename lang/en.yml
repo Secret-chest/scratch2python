@@ -47,3 +47,4 @@ en:
   new-sprite-position: "New position (%{x}, %{y}) set for sprite %{name}"
   stage: "Stage"
   zero-division-error: "Project was trying to divide by 0"
+  costumes-count: "%{sprite} has %{costumes} costumes"

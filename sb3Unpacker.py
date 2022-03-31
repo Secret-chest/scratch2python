@@ -59,7 +59,7 @@ def sb3Unpack(sb3):
             c = costume.Costume()
             if "md5ext" in costumeObj:
                 c.md5ext = costumeObj["md5ext"]
-                c.rotationCenterX, c.rotationCenterY = costumeObj["rotationCenterX"], costumeObj["rotationCenterY"]
+            c.rotationCenterX, c.rotationCenterY = costumeObj["rotationCenterX"], costumeObj["rotationCenterY"]
             c.dataFormat = costumeObj["dataFormat"]
             c.file = project.read(costumeObj["assetId"] + "." + costumeObj["dataFormat"])
             if costumeObj["dataFormat"] != "svg":
