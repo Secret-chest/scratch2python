@@ -24,8 +24,9 @@ class TargetSprite(pygame.sprite.Sprite):
         self.padX = 0
         self.padY = 0
         self.target = target
+        self.currentCostume = target.currentCostume
         # Load costume
-        if target.costumes[target.currentCostume].dataFormat != "svg":
+        if target.costumes[self.currentCostume].dataFormat != "svg":
             sprite = pygame.image.load(io.BytesIO(target.costumes[target.currentCostume].file))
             initialWidth = sprite.get_width()
             initialHeight = sprite.get_height()
@@ -118,3 +119,19 @@ class TargetSprite(pygame.sprite.Sprite):
             print(_("debug-prefix"), _("new-sprite-position", x=x, y=y, name=self.name), file=sys.stderr)
             self.rect.x = self.x + scratch.WIDTH // 2 - self.target.costumes[self.target.currentCostume].rotationCenterX
             self.rect.y = scratch.HEIGHT // 2 - self.y - self.target.costumes[self.target.currentCostume].rotationCenterY
+
+    # Change costume
+    def setCostume(self, costumeId):
+        # Load costume
+        if self.target.costumes[self.currentCostume].dataFormat != "svg":
+            sprite = pygame.image.load(io.BytesIO(self.target.costumes[self.target.currentCostume].file))
+            initialWidth = sprite.get_width()
+            initialHeight = sprite.get_height()
+            sprite = pygame.transform.smoothscale(sprite, (sprite.get_width() // self.target.costumes[self.target.currentCostume].bitmapResolution, sprite.get_height() // self.target.costumes[self.target.currentCostume].bitmapResolution))
+            self.padX = initialWidth - sprite.get_width()
+            self.padY = initialHeight - sprite.get_height()
+        else:
+            sprite = scratch.loadSvg(self.target.costumes[self.target.currentCostume].file)
+        self.image = sprite
+        self.rect = self.image.get_rect()
+        self.setXy(self.x, self.y)
