@@ -22,7 +22,6 @@ body:
     id: category
     attributes:
       label: Category
-      required: true
       options:
         - GUI
         - API
