@@ -1,0 +1,49 @@
+name: Suggestion
+description: Give us some feedback
+title: "Suggestion"
+labels: [":sparkles: enhancement", ":ballot_box: needs triage"]
+assignees:
+  - Secret-chest
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Tell us about your suggestion here.
+  - type: textarea
+    id: your-suggestion
+    attributes:
+      label: ### Your Suggestion
+      placeholder: Write your suggestion here.
+     validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+     validations:
+      required: true
+      options:
+        - GUI
+        - API
+        - Refactoring
+        - Docs
+        - Packaging
+        - Design
+        - General
+        - Other
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Latest version
+      description: You must be running the latest Scratch2Python version.
+      options:
+        - label: I am running the **latest version**
+          required: true
+  - type: checkboxes
+    id: checks2
+    attributes:
+      label: Duplicate
+      description: Please check that this has not been already suggested.
+      options:
+        - label: I have searched the issues page and this hasn't been suggested.
+          required: true
