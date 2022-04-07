@@ -22,8 +22,8 @@ body:
     id: category
     attributes:
       label: Category
-     validations:
-      required: true
+      validations:
+        required: true
       options:
         - GUI
         - API
