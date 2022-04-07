@@ -1,7 +1,7 @@
 name: Bug Report
 description: File a bug report
-title: "[Bug]: "
-labels: ["bug", "triage"]
+title: ""
+labels: [":bug: bug", ":ballot_box: needs triage"]
 assignees:
   - Secret-chest
 body:
@@ -13,21 +13,21 @@ body:
     id: what-was-expected
     attributes:
       label: What did you expect to happen?
-      placeholder: _What did you expect to happen?_
+      placeholder: What did you expect to happen?
     validations:
       required: true
   - type: textarea
     id: what-happened
     attributes:
       label: What did actually happen?
-      placeholder: _What did happen that you weren't expecting?_
+      placeholder: What did happen that you weren't expecting?
     validations:
       required: true
   - type: textarea
     id: how-to-reproduce
     attributes:
       label: How did you make that happen?
-      placeholder: _Tell us how to reproduce the issue._
+      placeholder: Tell us how to reproduce the issue.
     validations:
       required: true
   - type: textarea
