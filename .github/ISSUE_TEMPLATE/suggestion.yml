@@ -20,8 +20,8 @@ body:
       required: true
   - type: dropdown
     id: category
-    label: Category
     attributes:
+      label: Category
       options:
         - GUI
         - API
