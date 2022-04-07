@@ -36,6 +36,7 @@ body:
       label: Python errors
       description: Please copy and paste any relevant errors.
       render: shell
+      placeholder: Paste here
   - type: checkboxes
     id: checks
     attributes:
