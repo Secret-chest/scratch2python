@@ -69,6 +69,18 @@ def sb3Unpack(sb3):
                 c.bitmapResolution = 1
             t.costumes.append(c)
 
+        # Get sounds
+        for soundObj in targetObj["sounds"]:
+            s = sound.Sound()
+            if "md5ext" in soundObj:
+                s.md5ext = soundObj["md5ext"]
+            s.dataFormat = soundObj["dataFormat"]
+            s.rate = soundObj["rate"]
+            s.sampleCount = soundObj["sampleCount"]
+            s.file = project.read(soundObj["assetId"] + "." + soundObj["dataFormat"])
+            s.name = soundObj["name"]
+            t.sounds.append(s)
+
         # Set blocks to their correct values
         for blockId, blockObj in targetObj["blocks"].items():
             b = block.Block()

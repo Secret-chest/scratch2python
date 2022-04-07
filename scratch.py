@@ -326,6 +326,23 @@ def execute(block, s, keys=[]):
             return s.target.blocks[s.target.blocks[block.parent].next]
         return
 
+    elif opcode == "sound_play":  # start sound [ v]
+        nextBlock = block.getBlockInputValue("sound_menu")
+        return s.target.blocks[nextBlock]
+
+    elif opcode == "sound_sounds_menu":
+        if s.target.blocks[block.parent].opcode == "sound_play":
+            soundName = block.getFieldValue("sound_menu")
+            newSound = None
+            for so in s.target.sounds:
+                if so.name == soundName:
+                    newSound = so
+                    break
+            newSound.play()
+        if s.target.blocks[block.parent].next:
+            return s.target.blocks[s.target.blocks[block.parent].next]
+        return
+
     elif opcode == "procedures_call":
         if config.showSALogs:
             if block.proccode == "​​log​​ %s":  # Scratch Addons log ()

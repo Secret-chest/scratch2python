@@ -113,6 +113,8 @@ for t in targets:
     sprite.setXy(t.x, t.y)
 
 # Start pygame, load fonts and print a debug message
+pygame.mixer.pre_init(22050, -16, 1, 12193)
+
 pygame.init()
 font = pygame.font.SysFont(pygame.font.get_default_font(), 16)
 fontXl = pygame.font.SysFont(pygame.font.get_default_font(), 36)
@@ -216,7 +218,6 @@ for s in allSprites:
                 toExecute.append(nextBlock)
         elif block.opcode.startswith("event_"):  # add "when I start as a clone" code later
             eventHandlers.append(block)
-
 
 # Mainloop
 while projectRunning:
