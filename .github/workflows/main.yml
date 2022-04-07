@@ -1,2 +1,0 @@
-- name: Add To GitHub Projects Beta
-  uses: actions/add-to-project@v0.0.3
