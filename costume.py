@@ -15,3 +15,4 @@ class Costume:
         self.rotationCenterY = 0
         self.bitmapResolution = 1
         self.file = None
+        self.name = ""

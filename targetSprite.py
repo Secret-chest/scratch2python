@@ -24,9 +24,9 @@ class TargetSprite(pygame.sprite.Sprite):
         self.padX = 0
         self.padY = 0
         self.target = target
-        self.currentCostume = target.currentCostume
+        self.target.currentCostume = target.currentCostume
         # Load costume
-        if target.costumes[self.currentCostume].dataFormat != "svg":
+        if target.costumes[self.target.currentCostume].dataFormat != "svg":
             sprite = pygame.image.load(io.BytesIO(target.costumes[target.currentCostume].file))
             initialWidth = sprite.get_width()
             initialHeight = sprite.get_height()
@@ -122,8 +122,9 @@ class TargetSprite(pygame.sprite.Sprite):
 
     # Change costume
     def setCostume(self, costumeId):
+        self.target.currentCostume = costumeId
         # Load costume
-        if self.target.costumes[self.currentCostume].dataFormat != "svg":
+        if self.target.costumes[self.target.currentCostume].dataFormat != "svg":
             sprite = pygame.image.load(io.BytesIO(self.target.costumes[self.target.currentCostume].file))
             initialWidth = sprite.get_width()
             initialHeight = sprite.get_height()

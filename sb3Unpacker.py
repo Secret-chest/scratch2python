@@ -62,6 +62,7 @@ def sb3Unpack(sb3):
             c.rotationCenterX, c.rotationCenterY = costumeObj["rotationCenterX"], costumeObj["rotationCenterY"]
             c.dataFormat = costumeObj["dataFormat"]
             c.file = project.read(costumeObj["assetId"] + "." + costumeObj["dataFormat"])
+            c.name = costumeObj["name"]
             if costumeObj["dataFormat"] != "svg":
                 c.bitmapResolution = int(costumeObj["bitmapResolution"])
             else:

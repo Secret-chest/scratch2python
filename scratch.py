@@ -154,7 +154,9 @@ def execute(block, s, keys=[]):
             newX = newX - WIDTH // 2
             newY = HEIGHT // 2 - newY
             s.setXy(newX, newY)
-            return s.target.blocks[s.target.blocks[block.parent].next]
+            if s.target.blocks[block.parent].next:
+                return s.target.blocks[s.target.blocks[block.parent].next]
+            return
 
         elif block.getFieldValue("to") == "_random_":  # go to [random position v]
             minX = 0 - WIDTH // 2
@@ -163,7 +165,9 @@ def execute(block, s, keys=[]):
             maxY = HEIGHT // 2
             newX, newY = (random.randint(minX, maxX), random.randint(minY, maxY))
             s.setXy(newX, newY)
-            return s.target.blocks[s.target.blocks[block.parent].next]
+            if s.target.blocks[block.parent].next:
+                return s.target.blocks[s.target.blocks[block.parent].next]
+            return
 
     elif opcode == "motion_setx":  # set x to ()
         s.setXy(int(block.getInputValue("x")), s.y)
@@ -305,6 +309,23 @@ def execute(block, s, keys=[]):
             nb.next = block.blockID
             return nextBlock
 
+    elif opcode == "looks_switchcostumeto":  # switch costume to [ v]
+        nextBlock = block.getBlockInputValue("costume")
+        return s.target.blocks[nextBlock]
+
+    elif opcode == "looks_costume":
+        if s.target.blocks[block.parent].opcode == "looks_switchcostumeto":
+            costumeName = block.getFieldValue("costume")
+            newCostume = 0
+            for c in s.target.costumes:
+                if c.name == costumeName:
+                    break
+                newCostume += 1
+            s.setCostume(newCostume)
+        if s.target.blocks[block.parent].next:
+            return s.target.blocks[s.target.blocks[block.parent].next]
+        return
+
     elif opcode == "procedures_call":
         if config.showSALogs:
             if block.proccode == "​​log​​ %s":  # Scratch Addons log ()
@@ -313,6 +334,7 @@ def execute(block, s, keys=[]):
                 print(_("project-warn"), block.getCustomInputValue(0), file=sys.stderr)
             elif block.proccode == "​​error​​ %s":  # Scratch Addons error ()
                 print(_("project-error"), block.getCustomInputValue(0), file=sys.stderr)
+
     else:
         print(_("unknown-opcode"), opcode)
 
