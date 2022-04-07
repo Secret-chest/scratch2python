@@ -14,7 +14,7 @@ body:
   - type: textarea
     id: your-suggestion
     attributes:
-      label: ### Your Suggestion
+      label: "### Your Suggestion"
       placeholder: Write your suggestion here.
     validations:
       required: true
