@@ -18,19 +18,6 @@ body:
       placeholder: Write your suggestion here.
     validations:
       required: true
-  - type: dropdown
-    id: category
-    attributes:
-      label: Category
-      options:
-        - GUI
-        - API
-        - Refactoring
-        - Docs
-        - Packaging
-        - Design
-        - General
-        - Other
   - type: checkboxes
     id: checks
     attributes:
