@@ -28,6 +28,17 @@
         "doc",
         "ideas"
       ]
+    },
+    {
+      "login": "superscratch444tre",
+      "name": "superscratch444tre",
+      "avatar_url": "https://avatars.githubusercontent.com/u/69812464?v=4",
+      "profile": "https://github.com/superscratch444tre",
+      "contributions": [
+        "code",
+        "bug",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
