@@ -1,0 +1,29 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "Secret-chest",
+      "name": "Secret-chest",
+      "avatar_url": "https://avatars.githubusercontent.com/u/74449186?v=4",
+      "profile": "https://Secret-chest.github.io",
+      "contributions": [
+        "code",
+        "projectManagement",
+        "design",
+        "doc",
+        "bug",
+        "translation"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "scratch2python",
+  "projectOwner": "Secret-chest",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
