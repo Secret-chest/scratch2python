@@ -47,7 +47,7 @@ Currently supported languages:
 | en            | English                 | English                    | 🇬🇧 |
 | ro            | Romanian                | limba română               | 🇷🇴 |
 
-## Contributors ✨
+## ✨ Contributors
 
 These people have contributed to this project and helped shape it ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
