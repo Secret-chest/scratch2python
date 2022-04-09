@@ -1,6 +1,6 @@
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 ![Logo](s2p.svg)
 
@@ -57,6 +57,7 @@ These people have contributed to this project and helped shape it ([emoji key](h
 <table>
   <tr>
     <td align="center"><a href="https://Secret-chest.github.io"><img src="https://avatars.githubusercontent.com/u/74449186?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Secret-chest</b></sub></a><br /><a href="https://github.com/Secret-chest/scratch2python/commits?author=Secret-chest" title="Code">💻</a> <a href="#projectManagement-Secret-chest" title="Project Management">📆</a> <a href="#design-Secret-chest" title="Design">🎨</a> <a href="https://github.com/Secret-chest/scratch2python/commits?author=Secret-chest" title="Documentation">📖</a> <a href="https://github.com/Secret-chest/scratch2python/issues?q=author%3ASecret-chest" title="Bug reports">🐛</a> <a href="#translation-Secret-chest" title="Translation">🌍</a></td>
+    <td align="center"><a href="https://github.com/tigercoding56"><img src="https://avatars.githubusercontent.com/u/90169211?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tigercoding56</b></sub></a><br /><a href="https://github.com/Secret-chest/scratch2python/commits?author=tigercoding56" title="Documentation">📖</a> <a href="#ideas-tigercoding56" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 
