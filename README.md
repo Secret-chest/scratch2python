@@ -66,4 +66,4 @@ These people have contributed to this project and helped shape it ([emoji key](h
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
-Add your name here: #29
+Add your name here: [https://github.com/Secret-chest/scratch2python/issues/29](issue #29)
