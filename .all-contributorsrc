@@ -39,6 +39,16 @@
         "bug",
         "test"
       ]
+    },
+    {
+      "login": "Melt2002",
+      "name": "Melt",
+      "avatar_url": "https://avatars.githubusercontent.com/u/62972395?v=4",
+      "profile": "https://github.com/Melt2002",
+      "contributions": [
+        "bug",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
