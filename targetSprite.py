@@ -122,7 +122,7 @@ class TargetSprite(pygame.sprite.Sprite):
 
     # Change costume
     def setCostume(self, costumeId):
-        self.target.currentCostume = costumeId
+        self.target.currentCostume = costumeId % len(self.target.costumes)
         # Load costume
         if self.target.costumes[self.target.currentCostume].dataFormat != "svg":
             sprite = pygame.image.load(io.BytesIO(self.target.costumes[self.target.currentCostume].file))

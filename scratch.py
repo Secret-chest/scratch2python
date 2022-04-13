@@ -313,6 +313,9 @@ def execute(block, s, keys=[]):
         nextBlock = block.getBlockInputValue("costume")
         return s.target.blocks[nextBlock]
 
+    elif opcode == "looks_nextcostume":  # next costume
+        s.setCostume(s.target.currentCostume + 1)
+
     elif opcode == "looks_costume":
         if s.target.blocks[block.parent].opcode == "looks_switchcostumeto":
             costumeName = block.getFieldValue("costume")
