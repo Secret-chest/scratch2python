@@ -48,3 +48,4 @@ en:
   stage: "Stage"
   zero-division-error: "Project was trying to divide by 0"
   costumes-count: "%{sprite} has %{costumes} costumes"
+  stage-not-found: "There is no stage sprite! Invalid project."

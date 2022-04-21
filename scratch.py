@@ -10,11 +10,16 @@ import cairosvg
 import io
 import config
 import i18n
+import targetSprite
 
 i18n.set("locale", config.language)
 i18n.set("filename_format", "{locale}.{format}")
 i18n.load_path.append("lang/")
 _ = i18n.t
+
+
+class SpriteNotFoundError(Exception):
+    pass
 
 
 if not config.enableDebugMessages:
@@ -128,6 +133,14 @@ def refreshScreenResolution():
     global WIDTH
     HEIGHT = config.projectScreenHeight
     WIDTH = config.projectScreenWidth
+
+
+# Get the stage sprite in the current project
+def getStage():
+    for s in targetSprite.sprites:
+        if s.isStage:
+            return s
+    raise SpriteNotFoundError(_("stage-not-found"))
 
 
 # Run the given block object
@@ -309,7 +322,7 @@ def execute(block, s, keys=[]):
             nb.next = block.blockID
             return nextBlock
 
-    elif opcode == "looks_switchcostumeto":  # switch costume to [ v]
+    elif opcode == "looks_switchcostumeto":  # switch costume to [... v]
         nextBlock = block.getBlockInputValue("costume")
         return s.target.blocks[nextBlock]
 
@@ -329,7 +342,24 @@ def execute(block, s, keys=[]):
             return s.target.blocks[s.target.blocks[block.parent].next]
         return
 
-    elif opcode == "sound_play":  # start sound [ v]
+    elif opcode == "looks_switchbackdropto":  # switch backdrop to [... v]
+        nextBlock = block.getBlockInputValue("backdrop")
+        return s.target.blocks[nextBlock]
+
+    elif opcode == "looks_backdrops":
+        if s.target.blocks[block.parent].opcode == "looks_switchbackdropto":
+            backdropName = block.getFieldValue("backdrop")
+            newBackdrop = 0
+            for c in getStage().target.costumes:
+                if c.name == backdropName:
+                    break
+                newBackdrop += 1
+            getStage().setCostume(newBackdrop)
+        if s.target.blocks[block.parent].next:
+            return s.target.blocks[s.target.blocks[block.parent].next]
+        return
+
+    elif opcode == "sound_play":  # start sound [... v]
         nextBlock = block.getBlockInputValue("sound_menu")
         return s.target.blocks[nextBlock]
 

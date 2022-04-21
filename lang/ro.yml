@@ -48,3 +48,4 @@ ro:
   stage: "Scena"
   zero-division-error: "Proiectul a încercat să împartă la 0"
   costumes-count: "%{sprite} are %{costumes} costume"
+  stage-not-found: "Nu există scena! Proiect invalid."

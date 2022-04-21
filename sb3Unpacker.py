@@ -52,6 +52,7 @@ def sb3Unpack(sb3):
             t.direction = targetObj["direction"]
             t.size = targetObj["size"]
         t.currentCostume = targetObj["currentCostume"]
+        t.isStage = targetObj["isStage"]
         t.name = targetObj["name"]
 
         # Get costumes
