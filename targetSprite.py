@@ -17,9 +17,12 @@ i18n.set("filename_format", "{locale}.{format}")
 i18n.load_path.append("lang/")
 _ = i18n.t
 
+allTargetSprites = set()
+
 
 class TargetSprite(pygame.sprite.Sprite):
     def __init__(self, target):
+        allTargetSprites.add(self)
         pygame.sprite.Sprite.__init__(self)
         self.padX = 0
         self.padY = 0
