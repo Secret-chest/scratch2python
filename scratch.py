@@ -144,7 +144,7 @@ def getStage():
 
 
 # Run the given block object
-def execute(block, s, keys=[]):
+def execute(block, s, keys={}, keyEvents={}):
     # Get block values
     opcode = block.opcode
     id = block.blockID
@@ -217,7 +217,7 @@ def execute(block, s, keys=[]):
         key = block.getFieldValue("key_option", lookIn=0)
 
         if key == "any":  # when key [any v] pressed
-            if keys:
+            if keyEvents:
                 print(_("debug-prefix"), _("keypress-handling", keyName=_("key-any")), file=sys.stderr)
                 for b in block.script:
                     s.target.blocks[b].blockRan = False
@@ -236,7 +236,7 @@ def execute(block, s, keys=[]):
                 nextBlock = s.target.blocks[block.next]
                 return nextBlock
 
-        elif KEY_MAPPING[key] in keys and block.next:  # when key [. . . v] pressed
+        elif KEY_MAPPING[key] in keyEvents and block.next:  # when key [. . . v] pressed
             if key == "left arrow":
                 keyName = _("key-left")
             elif key == "right arrow":
@@ -346,6 +346,9 @@ def execute(block, s, keys=[]):
         nextBlock = block.getBlockInputValue("backdrop")
         return s.target.blocks[nextBlock]
 
+    elif opcode == "looks_nextbackdrop":  # next backdrop
+        getStage().setCostume(getStage().target.currentCostume + 1)
+
     elif opcode == "looks_backdrops":
         if s.target.blocks[block.parent].opcode == "looks_switchbackdropto":
             backdropName = block.getFieldValue("backdrop")
@@ -378,6 +381,7 @@ def execute(block, s, keys=[]):
 
     elif opcode == "procedures_call":
         if config.showSALogs:
+            # These are Scratch Addons debugger blocks.
             if block.proccode == "​​log​​ %s":  # Scratch Addons log ()
                 print(_("project-log"), block.getCustomInputValue(0), file=sys.stderr)
             elif block.proccode == "​​warn​​ %s":  # Scratch Addons warn ()

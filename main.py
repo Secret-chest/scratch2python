@@ -28,6 +28,7 @@ import os
 import sys
 import i18n
 import config
+import time
 
 if system() == "Linux":
     OS = "linux"
@@ -111,6 +112,7 @@ for t in targets:
     t.sprite = sprite
     allSprites.add(sprite)
     sprite.setXy(t.x, t.y)
+    sprite.setCostume(sprite.target.currentCostume)
 
 # Start pygame, load fonts and print a debug message
 pygame.mixer.pre_init(22050, -16, 1, 12193)
@@ -219,6 +221,8 @@ for s in allSprites:
         elif block.opcode.startswith("event_"):  # add "when I start as a clone" code later
             eventHandlers.append(block)
 
+pygame.key.set_repeat(1000, 1000 // config.projectMaxFPS)
+
 # Mainloop
 while projectRunning:
     # Process Pygame events
@@ -229,6 +233,11 @@ while projectRunning:
             projectRunning = False
 
         # Debug and utility functions
+        keyEvents = set()
+        if event.type == pygame.KEYDOWN:
+            print(event.key)
+            keyEvents.add(event.key)
+        print(keyEvents)
         keysRaw = pygame.key.get_pressed()
         keys = set(k for k in scratch.KEY_MAPPING.values() if keysRaw[k])
 
@@ -251,6 +260,7 @@ while projectRunning:
             if newFPS is not None:
                 print(fpsMessage, newFPS)
                 config.projectMaxFPS = newFPS
+            pygame.key.set_repeat(1000, 1000 // config.projectMaxFPS)
         if pygame.K_F8 in keys:  # Set new screen resolution
             try:
                 # Open special dialog
@@ -286,8 +296,8 @@ while projectRunning:
             # print("Running block", block.blockID, "of type", block.opcode)
     if not isPaused:
         for e in eventHandlers:
-            if e.opcode == "event_whenkeypressed" and keys:
-                nextBlock = scratch.execute(e, e.target.sprite, keys)
+             if e.opcode == "event_whenkeypressed" and keyEvents:
+                nextBlock = scratch.execute(e, e.target.sprite, keys, keyEvents)
                 if nextBlock:
                     if isinstance(nextBlock, list):
                         toExecute.extend(nextBlock)
@@ -309,7 +319,7 @@ while projectRunning:
                         nextBlocks.append(block.target.blocks[block.next])
                         block.executionTime, block.timeDelay = 0, 0
                 if not block.blockRan:
-                    nextBlock = scratch.execute(block, block.target.sprite, keys)
+                    nextBlock = scratch.execute(block, block.target.sprite, keys, keyEvents)
                     if nextBlock:
                         if isinstance(nextBlock, list):
                             nextBlocks.extend(nextBlock)
