@@ -29,7 +29,7 @@ projectLoadMethod: str = "manual"
 
 # Project file name
 # If the "manual" mode is chosen, set the Scratch project file to load.
-projectFileName: str = "projects/Food2.sb3"
+projectFileName: str = "projects/Food2-nobitmap.sb3"
 
 # Extract on project run
 # Set whether to extract the project assets on run.
@@ -41,7 +41,7 @@ enableTerminalOutput: bool = True
 
 # Enable debug messages
 # Set whether debug messages (messages to stderr) should be allowed.
-enableDebugMessages: bool = True
+enableDebugMessages: bool = False
 
 # Enable Scratch Addons debugger logs
 # This allows projects using Scratch Addons to print messages to the console. Vanilla Scratch doesn't support it.
@@ -53,6 +53,10 @@ showSALogs: bool = True
 # You can also use TURBO to use turbo mode.
 # Vanilla is 30.
 maxFPS: int = 30
+
+# Key delay
+# Set the delay before key events start repeating. (im milliseconds)
+keyDelay: int = 250
 
 # Screen width/height
 # Stage size. You can change that, but most projects won't work with it.

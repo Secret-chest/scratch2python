@@ -105,6 +105,7 @@ KEY_MAPPING = {
 
     # Scratch2Python only
     "backspace": pygame.K_BACKSPACE,
+    "escape": pygame.K_ESCAPE,
     "f1": pygame.K_F1,
     "f2": pygame.K_F2,
     "f3": pygame.K_F3,
@@ -265,7 +266,10 @@ def execute(block, s, keys={}, keyEvents={}):
                     nb.next = block.blockID
             nb.blockRan = False
             nextBlock = s.target.blocks[block.next]
+            keyEvents.discard(KEY_MAPPING[key])
             return nextBlock
+
+        return None
 
     elif opcode == "control_forever":  # forever {..}
         # Don't mark the loop as ran, and do a screen refresh

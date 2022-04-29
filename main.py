@@ -114,7 +114,7 @@ for t in targets:
     sprite.setXy(t.x, t.y)
     sprite.setCostume(sprite.target.currentCostume)
 
-# Start pygame, load fonts and print a debug message
+# Start pygame and load fonts
 pygame.mixer.pre_init(22050, -16, 1, 12193)
 
 pygame.init()
@@ -221,7 +221,7 @@ for s in allSprites:
         elif block.opcode.startswith("event_"):  # add "when I start as a clone" code later
             eventHandlers.append(block)
 
-pygame.key.set_repeat(1000, 1000 // config.projectMaxFPS)
+pygame.key.set_repeat(config.keyDelay, 1000 // config.projectMaxFPS)
 
 # Mainloop
 while projectRunning:
@@ -235,9 +235,8 @@ while projectRunning:
         # Debug and utility functions
         keyEvents = set()
         if event.type == pygame.KEYDOWN:
-            print(event.key)
             keyEvents.add(event.key)
-        print(keyEvents)
+            print(keyEvents, time.time_ns() // 1000000)
         keysRaw = pygame.key.get_pressed()
         keys = set(k for k in scratch.KEY_MAPPING.values() if keysRaw[k])
 

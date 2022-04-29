@@ -3,6 +3,7 @@ targetSprite
 
 Targets as pygame sprites
 """
+import time
 
 import pygame
 import cairosvg
