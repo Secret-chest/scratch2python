@@ -236,7 +236,6 @@ while projectRunning:
         keyEvents = set()
         if event.type == pygame.KEYDOWN:
             keyEvents.add(event.key)
-            print(keyEvents, time.time_ns() // 1000000)
         keysRaw = pygame.key.get_pressed()
         keys = set(k for k in scratch.KEY_MAPPING.values() if keysRaw[k])
 
