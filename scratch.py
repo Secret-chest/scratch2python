@@ -11,6 +11,7 @@ import io
 import config
 import i18n
 import targetSprite
+import bs4
 
 i18n.set("locale", config.language)
 i18n.set("filename_format", "{locale}.{format}")
@@ -123,7 +124,10 @@ KEY_MAPPING = {
 
 # Load SVG
 def loadSvg(svgBytes):
-    newBytes = cairosvg.svg2png(bytestring=svgBytes)
+    svg = bs4.BeautifulSoup(svgBytes, "lxml-xml")
+    if svg.find("svg")["width"] == "0" or svg.find("svg")["height"] == "0":
+        svg.find("svg")["width"], svg.find("svg")["height"] = 1, 1
+    newBytes = cairosvg.svg2png(bytestring=str(svg))
     byteIo = io.BytesIO(newBytes)
     return pygame.image.load(byteIo)
 

@@ -59,7 +59,8 @@ if OS == "unknown":
     print(_("unrecognized-os", platform=platform(), url="https://github.com/Secret-chest/scratch2python/issues"),
           file=sys.stderr)
 
-sys.stdout = open(os.devnull, "w")
+if not config.pygameWelcomeMessage:
+    sys.stdout = open(os.devnull, "w")
 import sb3Unpacker
 from sb3Unpacker import *
 import shutil

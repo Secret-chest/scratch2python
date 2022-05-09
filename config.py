@@ -25,11 +25,11 @@ language: str = "en"
 # cmdline: use command argument.
 # filechooser: graphical file chooser.
 # For now, it's easier to test using manual mode, so it's the default.
-projectLoadMethod: str = "manual"
+projectLoadMethod: str = "filechooser"
 
 # Project file name
 # If the "manual" mode is chosen, set the Scratch project file to load.
-projectFileName: str = "projects/Costumes4.sb3"
+projectFileName: str = "projects/MouseX.sb3"
 
 # Extract on project run
 # Set whether to extract the project assets on run.
@@ -41,7 +41,10 @@ enableTerminalOutput: bool = True
 
 # Enable debug messages
 # Set whether debug messages (messages to stderr) should be allowed.
-enableDebugMessages: bool = False
+enableDebugMessages: bool = True
+
+# pygame welcome message
+pygameWelcomeMessage: bool = True
 
 # Enable Scratch Addons debugger logs
 # This allows projects using Scratch Addons to print messages to the console. Vanilla Scratch doesn't support it.
