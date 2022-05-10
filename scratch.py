@@ -149,7 +149,7 @@ def getStage():
 
 
 # Run the given block object
-def execute(block, s, keys={}, keyEvents={}):
+def execute(block, s, keys=set(), keyEvents=set()):
     # Get block values
     opcode = block.opcode
     id = block.blockID
