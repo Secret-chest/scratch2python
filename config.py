@@ -18,18 +18,18 @@ INSANE: bool = False
 language: str = "en"
 
 # Project load method
-# Sets the behavior for loading projects.
+# Sets the behaviour for loading projects.
 # Possible values:
 # manual: use the project file name defined in the "projectFileName" variable.
 # interactive: use input().
 # cmdline: use command argument.
 # filechooser: graphical file chooser.
 # For now, it's easier to test using manual mode, so it's the default.
-projectLoadMethod: str = "manual"
+projectLoadMethod: str = "filechooser"
 
 # Project file name
 # If the "manual" mode is chosen, set the Scratch project file to load.
-projectFileName: str = "projects/Test5.sb3"
+projectFileName: str = "projects/Math.sb3"
 
 # Extract on project run
 # Set whether to extract the project assets on run.

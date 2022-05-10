@@ -35,8 +35,8 @@ class TargetSprite(pygame.sprite.Sprite):
             initialWidth = sprite.get_width()
             initialHeight = sprite.get_height()
             sprite = pygame.transform.smoothscale(sprite, (sprite.get_width() // target.costumes[target.currentCostume].bitmapResolution, sprite.get_height() // target.costumes[target.currentCostume].bitmapResolution))
-            self.padX = initialWidth - sprite.get_width()
-            self.padY = initialHeight - sprite.get_height()
+            # self.padX = initialWidth - sprite.get_width()
+            # self.padY = initialHeight - sprite.get_height()
         else:
             sprite = scratch.loadSvg(target.costumes[target.currentCostume].file)
         sprite = pygame.transform.rotate(sprite, 90 - target.direction)

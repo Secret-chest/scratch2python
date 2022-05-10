@@ -307,6 +307,7 @@ def execute(block, s, keys={}, keyEvents={}):
         else:
             block.blockRan = True
             block.repeatCounter = None
+            return s.target.blocks[block.next]
         block.screenRefresh = True
 
         if block.repeatCounter is not None:
