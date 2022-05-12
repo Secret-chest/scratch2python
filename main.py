@@ -228,7 +228,7 @@ pygame.key.set_repeat(config.keyDelay, 1000 // config.projectMaxFPS)
 while projectRunning:
     # Process Pygame events
     for event in pygame.event.get():
-        # Window quit (ALT-F4 / X button)
+        # Window quit (ALT-F4 / X button / etc.)
         if event.type == pygame.QUIT:
             print(playerClosedText)
             projectRunning = False

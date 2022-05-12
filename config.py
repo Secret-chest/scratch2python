@@ -25,11 +25,11 @@ language: str = "en"
 # cmdline: use command argument.
 # filechooser: graphical file chooser.
 # For now, it's easier to test using manual mode, so it's the default.
-projectLoadMethod: str = "filechooser"
+projectLoadMethod: str = "manual"
 
 # Project file name
 # If the "manual" mode is chosen, set the Scratch project file to load.
-projectFileName: str = "projects/Math.sb3"
+projectFileName: str = "projects/SpaceKey.sb3"
 
 # Extract on project run
 # Set whether to extract the project assets on run.
@@ -41,7 +41,7 @@ enableTerminalOutput: bool = True
 
 # Enable debug messages
 # Set whether debug messages (messages to stderr) should be allowed.
-enableDebugMessages: bool = True
+enableDebugMessages: bool = False
 
 # pygame welcome message
 pygameWelcomeMessage: bool = True
@@ -58,7 +58,7 @@ showSALogs: bool = True
 maxFPS: int = 30
 
 # Key delay
-# Set the delay before key events start repeating. (im milliseconds)
+# Set the delay before key events start repeating. (in milliseconds)
 keyDelay: int = 250
 
 # Screen width/height

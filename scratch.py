@@ -12,6 +12,7 @@ import config
 import i18n
 import targetSprite
 import bs4
+import time
 
 i18n.set("locale", config.language)
 i18n.set("filename_format", "{locale}.{format}")
@@ -118,7 +119,7 @@ KEY_MAPPING = {
     "f9": pygame.K_F9,
     "f10": pygame.K_F10,
     "f11": pygame.K_F11,
-    "f12": pygame.K_F12
+    "f12": pygame.K_F12,
 }
 
 
@@ -255,6 +256,7 @@ def execute(block, s, keys=set(), keyEvents=set()):
             else:
                 keyName = key
             print(_("debug-prefix"), _("keypress-handling", keyName=keyName), file=sys.stderr)
+            print(time.time_ns() // 1000000, keyName)
             for b in block.script:
                 s.target.blocks[b].blockRan = False
             nb = block  # s.target.blocks[block.next]
