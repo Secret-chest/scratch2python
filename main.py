@@ -295,13 +295,12 @@ while projectRunning:
             # print("Running block", block.blockID, "of type", block.opcode)
     if not isPaused:
         for e in eventHandlers:
-             if e.opcode == "event_whenkeypressed" and keyEvents:
+            if e.opcode == "event_whenkeypressed" and keyEvents:
                 nextBlock = scratch.execute(e, e.target.sprite, keys, keyEvents)
-                if nextBlock:
-                    if isinstance(nextBlock, list):
-                        toExecute.extend(nextBlock)
-                    else:
-                        toExecute.append(nextBlock)
+                if nextBlock and isinstance(nextBlock, list):
+                    toExecute.extend(nextBlock)
+                elif nextBlock:
+                    toExecute.append(nextBlock)
                 e.blockRan = True
         while toExecute and not doScreenRefresh:
             # Run blocks
@@ -311,14 +310,18 @@ while projectRunning:
                     block.executionTime += clock.get_time()
                     if block.executionTime >= block.timeDelay:
                         block.waiting = False
-                        if block.opcode.startswith("event"):
-                            block.blockRan = False
-                        else:
-                            block.blockRan = True
+                        block.blockRan = True
                         nextBlocks.append(block.target.blocks[block.next])
                         block.executionTime, block.timeDelay = 0, 0
                 if not block.blockRan:
                     nextBlock = scratch.execute(block, block.target.sprite, keys, keyEvents)
+                    if not block.next \
+                       and block.top \
+                       and block.top.opcode.startswith("event") \
+                       and block.top.opcode != "event_whenflagclicked":
+                        if not block.top.blockRan:
+                            print(block.top.blockRan, block.top.blockID)
+                        block.top.blockRan = False
                     if nextBlock:
                         if isinstance(nextBlock, list):
                             nextBlocks.extend(nextBlock)

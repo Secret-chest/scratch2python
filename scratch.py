@@ -256,7 +256,7 @@ def execute(block, s, keys=set(), keyEvents=set()):
             else:
                 keyName = key
             print(_("debug-prefix"), _("keypress-handling", keyName=keyName), file=sys.stderr)
-            print(time.time_ns() // 1000000, keyName)
+            # print(time.time_ns() // 1000000, keyName)
             for b in block.script:
                 s.target.blocks[b].blockRan = False
             nb = block  # s.target.blocks[block.next]

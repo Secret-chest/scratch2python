@@ -102,7 +102,7 @@ def sb3Unpack(sb3):
         for blockId, blockObj in targetObj["blocks"].items():
             b = t.blocks[blockId]
             if b.topLevel:
-                b.top = b.blockID
+                b.top = b
             elif b.parent:
                 b.top = t.blocks[b.parent].top
             else:
