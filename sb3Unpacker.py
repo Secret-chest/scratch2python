@@ -99,6 +99,14 @@ def sb3Unpack(sb3):
             b.blockRan = False
             b.target = t
             t.blocks[blockId] = b
+        for blockId, blockObj in targetObj["blocks"].items():
+            b = t.blocks[blockId]
+            if b.topLevel:
+                b.top = b.blockID
+            elif b.parent:
+                b.top = t.blocks[b.parent].top
+            else:
+                b.top = None
         targets.append(t)
 
     return targets, project

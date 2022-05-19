@@ -41,7 +41,7 @@ enableTerminalOutput: bool = True
 
 # Enable debug messages
 # Set whether debug messages (messages to stderr) should be allowed.
-enableDebugMessages: bool = False
+enableDebugMessages: bool = True
 
 # pygame welcome message
 pygameWelcomeMessage: bool = True
