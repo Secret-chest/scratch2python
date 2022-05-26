@@ -214,6 +214,7 @@ def execute(block, s, keys=set(), keyEvents=set()):
         pass
 
     elif opcode == "event_whenkeypressed":
+        print("Handling key event")
         # if not block.waiting:
         #     # Get time delay and convert it to milliseconds
         #     block.timeDelay = 500
@@ -260,8 +261,9 @@ def execute(block, s, keys=set(), keyEvents=set()):
             for b in block.script:
                 s.target.blocks[b].blockRan = False
             nb = block  # s.target.blocks[block.next]
-            nb.blockRan = False
+            # nb.blockRan = False
             block.script.add(nb.blockID)
+            nb = s.target.blocks[nb.next]
             while nb.next and nb.next != block.blockID:
                 nb.blockRan = False
                 nb.timeDelay = 0

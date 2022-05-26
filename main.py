@@ -295,13 +295,14 @@ while projectRunning:
             # print("Running block", block.blockID, "of type", block.opcode)
     if not isPaused:
         for e in eventHandlers:
-            if e.opcode == "event_whenkeypressed" and keyEvents:
+            if e.opcode == "event_whenkeypressed" and keyEvents and not e.blockRan:
                 nextBlock = scratch.execute(e, e.target.sprite, keys, keyEvents)
                 if nextBlock and isinstance(nextBlock, list):
                     toExecute.extend(nextBlock)
                 elif nextBlock:
                     toExecute.append(nextBlock)
-                e.blockRan = True
+                else:
+                    e.blockRan = True
         while toExecute and not doScreenRefresh:
             # Run blocks
             nextBlocks = []
@@ -319,8 +320,7 @@ while projectRunning:
                        and block.top \
                        and block.top.opcode.startswith("event") \
                        and block.top.opcode != "event_whenflagclicked":
-                        if not block.top.blockRan:
-                            print(block.top.blockRan, block.top.blockID)
+                        print(block.top.blockRan, block.top.blockID)
                         block.top.blockRan = False
                     if nextBlock:
                         if isinstance(nextBlock, list):

@@ -29,7 +29,7 @@ projectLoadMethod: str = "manual"
 
 # Project file name
 # If the "manual" mode is chosen, set the Scratch project file to load.
-projectFileName: str = "projects/CoolestProjectsDemo1.sb3"
+projectFileName: str = "projects/KeyJump.sb3"
 
 # Extract on project run
 # Set whether to extract the project assets on run.
@@ -41,7 +41,7 @@ enableTerminalOutput: bool = True
 
 # Enable debug messages
 # Set whether debug messages (messages to stderr) should be allowed.
-enableDebugMessages: bool = False
+enableDebugMessages: bool = True
 
 # pygame welcome message
 pygameWelcomeMessage: bool = True
