@@ -1,3 +1,4 @@
+- [ ] block.script is not filled correctly
 - [ ] Keypress event block is marked as not ran too early
 - [ ] Keypress event block should be marked as not ran only when the last block in the script is done
 - [ ] Use block.top to detect the event which needs to be marked

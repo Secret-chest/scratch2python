@@ -215,6 +215,8 @@ def execute(block, s, keys=set(), keyEvents=set()):
 
     elif opcode == "event_whenkeypressed":
         print("Handling key event")
+        for i in block.script:
+            print(i)
         # if not block.waiting:
         #     # Get time delay and convert it to milliseconds
         #     block.timeDelay = 500
@@ -277,6 +279,7 @@ def execute(block, s, keys=set(), keyEvents=set()):
             keyEvents.discard(KEY_MAPPING[key])
             return nextBlock
 
+        block.blockRan = False
         return None
 
     elif opcode == "control_forever":  # forever {..}
@@ -303,6 +306,7 @@ def execute(block, s, keys=set(), keyEvents=set()):
             return nextBlock
 
     elif opcode == "control_repeat":  # repeat (10) {..}
+        print(len(block.substack), block.substack)
         if block.repeatCounter is None:
             block.repeatCounter = int(block.getInputValue("times"))
         # Don't mark the loop as ran until done, and do a screen refresh
@@ -311,7 +315,10 @@ def execute(block, s, keys=set(), keyEvents=set()):
         else:
             block.blockRan = True
             block.repeatCounter = None
-            return s.target.blocks[block.next]
+            if block.next:
+                return s.target.blocks[block.next]
+            else:
+                return
         block.screenRefresh = True
 
         if block.repeatCounter is not None:
