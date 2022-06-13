@@ -304,7 +304,6 @@ while projectRunning:
                     toExecute.append(nextBlock)
 
             if e.opcode == "event_whenkeypressed":
-                print("!!", e.script)
                 if not e.script or all(s.target.blocks[b].blockRan for b in e.script):
                     e.blockRan = False
                     for b in e.script:
