@@ -94,34 +94,7 @@ class TargetSprite(pygame.sprite.Sprite):
     def setXyDelta(self, dx, dy):
         x = self.x + dx
         y = self.y + dy
-        # Do sprite fencing
-        if not config.allowOffScreenSprites:
-            if self.rect.width > 32:
-                if x > scratch.WIDTH - scratch.WIDTH / 2 + (self.rect.width / 2 - 16):
-                    x = scratch.WIDTH - scratch.WIDTH / 2 + (self.rect.width / 2 - 16)
-                if x < -scratch.WIDTH / 2 - (self.rect.width / 2 - 16):
-                    x = -scratch.WIDTH / 2 - (self.rect.width / 2 - 16)
-            else:
-                if x > scratch.WIDTH - scratch.WIDTH / 2:
-                    x = scratch.WIDTH - scratch.WIDTH / 2
-                if x < scratch.WIDTH / 2 - scratch.WIDTH:
-                    x = scratch.WIDTH / 2 - scratch.WIDTH
-            if self.rect.height > 32:
-                if y > scratch.HEIGHT - scratch.HEIGHT / 2 + (self.rect.height / 2 - 16):
-                    y = scratch.HEIGHT - scratch.HEIGHT / 2 + (self.rect.height / 2 - 16)
-                if y < -scratch.HEIGHT / 2 - (self.rect.height / 2 - 16):
-                    y = -scratch.HEIGHT / 2 - (self.rect.height / 2 - 16)
-            else:
-                if y > scratch.HEIGHT - scratch.HEIGHT / 2:
-                    y = scratch.HEIGHT - scratch.HEIGHT / 2
-                if y < scratch.HEIGHT / 2 - scratch.HEIGHT:
-                    y = scratch.HEIGHT / 2 - scratch.HEIGHT
-        # Set X and Y
-        self.x = x
-        self.y = y
-        print(_("debug-prefix"), _("new-sprite-position", x=x, y=y, name=self.name), file=sys.stderr)
-        self.rect.x = self.x + scratch.WIDTH // 2 - self.target.costumes[self.target.currentCostume].rotationCenterX + self.padX // 2
-        self.rect.y = scratch.HEIGHT // 2 - self.y - self.target.costumes[self.target.currentCostume].rotationCenterY + self.padY // 2
+        self.setXy(x, y)
 
     # Change costume
     def setCostume(self, costumeId):
