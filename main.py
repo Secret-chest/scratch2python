@@ -26,7 +26,10 @@ import tkinter.simpledialog
 from platform import system, platform
 import os
 import sys
-import i18n
+try:
+    import i18n
+except AttributeError:
+    import python_i18n.i18n
 import config
 import time
 
@@ -326,7 +329,13 @@ while projectRunning:
                        and block.top.opcode.startswith("event") \
                        and block.top.opcode != "event_whenflagclicked":
                         print(block.top.blockRan, block.top.blockID)
-                        block.top.blockRan = False
+                        waitFinished = False
+                        waitFinishedFor = set()
+                        for b in block.top.script:
+                            if not s.target.blocks[b].waiting:
+                                waitFinishedFor.add(s.target.blocks[b])
+                        if len(waitFinishedFor) == len(block.top.script):
+                            block.top.blockRan = False
                     if nextBlock:
                         if isinstance(nextBlock, list):
                             nextBlocks.extend(nextBlock)

@@ -224,24 +224,9 @@ def execute(block, s, keys=set(), keyEvents=set()):
         key = block.getFieldValue("key_option", lookIn=0)
 
         if key == "any":  # when key [any v] pressed
-            if keyEvents:
-                print(_("debug-prefix"), _("keypress-handling", keyName=_("key-any")), file=sys.stderr)
-                for b in block.script:
-                    s.target.blocks[b].blockRan = False
-                nb = block  # s.target.blocks[block.next]
-                nb.blockRan = False
-                block.script.add(nb.blockID)
-                while nb.next and nb.next != block.blockID:
-                    nb.blockRan = False
-                    nb.timeDelay = 0
-                    nb.executionTime = 0
-                    nb = s.target.blocks[nb.next]
-                    block.script.add(nb.blockID)
-                    if not nb.next:
-                        nb.next = block.blockID
-                nb.blockRan = False
-                nextBlock = s.target.blocks[block.next]
-                return nextBlock
+            # TODO any key
+
+            pass
 
         elif KEY_MAPPING[key] in keyEvents and block.next:  # when key [. . . v] pressed
             if key == "left arrow":
