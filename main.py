@@ -26,10 +26,7 @@ import tkinter.simpledialog
 from platform import system, platform
 import os
 import sys
-try:
-    import i18n
-except AttributeError:
-    import python_i18n.i18n
+import i18n
 import config
 import time
 
