@@ -329,7 +329,7 @@ while projectRunning:
                         waitFinished = False
                         waitFinishedFor = set()
                         for b in block.top.script:
-                            if not s.target.blocks[b].waiting:
+                            if not s.target.blocks[b].waiting and not s.target.blocks[b].blockRan:
                                 waitFinishedFor.add(s.target.blocks[b])
                         if len(waitFinishedFor) == len(block.top.script):
                             block.top.blockRan = False
