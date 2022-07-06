@@ -222,7 +222,9 @@ for s in allSprites:
         elif block.opcode.startswith("event_"):  # add "when I start as a clone" code later
             eventHandlers.append(block)
 
+# Prepare keyboard
 pygame.key.set_repeat(config.keyDelay, 1000 // config.projectMaxFPS)
+keyEvents = set()
 
 # Mainloop
 while projectRunning:
@@ -234,8 +236,11 @@ while projectRunning:
             projectRunning = False
 
         # Debug and utility functions
-        keyEvents = set()
+        # keyEvents = set()
         if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                print("Space")
+                keyEvents.add(32)
             keyEvents.add(event.key)
         keysRaw = pygame.key.get_pressed()
         keys = set(k for k in scratch.KEY_MAPPING.values() if keysRaw[k])
@@ -304,6 +309,7 @@ while projectRunning:
                     toExecute.append(nextBlock)
 
             if e.opcode == "event_whenkeypressed":
+                print(s.target.blocks, e.script)
                 if not e.script or all(s.target.blocks[b].blockRan for b in e.script):
                     e.blockRan = False
                     for b in e.script:

@@ -222,6 +222,7 @@ def execute(block, s, keys=set(), keyEvents=set()):
         #     block.executionTime = 0
         #     print("DEBUG: Waiting for", block.timeDelay, "ms")
         key = block.getFieldValue("key_option", lookIn=0)
+        print(key)
 
         if key == "any":  # when key [any v] pressed
             # TODO any key
@@ -229,44 +230,47 @@ def execute(block, s, keys=set(), keyEvents=set()):
             pass
 
         elif KEY_MAPPING[key] in keyEvents and block.next:  # when key [. . . v] pressed
-            if key == "left arrow":
-                keyName = _("key-left")
-            elif key == "right arrow":
-                keyName = _("key-right")
-            elif key == "up arrow":
-                keyName = _("key-up")
-            elif key == "down arrow":
-                keyName = _("key-down")
-            elif key == "space":
-                keyName = _("key-space")
-            else:
-                keyName = key
-            print(_("debug-prefix"), _("keypress-handling", keyName=keyName), file=sys.stderr)
-            # print(time.time_ns() // 1000000, keyName)
-            for b in block.script:
-                s.target.blocks[b].blockRan = False
-            nb = block  # s.target.blocks[block.next]
-            # nb.blockRan = False
-            block.script.add(nb.blockID)
-            nb = s.target.blocks[nb.next]
-            while nb.next and nb.next != block.blockID:
-                # Reset block
-                nb.blockRan = False
-                nb.timeDelay = 0
-                nb.executionTime = 0
-
+            keyEvents.discard(KEY_MAPPING[key])
+            if KEY_MAPPING[key] in keys:
+                if key == "left arrow":
+                    keyName = _("key-left")
+                elif key == "right arrow":
+                    keyName = _("key-right")
+                elif key == "up arrow":
+                    keyName = _("key-up")
+                elif key == "down arrow":
+                    keyName = _("key-down")
+                elif key == "space":
+                    keyName = _("key-space")
+                else:
+                    keyName = key
+                print(_("debug-prefix"), _("keypress-handling", keyName=keyName), file=sys.stderr)
+                # print(time.time_ns() // 1000000, keyName)
+                for b in block.script:
+                    s.target.blocks[b].blockRan = False
+                nb = block  # s.target.blocks[block.next]
+                # nb.blockRan = False
                 block.script.add(nb.blockID)
                 nb = s.target.blocks[nb.next]
-                if not nb.next:
-                    nb.next = block.blockID
-            if nb:
-                block.script.add(nb.blockID)
-            block.script.remove(block.blockID)
-            print("script:", block.script)
-            nb.blockRan = False
-            nextBlock = s.target.blocks[block.next]
-            keyEvents.discard(KEY_MAPPING[key])
-            return nextBlock
+                while nb.next and nb.next != block.blockID:
+                    # Reset block
+                    nb.blockRan = False
+                    nb.timeDelay = 0
+                    nb.executionTime = 0
+
+                    block.script.add(nb.blockID)
+                    nb = s.target.blocks[nb.next]
+                    if not nb.next:
+                        nb.next = block.blockID
+                if nb:
+                    block.script.add(nb.blockID)
+                block.script.remove(block.blockID)
+                print("script:", block.script)
+                nb.blockRan = False
+                nextBlock = s.target.blocks[block.next]
+                return nextBlock
+        else:
+            print(f"Unknown event: { key } in { keyEvents }, all keys: { keys }")
 
         block.blockRan = False
         return None

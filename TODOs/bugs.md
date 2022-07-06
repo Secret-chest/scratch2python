@@ -9,3 +9,4 @@
 ## ❎ In progress
 
 - [ ] Keys which have ASCII codes don't work
+- [ ] Cannot use multiple event handlers for one key
