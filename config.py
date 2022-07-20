@@ -15,7 +15,7 @@ INSANE: bool = False
 # Supported languages:
 # 🇬🇧 English - en
 # 🇷🇴 limba română - ro
-language: str = "en"
+language: str = "ro"
 
 # Project load method
 # Sets the behaviour for loading projects.
