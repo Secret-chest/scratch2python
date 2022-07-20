@@ -238,9 +238,6 @@ while projectRunning:
         # Debug and utility functions
         # keyEvents = set()
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                print("Space")
-                keyEvents.add(32)
             keyEvents.add(event.key)
         keysRaw = pygame.key.get_pressed()
         keys = set(k for k in scratch.KEY_MAPPING.values() if keysRaw[k])
@@ -310,7 +307,7 @@ while projectRunning:
 
             if e.opcode == "event_whenkeypressed":
                 print(s.target.blocks, e.script)
-                if not e.script or all(s.target.blocks[b].blockRan for b in e.script):
+                if all(s.target.blocks[b].blockRan for b in e.script):
                     e.blockRan = False
                     for b in e.script:
                         s.target.blocks[b].blockRan = False

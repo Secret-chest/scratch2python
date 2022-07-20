@@ -29,7 +29,7 @@ projectLoadMethod: str = "manual"
 
 # Project file name
 # If the "manual" mode is chosen, set the Scratch project file to load.
-projectFileName: str = "projects/KeyTest1alt.sb3"
+projectFileName: str = "projects/KeyTest1.sb3"
 
 # Extract on project run
 # Set whether to extract the project assets on run.
@@ -59,7 +59,7 @@ maxFPS: int = 30
 
 # Key delay
 # Set the delay before key events start repeating. (in milliseconds)
-keyDelay: int = 250
+keyDelay: int = 1000
 
 # Screen width/height
 # Stage size. You can change that, but most projects won't work with it.
