@@ -13,6 +13,7 @@ import i18n
 import targetSprite
 import bs4
 import time
+from datetime import datetime
 
 i18n.set("locale", config.language)
 i18n.set("filename_format", "{locale}.{format}")
@@ -214,7 +215,7 @@ def execute(block, s, keys=set(), keyEvents=set()):
         pass
 
     elif opcode == "event_whenkeypressed":
-        print("Handling key event")
+        # print("Handling key event")
         # if not block.waiting:
         #     # Get time delay and convert it to milliseconds
         #     block.timeDelay = 500
@@ -222,7 +223,7 @@ def execute(block, s, keys=set(), keyEvents=set()):
         #     block.executionTime = 0
         #     print("DEBUG: Waiting for", block.timeDelay, "ms")
         key = block.getFieldValue("key_option", lookIn=0)
-        print(key)
+        # print(key)
 
         if key == "any":  # when key [any v] pressed
             # TODO any key
@@ -270,7 +271,8 @@ def execute(block, s, keys=set(), keyEvents=set()):
                 nextBlock = s.target.blocks[block.next]
                 return nextBlock
         else:
-            print(f"Unknown event: { key } in { keyEvents }, all keys: { keys }")
+            # print(f"Unknown event: { key } in { keyEvents }, all keys: { keys }")
+            pass
 
         block.blockRan = False
         return None
@@ -395,7 +397,7 @@ def execute(block, s, keys=set(), keyEvents=set()):
         if config.showSALogs:
             # These are Scratch Addons debugger blocks.
             if block.proccode == "​​log​​ %s":  # Scratch Addons log ()
-                print(_("project-log"), block.getCustomInputValue(0), file=sys.stderr)
+                print("[", datetime.now().strftime("%H:%M:%S:%f"), "]", _("project-log"),  block.getCustomInputValue(0), file=sys.stderr)
             elif block.proccode == "​​warn​​ %s":  # Scratch Addons warn ()
                 print(_("project-warn"), block.getCustomInputValue(0), file=sys.stderr)
             elif block.proccode == "​​error​​ %s":  # Scratch Addons error ()
