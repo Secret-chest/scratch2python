@@ -86,7 +86,7 @@ class TargetSprite(pygame.sprite.Sprite):
         # Set X and Y
         self.x = x + self.padX // 2
         self.y = y - self.padY // 2
-        print(_("debug-prefix"), _("new-sprite-position", x=x, y=y, name=self.name), file=sys.stderr)
+        # print(_("debug-prefix"), _("new-sprite-position", x=x, y=y, name=self.name), file=sys.stderr)
         self.rect.x = self.x + scratch.WIDTH // 2 - round(self.target.costumes[self.target.currentCostume].rotationCenterX)
         self.rect.y = scratch.HEIGHT // 2 - self.y - round(self.target.costumes[self.target.currentCostume].rotationCenterY)
 

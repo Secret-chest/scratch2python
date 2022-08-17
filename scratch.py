@@ -230,7 +230,7 @@ def execute(block, s, keys=set(), keyEvents=set()):
 
             pass
 
-        elif KEY_MAPPING[key] in keyEvents and block.next:  # when key [. . . v] pressed
+        elif KEY_MAPPING[key] in keys and block.next:  # when key [. . . v] pressed
             keyEvents.discard(KEY_MAPPING[key])
             if KEY_MAPPING[key] in keys:
                 if key == "left arrow":
