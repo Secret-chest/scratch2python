@@ -300,7 +300,7 @@ while projectRunning:
             # print("Running block", block.blockID, "of type", block.opcode)
     if not isPaused:
         for e in eventHandlers:
-            if e.opcode == "event_whenkeypressed" and keyEvents and not e.blockRan:
+            if e.opcode == "event_whenkeypressed" and keys and not e.blockRan:
                 e.blockRan = True
                 nextBlock = scratch.execute(e, e.target.sprite, keys, keyEvents)
                 if nextBlock and isinstance(nextBlock, list):

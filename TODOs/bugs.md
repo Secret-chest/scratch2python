@@ -10,6 +10,7 @@
 
 ## ❎ In progress
 
+- [ ] Reject key events for a block already running
 - [ ] Revisit keypress checks
 - [ ] Empty key events set (all keys!)
 - [ ] Cannot use multiple event handlers for one key
