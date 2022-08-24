@@ -1,6 +1,3 @@
-
-Sorry for not doing anything on this branch! We are doing a bug rush [here](https://github.com/Secret-chest/scratch2python/tree/costumes-sounds). I hope I can can release that soon. Then development will be very fast, because the missing blocks will be like: touching color, days since 2000, mod, sqrt, set variable etc.
-
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-ff9800.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
