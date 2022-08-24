@@ -236,11 +236,8 @@ while projectRunning:
             projectRunning = False
 
         # Debug and utility functions
-        # keyEvents = set()
+        keyEvents = set()
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                print("Space")
-                keyEvents.add(32)
             keyEvents.add(event.key)
         keysRaw = pygame.key.get_pressed()
         keys = set(k for k in scratch.KEY_MAPPING.values() if keysRaw[k])
@@ -325,7 +322,7 @@ while projectRunning:
                         block.blockRan = True
                         nextBlocks.append(block.target.blocks[block.next])
                         block.executionTime, block.timeDelay = 0, 0
-                if not block.blockRan:
+                if not block.blockRan and not block.opcode.startswith("event"):
                     nextBlock = scratch.execute(block, block.target.sprite, keys, keyEvents)
                     if not block.next \
                        and block.top \

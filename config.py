@@ -29,7 +29,7 @@ projectLoadMethod: str = "manual"
 
 # Project file name
 # If the "manual" mode is chosen, set the Scratch project file to load.
-projectFileName: str = "projects/KeyTest1alt5.sb3"
+projectFileName: str = "projects/KeyTest1alt.sb3"
 
 # Extract on project run
 # Set whether to extract the project assets on run.

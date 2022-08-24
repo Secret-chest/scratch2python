@@ -10,8 +10,6 @@
 
 ## ❎ In progress
 
-- [ ] Reject key events for a block already running
-- [ ] Revisit keypress checks
-- [ ] Empty key events set (all keys!)
+- [ ] Why do event blocks go in `toExecute`?
 - [ ] Cannot use multiple event handlers for one key
 - [ ] Sprite fencing is wrong
