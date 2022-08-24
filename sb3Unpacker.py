@@ -52,6 +52,7 @@ def sb3Unpack(sb3):
             t.direction = targetObj["direction"]
             t.size = targetObj["size"]
         t.currentCostume = targetObj["currentCostume"]
+        t.isStage = targetObj["isStage"]
         t.name = targetObj["name"]
 
         # Get costumes
@@ -59,14 +60,27 @@ def sb3Unpack(sb3):
             c = costume.Costume()
             if "md5ext" in costumeObj:
                 c.md5ext = costumeObj["md5ext"]
-                c.rotationCenterX, c.rotationCenterY = costumeObj["rotationCenterX"], costumeObj["rotationCenterY"]
+            c.rotationCenterX, c.rotationCenterY = costumeObj["rotationCenterX"], costumeObj["rotationCenterY"]
             c.dataFormat = costumeObj["dataFormat"]
             c.file = project.read(costumeObj["assetId"] + "." + costumeObj["dataFormat"])
+            c.name = costumeObj["name"]
             if costumeObj["dataFormat"] != "svg":
                 c.bitmapResolution = int(costumeObj["bitmapResolution"])
             else:
                 c.bitmapResolution = 1
             t.costumes.append(c)
+
+        # Get sounds
+        for soundObj in targetObj["sounds"]:
+            s = sound.Sound()
+            if "md5ext" in soundObj:
+                s.md5ext = soundObj["md5ext"]
+            s.dataFormat = soundObj["dataFormat"]
+            s.rate = soundObj["rate"]
+            s.sampleCount = soundObj["sampleCount"]
+            s.file = project.read(soundObj["assetId"] + "." + soundObj["dataFormat"])
+            s.name = soundObj["name"]
+            t.sounds.append(s)
 
         # Set blocks to their correct values
         for blockId, blockObj in targetObj["blocks"].items():
@@ -85,6 +99,14 @@ def sb3Unpack(sb3):
             b.blockRan = False
             b.target = t
             t.blocks[blockId] = b
+        for blockId, blockObj in targetObj["blocks"].items():
+            b = t.blocks[blockId]
+            if b.topLevel:
+                b.top = b
+            elif b.parent:
+                b.top = t.blocks[b.parent].top
+            else:
+                b.top = None
         targets.append(t)
 
     return targets, project

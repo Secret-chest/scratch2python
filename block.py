@@ -10,6 +10,7 @@ import random
 import i18n
 import config
 import math
+import pygame
 
 i18n.set("locale", config.language)
 i18n.set("filename_format", "{locale}.{format}")
@@ -23,6 +24,7 @@ class Block:
         self.opcode = ""  # block type
         self.next = None  # next block
         self.parent = None  # previous block
+        self.top = None  # script start
         self.inputs = {}  # string and number inputs
         self.fields = {}  # dropdown menus
         self.shadow = False  # if the block is a reporter or boolean block
@@ -71,6 +73,16 @@ class Block:
         elif self.opcode == "motion_xposition":  # y position
             self.value = self.target.y
             return self.value
+        elif self.opcode == "sensing_mousex":  # mouse x
+            newX, newY = pygame.mouse.get_pos()
+            newX = newX - config.screenWidth // 2
+            self.value = newX
+            return newX
+        elif self.opcode == "sensing_mousey":  # mouse y
+            newX, newY = pygame.mouse.get_pos()
+            newY = newY - config.screenWidth // 2
+            self.value = newY
+            return newY
 
     # Returns block input value
     def getBlockInputValue(self, inputId):

@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-__version__ = "M19 (development version)"
+__version__ = "M20 (development version)"
 __author__ = "Secret-chest"
 
 import tkinter.simpledialog
@@ -28,6 +28,7 @@ import os
 import sys
 import i18n
 import config
+import time
 
 if system() == "Linux":
     OS = "linux"
@@ -58,7 +59,8 @@ if OS == "unknown":
     print(_("unrecognized-os", platform=platform(), url="https://github.com/Secret-chest/scratch2python/issues"),
           file=sys.stderr)
 
-sys.stdout = open(os.devnull, "w")
+if not config.pygameWelcomeMessage:
+    sys.stdout = open(os.devnull, "w")
 import sb3Unpacker
 from sb3Unpacker import *
 import shutil
@@ -111,8 +113,11 @@ for t in targets:
     t.sprite = sprite
     allSprites.add(sprite)
     sprite.setXy(t.x, t.y)
+    sprite.setCostume(sprite.target.currentCostume)
 
-# Start pygame, load fonts and print a debug message
+# Start pygame and load fonts
+pygame.mixer.pre_init(22050, -16, 1, 12193)
+
 pygame.init()
 font = pygame.font.SysFont(pygame.font.get_default_font(), 16)
 fontXl = pygame.font.SysFont(pygame.font.get_default_font(), 36)
@@ -217,17 +222,23 @@ for s in allSprites:
         elif block.opcode.startswith("event_"):  # add "when I start as a clone" code later
             eventHandlers.append(block)
 
+# Prepare keyboard
+pygame.key.set_repeat(config.keyDelay, 1000 // config.projectMaxFPS)
+keyEvents = set()
 
 # Mainloop
 while projectRunning:
     # Process Pygame events
     for event in pygame.event.get():
-        # Window quit (ALT-F4 / X button)
+        # Window quit (ALT-F4 / X button / etc.)
         if event.type == pygame.QUIT:
             print(playerClosedText)
             projectRunning = False
 
         # Debug and utility functions
+        keyEvents = set()
+        if event.type == pygame.KEYDOWN:
+            keyEvents.add(event.key)
         keysRaw = pygame.key.get_pressed()
         keys = set(k for k in scratch.KEY_MAPPING.values() if keysRaw[k])
 
@@ -250,6 +261,7 @@ while projectRunning:
             if newFPS is not None:
                 print(fpsMessage, newFPS)
                 config.projectMaxFPS = newFPS
+            pygame.key.set_repeat(1000, 1000 // config.projectMaxFPS)
         if pygame.K_F8 in keys:  # Set new screen resolution
             try:
                 # Open special dialog
@@ -285,14 +297,20 @@ while projectRunning:
             # print("Running block", block.blockID, "of type", block.opcode)
     if not isPaused:
         for e in eventHandlers:
-            if e.opcode == "event_whenkeypressed" and keys:
-                nextBlock = scratch.execute(e, e.target.sprite, keys)
-                if nextBlock:
-                    if isinstance(nextBlock, list):
-                        toExecute.extend(nextBlock)
-                    else:
-                        toExecute.append(nextBlock)
+            if e.opcode == "event_whenkeypressed" and keys and not e.blockRan:
                 e.blockRan = True
+                nextBlock = scratch.execute(e, e.target.sprite, keys, keyEvents)
+                if nextBlock and isinstance(nextBlock, list):
+                    toExecute.extend(nextBlock)
+                elif nextBlock:
+                    toExecute.append(nextBlock)
+
+            if e.opcode == "event_whenkeypressed":
+                # print(s.target.blocks, e.script)
+                if not e.script or all(s.target.blocks[b].blockRan for b in e.script):
+                    e.blockRan = False
+                    for b in e.script:
+                        s.target.blocks[b].blockRan = False
         while toExecute and not doScreenRefresh:
             # Run blocks
             nextBlocks = []
@@ -301,14 +319,23 @@ while projectRunning:
                     block.executionTime += clock.get_time()
                     if block.executionTime >= block.timeDelay:
                         block.waiting = False
-                        if block.opcode.startswith("event"):
-                            block.blockRan = False
-                        else:
-                            block.blockRan = True
+                        block.blockRan = True
                         nextBlocks.append(block.target.blocks[block.next])
                         block.executionTime, block.timeDelay = 0, 0
-                if not block.blockRan:
-                    nextBlock = scratch.execute(block, block.target.sprite, keys)
+                if not block.blockRan and not block.opcode.startswith("event"):
+                    nextBlock = scratch.execute(block, block.target.sprite, keys, keyEvents)
+                    if not block.next \
+                       and block.top \
+                       and block.top.opcode.startswith("event") \
+                       and block.top.opcode != "event_whenflagclicked":
+                        print(block.top.blockRan, block.top.blockID)
+                        waitFinished = False
+                        waitFinishedFor = set()
+                        for b in block.top.script:
+                            if not s.target.blocks[b].waiting and not s.target.blocks[b].blockRan:
+                                waitFinishedFor.add(s.target.blocks[b])
+                        if len(waitFinishedFor) == len(block.top.script):
+                            block.top.blockRan = False
                     if nextBlock:
                         if isinstance(nextBlock, list):
                             nextBlocks.extend(nextBlock)
