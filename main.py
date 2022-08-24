@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-__version__ = "M20 (development version)"
+__version__ = "v0.0.0"
 __author__ = "Secret-chest"
 
 import tkinter.simpledialog
