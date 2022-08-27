@@ -68,6 +68,12 @@ class TargetSprite(pygame.sprite.Sprite):
                     x = scratch.WIDTH / 2
                 elif x < scratch.WIDTH / -2:
                     x = scratch.WIDTH / -2
+            else:
+                if x > scratch.WIDTH / 2 + self.rect.width / 2 - 16:
+                    x = scratch.WIDTH / 2 + self.rect.width / 2 - 16
+                elif x < scratch.WIDTH / -2 - self.rect.width / 2 + 16:
+                    x = scratch.WIDTH / -2 - self.rect.width / 2 + 16
+
             if self.rect.height <= 32:
                 if y > scratch.HEIGHT / 2:
                     y = scratch.HEIGHT / 2
