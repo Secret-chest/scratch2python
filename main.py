@@ -210,9 +210,12 @@ class SizeDialog(tkinter.simpledialog.Dialog):
 toExecute = []
 eventHandlers = []
 print(_("project-started"))
+blocksHash = {}
+
 # Start green flag scripts
 for s in allSprites:
     for _, block in s.target.blocks.items():
+        blocksHash[block.blockID] = block
         if block.opcode == "event_whenflagclicked":
             nextBlock = scratch.execute(block, block.target.sprite)
             # Error-proof by checking if the scripts are not empty
@@ -221,6 +224,7 @@ for s in allSprites:
                 toExecute.append(nextBlock)
         elif block.opcode.startswith("event_"):  # add "when I start as a clone" code later
             eventHandlers.append(block)
+s = None
 
 # Prepare keyboard
 pygame.key.set_repeat(config.keyDelay, 1000 // config.projectMaxFPS)
@@ -307,10 +311,10 @@ while projectRunning:
 
             if e.opcode == "event_whenkeypressed":
                 # print(s.target.blocks, e.script)
-                if not e.script or all(s.target.blocks[b].blockRan for b in e.script):
+                if not e.script or all(blocksHash[b].blockRan for b in e.script):
                     e.blockRan = False
                     for b in e.script:
-                        s.target.blocks[b].blockRan = False
+                        blocksHash[b].blockRan = False
         while toExecute and not doScreenRefresh:
             # Run blocks
             nextBlocks = []
@@ -332,8 +336,8 @@ while projectRunning:
                         waitFinished = False
                         waitFinishedFor = set()
                         for b in block.top.script:
-                            if not s.target.blocks[b].waiting and not s.target.blocks[b].blockRan:
-                                waitFinishedFor.add(s.target.blocks[b])
+                            if not blocksHash[b].waiting and not blocksHash[b].blockRan:
+                                waitFinishedFor.add(blocksHash[b])
                         if len(waitFinishedFor) == len(block.top.script):
                             block.top.blockRan = False
                     if nextBlock:
