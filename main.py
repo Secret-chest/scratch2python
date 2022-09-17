@@ -86,7 +86,7 @@ mainWindow = tk.Tk()
 mainWindow.withdraw()
 
 # Get project file name based on options and arguments
-if sys.argv:
+if len(sys.argv) > 1:
     setProject = sys.argv[1]
 else:
     if config.testMode:
