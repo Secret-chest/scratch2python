@@ -31,6 +31,10 @@ projectLoadMethod: str = "manual"
 # If the "manual" mode is chosen, set the Scratch project file to load.
 projectFileName: str = "projects/EventHandlers.sb3"
 
+# Download cache size
+# Number of recent downloaded projects stored. 0 means infinity.
+cachedDownloads = 4
+
 # Extract on project run
 # Set whether to extract the project assets on run.
 extractOnProjectRun: bool = True
