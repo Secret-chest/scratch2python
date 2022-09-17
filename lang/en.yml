@@ -1,7 +1,6 @@
 en:
   start: "Scratch2Python %{version} running on %{os}"
   unrecognized-os: "Sorry, Scratch2Python does not recognize your OS. Your platform string is: %{platform}. If you encounter any crashes, please report it here: %{url}"
-  missing-filename: "No project file name passed. Run Scratch2Python as \"<executable name> <project file name>\" or use another load mode."
   filename-prompt: "Project file name:"
   sb3-desc: "Scratch 3 projects"
   all-files-desc: "All files"

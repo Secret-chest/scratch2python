@@ -17,18 +17,13 @@ INSANE: bool = False
 # 🇷🇴 limba română - ro
 language: str = "en"
 
-# Project load method
-# Sets the behaviour for loading projects.
-# Possible values:
-# manual: use the project file name defined in the "projectFileName" variable.
-# interactive: use input().
-# cmdline: use command argument.
-# filechooser: graphical file chooser.
-# For now, it's easier to test using manual mode, so it's the default.
-projectLoadMethod: str = "manual"
+# Test mode
+# If true, Scratch2Python will load the project specified in the projectFileName variable below on startup.
+# For now, it's easier to develop using this mode, so it's the default.
+testMode: bool = True
 
 # Project file name
-# If the "manual" mode is chosen, set the Scratch project file to load.
+# If in test mode, set the Scratch project file to load.
 projectFileName: str = "projects/EventHandlers.sb3"
 
 # Download cache size

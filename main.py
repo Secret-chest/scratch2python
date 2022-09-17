@@ -85,25 +85,18 @@ if not config.enableDebugMessages:
 mainWindow = tk.Tk()
 mainWindow.withdraw()
 
-# Get project file name
-if config.projectLoadMethod == "manual":
-    setProject = config.projectFileName
-elif config.projectLoadMethod == "cmdline":
-    try:
-        setProject = sys.argv[1]
-    except IndexError:
-        raise OSError(_("missing-filename"))
-elif config.projectLoadMethod == "interactive":
-    setProject = input(_("filename-prompt") + " ")
-elif config.projectLoadMethod == "filechooser":
-    fileTypes = [(_("sb3-desc"), ".sb3"), (_("all-files-desc"), ".*")]
-    setProject = filedialog.askopenfilename(parent=mainWindow,
-                                            initialdir=os.getcwd(),
-                                            title=_("choose-project-title"),
-                                            filetypes=fileTypes)
+# Get project file name based on options and arguments
+if sys.argv:
+    setProject = sys.argv[1]
 else:
-    sys.stderr = sys.__stderr__
-    raise config.ConfigError(_("invalid-setting-error", setting="projectLoadMethod"))
+    if config.testMode:
+        setProject = config.projectFileName
+    else:
+        fileTypes = [(_("sb3-desc"), ".sb3"), (_("all-files-desc"), ".*")]
+        setProject = filedialog.askopenfilename(parent=mainWindow,
+                                                initialdir=os.getcwd(),
+                                                title=_("choose-project-title"),
+                                                filetypes=fileTypes)
 
 # Get project data and create sprites
 targets, project = sb3Unpacker.sb3Unpack(setProject)

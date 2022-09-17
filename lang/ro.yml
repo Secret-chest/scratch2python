@@ -1,7 +1,6 @@
 ro:
   start: "Scratch2Python %{version} rulând pe %{os}"
   unrecognized-os: "Scuze, Scratch2Python nu recunoaște sistemul tău de operare. Platforma ta este: %{platform}. Dacă Scratch2Python crapă, raportează aici: %{url}"
-  missing-filename: "Nu a fost primit niciun nume de fișier. Rulează Scratch2Python ca și „<nume executabil> <nume fișier proiect>” sau alege alt mod de încărcare."
   filename-prompt: "Nume de fișier pentru proiect:"
   sb3-desc: "Proiecte Scratch 3"
   all-files-desc: "Toate fișierele"
