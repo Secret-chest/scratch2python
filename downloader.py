@@ -32,3 +32,5 @@ def downloadByID(projectID, location="./", zipName=None, metaInArchive=True):
         for filename in objectsToDownload:
             projectFile.writestr(filename, client.get(
                 f"https://cdn.assets.scratch.mit.edu/internalapi/asset/{filename}/get/").content)
+
+    return zipSaveName
