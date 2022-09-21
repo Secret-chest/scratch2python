@@ -3,6 +3,7 @@ import httpx
 import json
 import zipfile
 import os
+import re
 
 client = httpx.Client()
 
@@ -34,3 +35,9 @@ def downloadByID(projectID, location="./", zipName=None, metaInArchive=True):
                 f"https://cdn.assets.scratch.mit.edu/internalapi/asset/{filename}/get/").content)
 
     return zipSaveName
+
+
+def downloadByURL(projectURL, location="./", zipName=None, metaInArchive=True):
+    # Get the ID
+    projectID = re.findall('[0-9]+', projectURL)[0]
+    return downloadByID(projectID, location, zipName, metaInArchive)
