@@ -24,7 +24,7 @@ testMode: bool = True
 
 # Project file name
 # If in test mode, set the Scratch project file to load.
-projectFileName: str = "projects/EventHandlers.sb3"
+projectFileName: str = "https://scratch.mit.edu/projects/729175960/"
 
 # Download cache size
 # Number of recent downloaded projects stored. 0 means infinity.

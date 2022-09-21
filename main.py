@@ -62,6 +62,7 @@ if OS == "unknown":
 if not config.pygameWelcomeMessage:
     sys.stdout = open(os.devnull, "w")
 import sb3Unpacker
+import downloader
 from sb3Unpacker import *
 import shutil
 import scratch
@@ -81,6 +82,41 @@ if not config.enableTerminalOutput:
 if not config.enableDebugMessages:
     sys.stderr = open(os.devnull, "w")
 
+
+# Define a dialog class for screen resolution
+class SizeDialog(tkinter.simpledialog.Dialog):
+    def __init__(self, parent, title):
+        super().__init__(parent, title)
+
+    def body(self, master):
+        tk.Label(master, text=widthPrompt).grid(row=0)
+        tk.Label(master, text=heightPrompt).grid(row=1)
+
+        self.width = tk.Entry(master)
+        self.height = tk.Entry(master)
+
+        self.width.grid(row=0, column=1)
+        self.height.grid(row=1, column=1)
+
+        return self.width
+
+    def okPressed(self):
+        self.setWidth = self.width.get()
+        self.setHeight = self.height.get()
+        self.destroy()
+
+    def cancelPressed(self):
+        self.destroy()
+
+    def buttonbox(self):
+        self.okButton = tk.Button(self, text=okText, width=5, command=self.okPressed)
+        self.okButton.pack(side="left")
+        cancelButton = tk.Button(self, text=cancelText, width=5, command=self.cancelPressed)
+        cancelButton.pack(side="right")
+        self.bind("<Return>", lambda event: self.okPressed())
+        self.bind("<Escape>", lambda event: self.cancelPressed())
+
+
 # Start tkinter for showing some popups, and hide main window
 mainWindow = tk.Tk()
 mainWindow.withdraw()
@@ -90,7 +126,14 @@ if len(sys.argv) > 1:
     setProject = sys.argv[1]
 else:
     if config.testMode:
-        setProject = config.projectFileName
+        if not config.projectFileName.endswith(".sb3"):
+            if "http" not in config.projectFileName\
+               or "https" not in config.projectFileName:
+                setProject = downloader.downloadByID(config.projectFileName, "./download")
+            else:
+                setProject = downloader.downloadByURL(config.projectFileName, "./download")
+        else:
+            setProject = config.projectFileName
     else:
         fileTypes = [(_("sb3-desc"), ".sb3"), (_("all-files-desc"), ".*")]
         setProject = filedialog.askopenfilename(parent=mainWindow,
@@ -163,40 +206,6 @@ fpsPrompt, fpsMessage = _("fps-prompt"), _("fps-message")
 extractPrompt, extractMessage = _("extract-prompt"), _("extracting-project")
 screenMessage = _("screen-message")
 redrawMessage = _("redraw-message")
-
-
-# Define a dialog class for screen resolution
-class SizeDialog(tkinter.simpledialog.Dialog):
-    def __init__(self, parent, title):
-        super().__init__(parent, title)
-
-    def body(self, master):
-        tk.Label(master, text=widthPrompt).grid(row=0)
-        tk.Label(master, text=heightPrompt).grid(row=1)
-
-        self.width = tk.Entry(master)
-        self.height = tk.Entry(master)
-
-        self.width.grid(row=0, column=1)
-        self.height.grid(row=1, column=1)
-
-        return self.width
-
-    def okPressed(self):
-        self.setWidth = self.width.get()
-        self.setHeight = self.height.get()
-        self.destroy()
-
-    def cancelPressed(self):
-        self.destroy()
-
-    def buttonbox(self):
-        self.okButton = tk.Button(self, text=okText, width=5, command=self.okPressed)
-        self.okButton.pack(side="left")
-        cancelButton = tk.Button(self, text=cancelText, width=5, command=self.cancelPressed)
-        cancelButton.pack(side="right")
-        self.bind("<Return>", lambda event: self.okPressed())
-        self.bind("<Escape>", lambda event: self.cancelPressed())
 
 
 # Start project
