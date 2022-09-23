@@ -1,54 +1,62 @@
+# ![](icon.svg) <font size="7">Scratch2Python</font>
+
+<img src="https://img.shields.io/github/languages/top/Secret-chest/Scratch2Python?labelColor=546e7a&color=26c6da&logo=python&logoColor=26c6da&style=flat-square"> <img alt="GitHub" src="https://img.shields.io/github/license/Secret-chest/Scratch2Python?style=flat-square&labelColor=546e7a&color=ffa000&label=licence"> <img alt="GitHub issues" src="https://img.shields.io/github/issues/Secret-chest/Scratch2Python?labelColor=546e7a&color=64dd17&logo=github&logoColor=ffffff&style=flat-square"> <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/Secret-chest/Scratch2Python?labelColor=546e7a&color=64dd17&logo=github&logoColor=ffffff&style=flat-square"> <img alt="GitHub milestones" src="https://img.shields.io/github/milestones/open/Secret-chest/Scratch2Python?labelColor=546e7a&color=64dd17&style=flat-square"><a href="https://github.com/Secret-chest/scratch2python/network"> <img alt="GitHub forks" src="https://img.shields.io/github/forks/Secret-chest/scratch2python?labelColor=546e7a&color=ffc107&logo=github&logoColor=ffffff&style=flat-square"></a> <a href="https://github.com/Secret-chest/Scratch2Python/releases"><img alt="GitHub all releases" src="https://img.shields.io/github/downloads/Secret-chest/Scratch2Python/total?color=4caf50&logo=github&style=flat-square&labelColor=546e7a"></a>
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-ff9800.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
-![Logo](s2p.svg)
 
-<img src="https://img.shields.io/github/languages/top/Secret-chest/Scratch2Python?labelColor=546e7a&color=26c6da&logo=python&logoColor=26c6da&style=flat-square"> <img alt="GitHub" src="https://img.shields.io/github/license/Secret-chest/Scratch2Python?style=flat-square&labelColor=546e7a&color=ffa000"> <img alt="GitHub issues" src="https://img.shields.io/github/issues/Secret-chest/Scratch2Python?labelColor=546e7a&color=64dd17&logo=github&logoColor=ffffff&style=flat-square"> <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/Secret-chest/Scratch2Python?labelColor=546e7a&color=64dd17&logo=github&logoColor=ffffff&style=flat-square"> <img alt="GitHub milestones" src="https://img.shields.io/github/milestones/open/Secret-chest/Scratch2Python?labelColor=546e7a&color=64dd17&style=flat-square"><a href="https://github.com/Secret-chest/scratch2python/network"> <img alt="GitHub forks" src="https://img.shields.io/github/forks/Secret-chest/scratch2python?labelColor=546e7a&color=ffc107&logo=github&logoColor=ffffff&style=flat-square"></a>
+Scratch2Python is a Scratch project interpreter that runs Scratch projects in Python, **using pygame to render your sprites**.
+<sup>Go to #23 if you want to change the name.</sup>
 
-# Scratch2Python
-Scratch2Python is a Scratch project interpreter that runs Scratch projects in Python, using pygame to render your sprites.
+Unlike others, Scratch2Python can actually _display_ your projects, not only process the variables, control flow, math and logic in the project,
+and simply print speech bubble blocks.
 
-A GUI for accessing the Scratch website is planned. It will most probably use... Qt. I would love using GTK, but **WINDOWS...** [Or maybe not](https://www.gtk.org/docs/installations/windows).
+It's not finished though. It only supports a few blocks, but it supports them well. The goal is to support almost everything
+(save for online services like text-to-speech) when we'll declare it as done. (Of course we'll still update things like the GUI.)
 
-Scratch2Python may only be the temporary name, as this may get confused with [Scratch2Py](https://github.com/The-Cloud-Dev/scratch2py). See #23 for more information.
-## 📝 Requirements
-Install from requirements.txt (Scratch2Python also needs Python 3.8 or newer).
+Scratch2Python is not *yet* a transpiler.
+
+## 📝 Requirements and installation
+[📥 Visit the website to easily download Scratch2Python](https://secret-chest.github.io/s2p/download/)
+
+Then install from requirements.txt using:
+
+`pip install -r requirements.txt`
+
+Scratch2Python also needs Python 3.8 or newer. [Click here to download Python for Windows and Mac](https://www.python.org/downloads/).
+On recent GNU/Linux distros (Ubuntu 20.04+, Debian 11+, Linux Mint 20+, Fedora 32+, updated rolling-release distros),
+Python 3 is preinstalled or downloadable from the repositories. Check your distro's documentation for more info.
+
+<details>
+<summary>Getting errors on Windows?</summary>
 
 On Windows, Scratch2Python needs to be installed in a non-protected folder.
-By default, the "Documents" folder is protected. Installing it anywhere else will work.
+By default, the “Documents” folder is protected. Installing it anywhere else will work.
 
-## 📘 Docs
-[Read the wiki here](https://github.com/Secret-chest/scratch2python/wiki). Also read `CONTRIBUTING.md`.
+To unprotect the “Documents” folder, go to its Properties and uncheck the “Read-only” checkbox.
 
-## 🔨 How to use 
-Assuming that you installed all necessary requirements, place your sb3 files somewhere accessible, or in the Scratch2Python folder. You can use an absolute or relative path.
-Then, go to `config.py` and change the projectFileName variable to your project file.
-There you can also choose to use a command-line argument, or an interactive prompt. The variable option is the default as it's more useful for testing.
+</details>
 
-Now, just run `python3 main.py` and the project will start!
+## ▶️ Setting the project
+Now that you have downloaded Scratch2Python, let's run a project.
 
-### ✅ Config
-The `config.py` file contains some more configuration options.
+### Using test mode
+For now Scratch2Python is in test mode by default. That means it will always run the project
+defined in the `projectFileName` variable in `config.py`. The variable can be a path, which will load the project there,
+or a Scratch ID / URL, which will download and cache the specified online project. No support for downloading unshared
+projects is provided! (The Scratch Team will implement access control, and it won't be possible anyway soon too.)
 
-Each of them is nicely explained, so why not just check it out?
+### GUI (experimental)
+Change the `testMode` variable to `False` so Scratch2Python will open a GUI when started. For now this is a basic filechooser,
+but we'll implement a proper full GUI soon.
 
-## 🌐 Localization
-To translate Scratch2Python, add a new file in the `lang` directory. Copy the English file for reference, and replace the string.
+## 📖 Wiki
+Our [GitHub Wiki](https://github.com/Secret-chest/scratch2python/wiki) may have some outdated information and it is short, but still useful.
 
-Then add it on the supported languages list both here and in `config.py`.
-Though I would not recommend translating it right now. It is still very WIP and you would have to update your language
-file very frequently.
+## 🧑‍💻 Contributors
 
-Currently supported languages:
-
-| Language code | Language name (English) | Language name (translated) | Flag |
-|---------------|-------------------------|----------------------------|------|
-| en            | English                 | English                    | 🇬🇧 |
-| ro            | Romanian                | limba română               | 🇷🇴 |
-
-## ✨ Contributors
-
-These people have contributed to this project and helped shape it ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+Thanks to the people listed here for contributing to Scratch2Python! ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
