@@ -25,8 +25,6 @@ class TargetSprite(pygame.sprite.Sprite):
     def __init__(self, target):
         sprites.add(self)
         pygame.sprite.Sprite.__init__(self)
-        self.padX = 0
-        self.padY = 0
         self.target = target
         self.target.currentCostume = target.currentCostume
         # Load costume
@@ -40,12 +38,13 @@ class TargetSprite(pygame.sprite.Sprite):
         else:
             sprite = scratch.loadSvg(target.costumes[target.currentCostume].file)
         sprite = pygame.transform.rotate(sprite, 90 - target.direction)
-        self.x = target.x + self.padX // 2
-        self.y = target.y - self.padY // 2
+        self.x = target.x
+        self.y = target.y
         self.size = target.size
         self.image = sprite
         self.rect = self.image.get_rect()
         self.isStage = target.isStage
+        self.imageSize = sprite.get_size()
         if self.target.name == "Stage":
             self.name = _("stage")
         else:
@@ -85,11 +84,11 @@ class TargetSprite(pygame.sprite.Sprite):
                 elif y < scratch.HEIGHT / -2 - self.rect.height / 2 + 16:
                     y = scratch.HEIGHT / -2 - self.rect.height / 2 + 16
         # Set X and Y
-        self.x = x + self.padX // 2
-        self.y = y - self.padY // 2
+        self.x = x
+        self.y = y
         print(_("debug-prefix"), _("new-sprite-position", x=x, y=y, name=self.name), file=sys.stderr)
-        self.rect.x = self.x + scratch.WIDTH // 2 - round(self.target.costumes[self.target.currentCostume].rotationCenterX)
-        self.rect.y = scratch.HEIGHT // 2 - self.y - round(self.target.costumes[self.target.currentCostume].rotationCenterY)
+        self.rect.x = self.x + scratch.WIDTH // 2 - round(self.target.costumes[self.target.currentCostume].rotationCenterX) + round(self.imageSize[0] / 2)
+        self.rect.y = scratch.HEIGHT // 2 - self.y - round(self.target.costumes[self.target.currentCostume].rotationCenterY) + round(self.imageSize[1] / 2)
 
     # Move
     def setXyDelta(self, dx, dy):
@@ -112,5 +111,6 @@ class TargetSprite(pygame.sprite.Sprite):
         else:
             sprite = scratch.loadSvg(self.target.costumes[self.target.currentCostume].file)
         self.image = sprite
+        self.imageSize = sprite.get_size()
         self.rect = self.image.get_rect()
         self.setXy(self.x, self.y)
