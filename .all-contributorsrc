@@ -2,7 +2,7 @@
   "files": [
     "README.md"
   ],
-  "imageSize": 100,
+  "imageSize": 96,
   "commit": false,
   "contributors": [
     {
@@ -52,7 +52,7 @@
       ]
     }
   ],
-  "contributorsPerLine": 7,
+  "contributorsPerLine": 6,
   "projectName": "scratch2python",
   "projectOwner": "Secret-chest",
   "repoType": "github",
