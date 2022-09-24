@@ -35,9 +35,9 @@ class TargetSprite(pygame.sprite.Sprite):
             sprite = pygame.transform.smoothscale(sprite, (sprite.get_width() // target.costumes[target.currentCostume].bitmapResolution, sprite.get_height() // target.costumes[target.currentCostume].bitmapResolution))
         else:
             sprite = scratch.loadSvg(target.costumes[target.currentCostume].file)
-        sprite = pygame.transform.rotate(sprite, 90 - target.direction)
         self.x = target.x
         self.y = target.y
+        self.direction = target.direction
         self.size = target.size
         self.image = sprite
         self.rect = self.image.get_rect()
@@ -48,13 +48,7 @@ class TargetSprite(pygame.sprite.Sprite):
         else:
             self.name = self.target.name
         self.setXy(self.x, self.y)
-
-        # # Convert Scratch coordinates into Pygame coordinates
-        # self.rect.x = (self.x + scratch.WIDTH // 2 - self.target.costumes[self.target.currentCostume].rotationCenterX)
-        # self.rect.y = (scratch.HEIGHT // 2 - self.y - self.target.costumes[self.target.currentCostume].rotationCenterY)
-        # pygame.transform.scale(self.image, (int(round(self.rect.width * self.size / 100)), int(round(self.rect.height * self.size / 100))))
-        #
-        # print(_("costumes-count", sprite=self.name, costumes=len(self.target.costumes)))
+        self.setRot(self.direction)
 
     # Set self position
     def setXy(self, x, y):
@@ -88,11 +82,21 @@ class TargetSprite(pygame.sprite.Sprite):
         self.rect.x = self.x + scratch.WIDTH // 2 - round(self.target.costumes[self.target.currentCostume].rotationCenterX) + round(self.imageSize[0] / 2)
         self.rect.y = scratch.HEIGHT // 2 - self.y - round(self.target.costumes[self.target.currentCostume].rotationCenterY) + round(self.imageSize[1] / 2)
 
-    # Move
+    # Relatively set self position
     def setXyDelta(self, dx, dy):
         x = self.x + dx
         y = self.y + dy
         self.setXy(x, y)
+
+    # Set self rotation
+    def setRot(self, rot):
+        self.direction = rot
+        sprite = pygame.transform.rotate(self.image, 90 - self.direction)
+
+    # Relatively set self rotation (turn)
+    def setRotDelta(self, drot):
+        rot = self.direction + drot
+        self.setRot(rot)
 
     # Change costume
     def setCostume(self, costumeId):
