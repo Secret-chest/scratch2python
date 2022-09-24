@@ -121,6 +121,12 @@ class SizeDialog(tkinter.simpledialog.Dialog):
 mainWindow = tk.Tk()
 mainWindow.withdraw()
 
+# Clean the cache if limit is exceeded
+downloads = sorted(Path("./download/").iterdir(), key=os.path.getmtime)
+downloadsToDelete = downloads[config.cachedDownloads:]
+for f in downloadsToDelete:
+    os.remove(f)
+
 # Get project file name based on options and arguments
 if len(sys.argv) > 1:
     setProject = sys.argv[1]
