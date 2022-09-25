@@ -24,7 +24,7 @@ ro:
   fps-prompt: "Introdu numărul de cadre pe secundă"
   fps-message: "Rata de cadre pe secundă a fost setată la:"
   extract-prompt: "Extrage toate resursele proiectului?"
-  screen-message: "Rezoulția ecranului a fost setată la:"
+  screen-message: "Rezoluția ecranului a fost setată la:"
   redraw-message: "Ecran redesenat"
   config-warning-screen-too-small: "Această rezoluție este foarte mică. Rezoluția minimă recomandată este cel puțin %{res}. Dacă vrei să nu apară acest mesaj, setează variabila INSANE în config.py pe True."
   config-warning-screen-too-large: "Această rezoluție este foarte mare. Rezoluția maximă recomandată este cel mult %{res}. Dacă vrei să nu apară acest mesaj, setează variabila INSANE în config.py pe True."
@@ -49,3 +49,4 @@ ro:
   costumes-count: "%{sprite} are %{costumes} costume"
   stage-not-found: "Nu există scena! Proiect invalid."
   no-any-key: "Scuze, nu există suport pentru opțiunea de taste „oricare” încă. Lucrăm la altceva și va fi adăugat când blocul principal e gata."
+  new-sprite-rotation: "Personajul %{name} a fost rotit la %{rot}"

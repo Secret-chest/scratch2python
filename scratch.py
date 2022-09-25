@@ -162,7 +162,7 @@ def execute(block, s, keys=set(), keyEvents=set()):
     nextBlock = None
 
     if opcode == "motion_gotoxy":  # go to x: () y: ()
-        s.setXy(int(block.getInputValue("x")), int(block.getInputValue("y")))
+        s.setXy(float(block.getInputValue("x")), float(block.getInputValue("y")))
 
     elif opcode == "motion_goto":
         nextBlock = block.getBlockInputValue("to")
@@ -190,16 +190,22 @@ def execute(block, s, keys=set(), keyEvents=set()):
             return
 
     elif opcode == "motion_setx":  # set x to ()
-        s.setXy(int(block.getInputValue("x")), s.y)
+        s.setXy(float(block.getInputValue("x")), s.y)
 
     elif opcode == "motion_changexby":  # change x by ( )
-        s.setXyDelta(int(block.getInputValue("dx")), 0)
+        s.setXyDelta(float(block.getInputValue("dx")), 0)
 
     elif opcode == "motion_sety":  # set y to ()
-        s.setXy(s.x, int(block.getInputValue("y")))
+        s.setXy(s.x, float(block.getInputValue("y")))
 
     elif opcode == "motion_changeyby":  # change y by ()
-        s.setXyDelta(0, int(block.getInputValue("dy")))
+        s.setXyDelta(0, float(block.getInputValue("dy")))
+
+    elif opcode == "motion_turnleft":  # turn ccw () degrees
+        s.setRotDelta(0 - float(block.getInputValue("degrees")))
+
+    elif opcode == "motion_turnright":  # turn cw () degrees
+        s.setRotDelta(float(block.getInputValue("degrees")))
 
     elif opcode == "control_wait":  # wait () seconds
         block.screenRefresh = True

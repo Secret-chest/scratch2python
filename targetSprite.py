@@ -29,17 +29,20 @@ class TargetSprite(pygame.sprite.Sprite):
         self.target.currentCostume = target.currentCostume
         # Load costume
         if target.costumes[self.target.currentCostume].dataFormat != "svg":
+            self.isBitmap = True
             sprite = pygame.image.load(io.BytesIO(target.costumes[target.currentCostume].file))
             initialWidth = sprite.get_width()
             initialHeight = sprite.get_height()
             sprite = pygame.transform.smoothscale(sprite, (sprite.get_width() // target.costumes[target.currentCostume].bitmapResolution, sprite.get_height() // target.costumes[target.currentCostume].bitmapResolution))
         else:
+            self.isBitmap = False
             sprite = scratch.loadSvg(target.costumes[target.currentCostume].file)
         self.x = target.x
         self.y = target.y
         self.direction = target.direction
         self.size = target.size
         self.image = sprite
+        self.sprite = sprite
         self.rect = self.image.get_rect()
         self.isStage = target.isStage
         self.imageSize = sprite.get_size()
@@ -79,8 +82,13 @@ class TargetSprite(pygame.sprite.Sprite):
         self.x = x
         self.y = y
         print(_("debug-prefix"), _("new-sprite-position", x=x, y=y, name=self.name), file=sys.stderr)
-        self.rect.x = self.x + scratch.WIDTH // 2 - round(self.target.costumes[self.target.currentCostume].rotationCenterX) + round(self.imageSize[0] / 2)
-        self.rect.y = scratch.HEIGHT // 2 - self.y - round(self.target.costumes[self.target.currentCostume].rotationCenterY) + round(self.imageSize[1] / 2)
+        # Scratch really is weird.
+        if self.isBitmap:
+            self.rect.x = self.x + scratch.WIDTH // 2 - round(self.target.costumes[self.target.currentCostume].rotationCenterX) + round(self.imageSize[0] / 2)
+            self.rect.y = scratch.HEIGHT // 2 - self.y - round(self.target.costumes[self.target.currentCostume].rotationCenterY) + round(self.imageSize[1] / 2)
+        else:
+            self.rect.x = self.x + scratch.WIDTH // 2 - round(self.target.costumes[self.target.currentCostume].rotationCenterX)
+            self.rect.y = scratch.HEIGHT // 2 - self.y - round(self.target.costumes[self.target.currentCostume].rotationCenterY)
 
     # Relatively set self position
     def setXyDelta(self, dx, dy):
@@ -91,6 +99,8 @@ class TargetSprite(pygame.sprite.Sprite):
     # Set self rotation
     def setRot(self, rot):
         self.direction = rot
+        print(_("debug-prefix"), _("new-sprite-rotation", rot=rot, name=self.name), file=sys.stderr)
+        self.image = self.sprite
         sprite = pygame.transform.rotate(self.image, 90 - self.direction)
 
     # Relatively set self rotation (turn)

@@ -24,7 +24,7 @@ testMode: bool = True
 
 # Project file name
 # If in test mode, set the Scratch project file to load.
-projectFileName: str = "https://scratch.mit.edu/projects/736349011/editor"
+projectFileName: str = "https://scratch.mit.edu/projects/736714617/"
 
 # Download cache size
 # Number of recent downloaded projects stored. 0 means infinity.
