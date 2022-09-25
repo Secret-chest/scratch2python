@@ -48,5 +48,4 @@ en:
   zero-division-error: "Project was trying to divide by 0"
   costumes-count: "%{sprite} has %{costumes} costumes"
   stage-not-found: "There is no stage sprite! Invalid project."
-  no-any-key: "Sorry, there is no support for the \"any\" key option yet. We're working on other things and it will be added when the code for the main key block is done."
   new-sprite-rotation: "Sprite %{name} rotated to %{rot}"

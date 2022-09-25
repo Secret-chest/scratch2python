@@ -232,10 +232,32 @@ def execute(block, s, keys=set(), keyEvents=set()):
         # print(key)
 
         if key == "any":  # when key [any v] pressed
-            # TODO any key
+            if keys and block.next:
+                print(_("debug-prefix"), _("keypress-handling", keyName=_("key-any")), file=sys.stderr)
+                # print(time.time_ns() // 1000000, keyName)
+                for b in block.script:
+                    s.target.blocks[b].blockRan = False
+                nb = block  # s.target.blocks[block.next]
+                # nb.blockRan = False
+                block.script.add(nb.blockID)
+                nb = s.target.blocks[nb.next]
+                while nb.next and nb.next != block.blockID:
+                    # Reset block
+                    nb.blockRan = False
+                    nb.timeDelay = 0
+                    nb.executionTime = 0
 
-            pass
-
+                    block.script.add(nb.blockID)
+                    nb = s.target.blocks[nb.next]
+                    if not nb.next:
+                        nb.next = block.blockID
+                if nb:
+                    block.script.add(nb.blockID)
+                block.script.remove(block.blockID)
+                print("script:", block.script)
+                nb.blockRan = False
+                nextBlock = s.target.blocks[block.next]
+                return nextBlock
         elif KEY_MAPPING[key] in keys and block.next:  # when key [. . . v] pressed
             if KEY_MAPPING[key] in keys:
                 if key == "left arrow":

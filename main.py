@@ -230,9 +230,9 @@ for s in allSprites:
             if nextBlock:
                 # Add the next block to the queue
                 toExecute.append(nextBlock)
-        elif block.opcode.startswith("event_"):  # add "when I start as a clone" code later
+        elif block.opcode.startswith("event_"):  # add “when I start as a clone” code later
             eventHandlers.append(block)
-s = None
+s = None  # so we don't mix it up
 
 # Prepare keyboard
 pygame.key.set_repeat(config.keyDelay, 1000 // config.projectMaxFPS)

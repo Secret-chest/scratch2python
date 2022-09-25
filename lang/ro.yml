@@ -48,5 +48,4 @@ ro:
   zero-division-error: "Proiectul a încercat să împartă la 0"
   costumes-count: "%{sprite} are %{costumes} costume"
   stage-not-found: "Nu există scena! Proiect invalid."
-  no-any-key: "Scuze, nu există suport pentru opțiunea de taste „oricare” încă. Lucrăm la altceva și va fi adăugat când blocul principal e gata."
   new-sprite-rotation: "Personajul %{name} a fost rotit la %{rot}"
