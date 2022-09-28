@@ -225,7 +225,7 @@ for s in allSprites:
     for _, block in s.target.blocks.items():
         blocksHash[block.blockID] = block
         if block.opcode == "event_whenflagclicked":
-            nextBlock = scratch.execute(block, block.target.sprite)
+            nextBlock = scratch.execute(block, block.target.sprite, set(), set())
             # Error-proof by checking if the scripts are not empty
             if nextBlock:
                 # Add the next block to the queue
@@ -239,7 +239,11 @@ pygame.key.set_repeat(config.keyDelay, 1000 // config.projectMaxFPS)
 keyEvents = set()
 
 # Mainloop
+framesCounter = 0
 while projectRunning:
+    print(f"Counter is {framesCounter}")
+    framesCounter += 1
+
     # Process Pygame events
     for event in pygame.event.get():
         # Window quit (ALT-F4 / X button / etc.)
@@ -248,9 +252,11 @@ while projectRunning:
             projectRunning = False
 
         # Debug and utility functions
+        # TODO why are the events correct here but not in execute???
         keyEvents = set()
         if event.type == pygame.KEYDOWN:
             keyEvents.add(event.key)
+            print("new key event", time.time_ns())
         keysRaw = pygame.key.get_pressed()
         keys = set(k for k in scratch.KEY_MAPPING.values() if keysRaw[k])
 
@@ -306,11 +312,12 @@ while projectRunning:
     if toExecute:
         for block in toExecute:
             pass
-            # print("Running block", block.blockID, "of type", block.opcode)
     if not isPaused:
+        print(len(eventHandlers))
         for e in eventHandlers:
-            if e.opcode == "event_whenkeypressed" and keys and not e.blockRan:
+            if e.opcode == "event_whenkeypressed" and keyEvents and not e.blockRan:
                 e.blockRan = True
+                print(keyEvents)
                 nextBlock = scratch.execute(e, e.target.sprite, keys, keyEvents)
                 if nextBlock and isinstance(nextBlock, list):
                     toExecute.extend(nextBlock)
@@ -334,13 +341,12 @@ while projectRunning:
                         block.blockRan = True
                         nextBlocks.append(block.target.blocks[block.next])
                         block.executionTime, block.timeDelay = 0, 0
-                if not block.blockRan and not block.opcode.startswith("event"):
+                if not block.blockRan and not block.opcode.startswith("event"):  # TODO add broadcast blocks
                     nextBlock = scratch.execute(block, block.target.sprite, keys, keyEvents)
                     if not block.next \
                        and block.top \
                        and block.top.opcode.startswith("event") \
                        and block.top.opcode != "event_whenflagclicked":
-                        print(block.top.blockRan, block.top.blockID)
                         waitFinished = False
                         waitFinishedFor = set()
                         for b in block.top.script:

@@ -40,7 +40,7 @@ enableTerminalOutput: bool = True
 
 # Enable debug messages
 # Set whether debug messages (messages to stderr) should be allowed.
-enableDebugMessages: bool = True
+enableDebugMessages: bool = False
 
 # Enable pygame welcome message
 # Enable or disable the "
@@ -63,7 +63,7 @@ maxFPS: int = 30
 
 # Key delay
 # Set the delay before key events start repeating. (in milliseconds)
-keyDelay: int = 250
+keyDelay: int = 10000
 
 # Screen width/height
 # Stage size. You can change that, but most projects won't work with it.
