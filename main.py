@@ -240,6 +240,7 @@ pygame.key.set_repeat(config.keyDelay, 1000 // config.projectMaxFPS)
 keyEventContainer = eventContainer.EventContainer()
 
 # Mainloop
+counterValue = 0
 while projectRunning:
     # Process Pygame events
     for event in pygame.event.get():
@@ -254,7 +255,6 @@ while projectRunning:
         if event.type == pygame.KEYDOWN:
             keyEventContainer.keyEvents.add(event.key)
             print("new key event", time.time_ns())
-        print(keyEventContainer.keyEvents, "after populating in main.py")
         keysRaw = pygame.key.get_pressed()
         keyEventContainer.keys = set(k for k in scratch.KEY_MAPPING.values() if keysRaw[k])
 
@@ -307,14 +307,13 @@ while projectRunning:
             print(redrawMessage)
 
     display.fill((255, 255, 255))
-    if toExecute:
-        for block in toExecute:
-            pass
     if not isPaused:
+        print("Starting frame at", time.time_ns())
         for e in eventHandlers:
             # TODO why does it run so many times???
-            print("running", e.blockID)
             if e.opcode == "event_whenkeypressed" and keyEventContainer.keyEvents and not e.blockRan:
+                print("running", e.blockID)
+
                 e.blockRan = True
                 nextBlock = scratch.execute(e, e.target.sprite, keyEventContainer)
                 if nextBlock and isinstance(nextBlock, list):
@@ -344,6 +343,8 @@ while projectRunning:
                         block.executionTime, block.timeDelay = 0, 0
                 if not block.blockRan and not block.opcode.startswith("event"):  # TODO add broadcast blocks
                     nextBlock = scratch.execute(block, block.target.sprite, keyEventContainer)
+                    if block.opcode == "looks_nextcostume":
+                        counterValue += 1
                     if not block.next \
                        and block.top \
                        and block.top.opcode.startswith("event") \
@@ -368,6 +369,9 @@ while projectRunning:
         allSprites.update()
     else:
         display.blit(paused, (WIDTH // 2 - pausedWidth // 2, WIDTH // 2 - pausedHeight // 2))
+
+    counter = font.render(str(counterValue), True, (0, 0, 128))
+    display.blit(counter, (WIDTH // 2 - pausedWidth // 2, WIDTH // 2 - pausedHeight // 2))
     pygame.display.flip()
     mainWindow.update()
     doScreenRefresh = False
