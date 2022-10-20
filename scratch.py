@@ -14,6 +14,7 @@ import targetSprite
 import bs4
 import time
 from datetime import datetime
+import eventContainer
 
 i18n.set("locale", config.language)
 i18n.set("filename_format", "{locale}.{format}")
@@ -151,7 +152,7 @@ def getStage():
 
 
 # Run the given block object
-def execute(block, s, keys, keyEvents):
+def execute(block, s, events=eventContainer.EventContainer()):
     # Get block values
     opcode = block.opcode
     blockRan = block.blockRan
@@ -159,6 +160,10 @@ def execute(block, s, keys, keyEvents):
     fields = block.fields
     shadow = block.shadow
     nextBlock = None
+
+    # Get keys
+    keys = events.keys
+    keyEvents = events.keyEvents
 
     if opcode == "motion_gotoxy":  # go to x: () y: ()
         s.setXy(float(block.getInputValue("x")), float(block.getInputValue("y")))
@@ -259,7 +264,7 @@ def execute(block, s, keys, keyEvents):
                 nextBlock = s.target.blocks[block.next]
                 return nextBlock
         elif KEY_MAPPING[key] in keyEvents and KEY_MAPPING[key] in keys and block.next:  # when key [. . . v] pressed
-            print(keyEvents)
+            print(keyEvents, "received in execute()")
             if key == "left arrow":
                 keyName = _("key-left")
             elif key == "right arrow":

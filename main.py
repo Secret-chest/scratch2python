@@ -73,6 +73,7 @@ from tkinter.messagebox import *
 from tkinter.simpledialog import *
 from tkinter import filedialog
 from targetSprite import TargetSprite
+import eventContainer
 
 sys.stdout = sys.__stdout__
 
@@ -225,7 +226,7 @@ for s in allSprites:
     for _, block in s.target.blocks.items():
         blocksHash[block.blockID] = block
         if block.opcode == "event_whenflagclicked":
-            nextBlock = scratch.execute(block, block.target.sprite, set(), set())
+            nextBlock = scratch.execute(block, block.target.sprite)
             # Error-proof by checking if the scripts are not empty
             if nextBlock:
                 # Add the next block to the queue
@@ -236,14 +237,10 @@ s = None  # so we don't mix it up
 
 # Prepare keyboard
 pygame.key.set_repeat(config.keyDelay, 1000 // config.projectMaxFPS)
-keyEvents = set()
+keyEventContainer = eventContainer.EventContainer()
 
 # Mainloop
-framesCounter = 0
 while projectRunning:
-    print(f"Counter is {framesCounter}")
-    framesCounter += 1
-
     # Process Pygame events
     for event in pygame.event.get():
         # Window quit (ALT-F4 / X button / etc.)
@@ -253,34 +250,35 @@ while projectRunning:
 
         # Debug and utility functions
         # TODO why are the events correct here but not in execute???
-        keyEvents = set()
+        keyEventContainer.keyEvents = set()
         if event.type == pygame.KEYDOWN:
-            keyEvents.add(event.key)
+            keyEventContainer.keyEvents.add(event.key)
             print("new key event", time.time_ns())
+        print(keyEventContainer.keyEvents, "after populating in main.py")
         keysRaw = pygame.key.get_pressed()
-        keys = set(k for k in scratch.KEY_MAPPING.values() if keysRaw[k])
+        keyEventContainer.keys = set(k for k in scratch.KEY_MAPPING.values() if keysRaw[k])
 
-        if pygame.K_F1 in keys:  # Help
+        if pygame.K_F1 in keyEventContainer.keys:  # Help
             showinfo(helpTitle, nothingToSeeHere)
-        if pygame.K_F4 in keys:  # Project info
+        if pygame.K_F4 in keyEventContainer.keys:  # Project info
             showinfo(projectInfoTitle, nothingToSeeHere)
-        if pygame.K_F3 in keys:  # Extract
+        if pygame.K_F3 in keyEventContainer.keys:  # Extract
             confirm = askokcancel(extractTitle, extractPrompt)
             if confirm:
                 print(extractMessage)
                 shutil.rmtree("assets")
                 os.mkdir("assets")
                 project.extractall("assets")
-        if pygame.K_F6 in keys:  # Pause
+        if pygame.K_F6 in keyEventContainer.keys:  # Pause
             isPaused = not isPaused
-        if pygame.K_F7 in keys:  # Set new FPS
+        if pygame.K_F7 in keyEventContainer.keys:  # Set new FPS
             # Open dialog
             newFPS = askinteger(title=fpsTitle, prompt=fpsPrompt)
             if newFPS is not None:
                 print(fpsMessage, newFPS)
                 config.projectMaxFPS = newFPS
             pygame.key.set_repeat(1000, 1000 // config.projectMaxFPS)
-        if pygame.K_F8 in keys:  # Set new screen resolution
+        if pygame.K_F8 in keyEventContainer.keys:  # Set new screen resolution
             try:
                 # Open special dialog
                 dialog = SizeDialog(mainWindow, title=screenTitle)
@@ -298,7 +296,7 @@ while projectRunning:
                 print(screenMessage, str(HEIGHT) + "x" + str(WIDTH))
             except ValueError:
                 pass
-        if pygame.K_F5 in keys:  # Redraw
+        if pygame.K_F5 in keyEventContainer.keys:  # Redraw
             # Redraw everything and recalculate sprite operations
             display = pygame.display.set_mode([config.projectScreenWidth, config.projectScreenHeight])
             HEIGHT = config.projectScreenHeight
@@ -313,16 +311,19 @@ while projectRunning:
         for block in toExecute:
             pass
     if not isPaused:
-        print(len(eventHandlers))
         for e in eventHandlers:
-            if e.opcode == "event_whenkeypressed" and keyEvents and not e.blockRan:
+            # TODO why does it run so many times???
+            print("running", e.blockID)
+            if e.opcode == "event_whenkeypressed" and keyEventContainer.keyEvents and not e.blockRan:
                 e.blockRan = True
-                print(keyEvents)
-                nextBlock = scratch.execute(e, e.target.sprite, keys, keyEvents)
+                nextBlock = scratch.execute(e, e.target.sprite, keyEventContainer)
                 if nextBlock and isinstance(nextBlock, list):
                     toExecute.extend(nextBlock)
+                    print("next:", (b.blockID for b in nextBlock))
                 elif nextBlock:
                     toExecute.append(nextBlock)
+                    print("next:", nextBlock.blockID)
+                print(keyEventContainer.keyEvents, "in main.py", "(" + str(len(eventHandlers)) + ")")
 
             if e.opcode == "event_whenkeypressed":
                 # print(s.target.blocks, e.script)
@@ -342,7 +343,7 @@ while projectRunning:
                         nextBlocks.append(block.target.blocks[block.next])
                         block.executionTime, block.timeDelay = 0, 0
                 if not block.blockRan and not block.opcode.startswith("event"):  # TODO add broadcast blocks
-                    nextBlock = scratch.execute(block, block.target.sprite, keys, keyEvents)
+                    nextBlock = scratch.execute(block, block.target.sprite, keyEventContainer)
                     if not block.next \
                        and block.top \
                        and block.top.opcode.startswith("event") \

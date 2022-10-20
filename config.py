@@ -63,7 +63,7 @@ maxFPS: int = 30
 
 # Key delay
 # Set the delay before key events start repeating. (in milliseconds)
-keyDelay: int = 10000
+keyDelay: int = 250
 
 # Screen width/height
 # Stage size. You can change that, but most projects won't work with it.
