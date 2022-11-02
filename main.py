@@ -240,8 +240,9 @@ pygame.key.set_repeat(config.keyDelay, 1000 // config.projectMaxFPS)
 keyEventContainer = eventContainer.EventContainer()
 
 # Mainloop
-counterValue = 0
+lastTime = time.time_ns()
 while projectRunning:
+    keyEventContainer.keyEvents = set()
     # Process Pygame events
     for event in pygame.event.get():
         # Window quit (ALT-F4 / X button / etc.)
@@ -254,7 +255,8 @@ while projectRunning:
         keyEventContainer.keyEvents = set()
         if event.type == pygame.KEYDOWN:
             keyEventContainer.keyEvents.add(event.key)
-            print("new key event", time.time_ns())
+            # print(event.key, "+" + str((time.time_ns() - lastTime) // 1000000))
+            lastTime = time.time_ns()
         keysRaw = pygame.key.get_pressed()
         keyEventContainer.keys = set(k for k in scratch.KEY_MAPPING.values() if keysRaw[k])
 
@@ -308,21 +310,21 @@ while projectRunning:
 
     display.fill((255, 255, 255))
     if not isPaused:
-        print("Starting frame at", time.time_ns())
+        # print("starting new frame", keyEventContainer.keyEvents)
         for e in eventHandlers:
             # TODO why does it run so many times???
             if e.opcode == "event_whenkeypressed" and keyEventContainer.keyEvents and not e.blockRan:
-                print("running", e.blockID)
+                # print("running", e.blockID)
 
                 e.blockRan = True
                 nextBlock = scratch.execute(e, e.target.sprite, keyEventContainer)
                 if nextBlock and isinstance(nextBlock, list):
                     toExecute.extend(nextBlock)
-                    print("next:", (b.blockID for b in nextBlock))
+                    # print("next:", (b.blockID for b in nextBlock))
                 elif nextBlock:
                     toExecute.append(nextBlock)
-                    print("next:", nextBlock.blockID)
-                print(keyEventContainer.keyEvents, "in main.py", "(" + str(len(eventHandlers)) + ")")
+                    # print("next:", nextBlock.blockID)
+                # print(keyEventContainer.keyEvents, "in main.py", "(" + str(len(eventHandlers)) + ")")
 
             if e.opcode == "event_whenkeypressed":
                 # print(s.target.blocks, e.script)
@@ -343,8 +345,6 @@ while projectRunning:
                         block.executionTime, block.timeDelay = 0, 0
                 if not block.blockRan and not block.opcode.startswith("event"):  # TODO add broadcast blocks
                     nextBlock = scratch.execute(block, block.target.sprite, keyEventContainer)
-                    if block.opcode == "looks_nextcostume":
-                        counterValue += 1
                     if not block.next \
                        and block.top \
                        and block.top.opcode.startswith("event") \
@@ -370,8 +370,6 @@ while projectRunning:
     else:
         display.blit(paused, (WIDTH // 2 - pausedWidth // 2, WIDTH // 2 - pausedHeight // 2))
 
-    counter = font.render(str(counterValue), True, (0, 0, 128))
-    display.blit(counter, (WIDTH // 2 - pausedWidth // 2, WIDTH // 2 - pausedHeight // 2))
     pygame.display.flip()
     mainWindow.update()
     doScreenRefresh = False

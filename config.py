@@ -24,7 +24,7 @@ testMode: bool = True
 
 # Project file name
 # If in test mode, set the Scratch project file to load.
-projectFileName: str = "projects/RightArrowKey.sb3"
+projectFileName: str = "projects/KeyJump.sb3"
 
 # Download cache size
 # Number of recent downloaded projects stored. 0 means infinity.
@@ -63,7 +63,7 @@ maxFPS: int = 30
 
 # Key delay
 # Set the delay before key events start repeating. (in milliseconds)
-keyDelay: int = 5000
+keyDelay: int = 250
 
 # Screen width/height
 # Stage size. You can change that, but most projects won't work with it.

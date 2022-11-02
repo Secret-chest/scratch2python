@@ -225,7 +225,7 @@ def execute(block, s, events=eventContainer.EventContainer()):
         pass
 
     elif opcode == "event_whenkeypressed":
-        print(time.time_ns(), "in whenkeypressed")
+        # print(time.time_ns(), "in whenkeypressed")
 
         # print("Handling key event")
         # if not block.waiting:
@@ -264,7 +264,7 @@ def execute(block, s, events=eventContainer.EventContainer()):
                 nextBlock = s.target.blocks[block.next]
                 return nextBlock
         elif KEY_MAPPING[key] in keyEvents and block.next:  # when key [. . . v] pressed
-            print(keyEvents, "received in execute()")
+            # print(keyEvents, "received in execute()")
             if key == "left arrow":
                 keyName = _("key-left")
             elif key == "right arrow":
