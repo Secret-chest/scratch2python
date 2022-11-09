@@ -166,7 +166,7 @@ def execute(block, s, events=eventContainer.EventContainer()):
     keyEvents = events.keyEvents
 
     if opcode == "motion_gotoxy":  # go to x: () y: ()
-        s.setXy(float(block.getInputValue("x")), float(block.getInputValue("y")))
+        s.setXy(float(block.getInputValue("x", eventContainer=events)), float(block.getInputValue("y", eventContainer=events)))
 
     elif opcode == "motion_goto":
         nextBlock = block.getBlockInputValue("to")
@@ -194,28 +194,28 @@ def execute(block, s, events=eventContainer.EventContainer()):
             return
 
     elif opcode == "motion_setx":  # set x to ()
-        s.setXy(float(block.getInputValue("x")), s.y)
+        s.setXy(float(block.getInputValue("x", eventContainer=events)), s.y)
 
     elif opcode == "motion_changexby":  # change x by ( )
-        s.setXyDelta(float(block.getInputValue("dx")), 0)
+        s.setXyDelta(float(block.getInputValue("dx", eventContainer=events)), 0)
 
     elif opcode == "motion_sety":  # set y to ()
-        s.setXy(s.x, float(block.getInputValue("y")))
+        s.setXy(s.x, float(block.getInputValue("y", eventContainer=events)))
 
     elif opcode == "motion_changeyby":  # change y by ()
-        s.setXyDelta(0, float(block.getInputValue("dy")))
+        s.setXyDelta(0, float(block.getInputValue("dy", eventContainer=events)))
 
     elif opcode == "motion_turnleft":  # turn ccw () degrees
-        s.setRotDelta(0 - float(block.getInputValue("degrees")))
+        s.setRotDelta(0 - float(block.getInputValue("degrees", eventContainer=events)))
 
     elif opcode == "motion_turnright":  # turn cw () degrees
-        s.setRotDelta(float(block.getInputValue("degrees")))
+        s.setRotDelta(float(block.getInputValue("degrees", eventContainer=events)))
 
     elif opcode == "control_wait":  # wait () seconds
         block.screenRefresh = True
         if not block.waiting:
             # Get time delay and convert it to milliseconds
-            block.timeDelay = int(round(float(float(block.getInputValue("duration"))) * 1000))
+            block.timeDelay = int(round(float(float(block.getInputValue("duration", eventContainer=events))) * 1000))
             block.waiting = True
             block.executionTime = 0
             print(_("debug-prefix"), _("block-waiting", time=block.timeDelay), file=sys.stderr)
@@ -332,7 +332,7 @@ def execute(block, s, events=eventContainer.EventContainer()):
 
     elif opcode == "control_repeat":  # repeat (10) {...}
         if block.repeatCounter is None:
-            block.repeatCounter = int(block.getInputValue("times"))
+            block.repeatCounter = int(block.getInputValue("times", eventContainer=events))
         # Don't mark the loop as ran until done, and do a screen refresh
         if block.repeatCounter > 0:
             block.blockRan = False
@@ -365,6 +365,37 @@ def execute(block, s, events=eventContainer.EventContainer()):
                 block.substack.add(nb.blockID)
             nb.next = block.blockID
             return nextBlock
+
+    elif opcode == "control_if":  # if <> then {...}
+        print("entered if", block.blockID)
+        if block.target.blocks[inputs["CONDITION"][1]].evaluateBlockValue(events):
+            # If there are blocks, get them
+            if inputs["SUBSTACK"][1]:
+                print("Running if substack")
+                # No blocks will be flagged as ran inside a forever loop
+                for b in block.substack:
+                    s.target.blocks[b].blockRan = False
+                nextBlock = s.target.blocks[inputs["SUBSTACK"][1]]
+                nb = s.target.blocks[inputs["SUBSTACK"][1]]
+                block.substack.add(nb.blockID)
+                while nb.next and nb.next != block.blockID:
+                    nb.blockRan = False
+                    nb.waiting = False
+                    nb.timeDelay = 0
+                    nb.executionTime = 0
+                    nb = s.target.blocks[nb.next]
+                    block.substack.add(nb.blockID)
+                nb.next = block.next
+                block.blockRan = True
+                print(nextBlock.blockID)
+                return nextBlock
+            print("No substack")
+            block.blockRan = True
+            # TODO why does it hang???
+        else:
+            print("condition is false, leaving")
+            block.blockRan = True
+            return s.target.blocks[block.next]
 
     elif opcode == "looks_switchcostumeto":  # switch costume to [... v]
         nextBlock = block.getBlockInputValue("costume")

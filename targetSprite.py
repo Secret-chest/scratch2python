@@ -81,7 +81,7 @@ class TargetSprite(pygame.sprite.Sprite):
         # Set X and Y
         self.x = x
         self.y = y
-        print(_("debug-prefix"), _("new-sprite-position", x=x, y=y, name=self.name), file=sys.stderr)
+        # print(_("debug-prefix"), _("new-sprite-position", x=x, y=y, name=self.name), file=sys.stderr)
         # Scratch really is weird.
         if self.isBitmap:
             self.rect.x = self.x + scratch.WIDTH // 2 - round(self.target.costumes[self.target.currentCostume].rotationCenterX) + round(self.imageSize[0] / 2)
