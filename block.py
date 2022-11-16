@@ -11,6 +11,8 @@ import i18n
 import config
 import math
 import pygame
+import eventContainer
+from scratch import KEY_MAPPING
 
 i18n.set("locale", config.language)
 i18n.set("filename_format", "{locale}.{format}")
@@ -40,9 +42,10 @@ class Block:
         self.inEventLoop = False
         self.value = None  # reported value
         self.repeatCounter = None  # for repeat block
+        self.canRun = None  # for if then / if then else
 
     # Evaluates block value (for reporters)
-    def evaluateBlockValue(self):
+    def evaluateBlockValue(self, eventContainer=eventContainer.EventContainer):
         if self.opcode == "operator_add":  # () + ()
             self.value = float(self.getInputValue("num1")) + float(self.getInputValue("num2"))
             return self.value
@@ -83,18 +86,22 @@ class Block:
             newY = newY - config.screenWidth // 2
             self.value = newY
             return newY
+        elif self.opcode == "sensing_keypressed":  # key pressed?
+            return KEY_MAPPING[self.getMenuValue("key_option")] in eventContainer.keys
+        elif self.opcode == "operator_not":  # not <>
+            return not self.target.blocks[self.getBlockInputValue("operand")].evaluateBlockValue(eventContainer)
 
     # Returns block input value
     def getBlockInputValue(self, inputId):
         return self.inputs[inputId.upper()][1]
 
     # Returns block input value
-    def getInputValue(self, inputId, lookIn=(1, 1)):
+    def getInputValue(self, inputId, lookIn=(1, 1), eventContainer=eventContainer.EventContainer()):
         if self.inputs[inputId.upper()][lookIn[0]][0] in {4, 0, 5, 6}:
             return self.inputs[inputId.upper()][lookIn[0]][1] or 0
         elif self.inputs[inputId.upper()][0] == 3:
             blockLink = self.inputs[inputId.upper()][1]
-            return self.target.blocks[blockLink].evaluateBlockValue()
+            return self.target.blocks[blockLink].evaluateBlockValue(eventContainer)
         else:
             pass
 
@@ -104,7 +111,7 @@ class Block:
 
     # Returns dropdown menu value (menus are separate blocks)
     def getMenuValue(self, menuId):
-        return self.inputs[menuId.upper()][1].fields[menuId.upper()][0]
+        return self.target.blocks[self.inputs[menuId.upper()][1]].fields[menuId.upper()][0]
 
     # Returns field value (menus are separate blocks)
     def getFieldValue(self, fieldId, lookIn=0):

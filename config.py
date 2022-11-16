@@ -24,7 +24,7 @@ testMode: bool = True
 
 # Project file name
 # If in test mode, set the Scratch project file to load.
-projectFileName: str = "projects/KeyJump.sb3"
+projectFileName: str = "projects/ChangeColour.sb3"
 
 # Download cache size
 # Number of recent downloaded projects stored. 0 means infinity.
@@ -40,14 +40,13 @@ enableTerminalOutput: bool = True
 
 # Enable debug messages
 # Set whether debug messages (messages to stderr) should be allowed.
-enableDebugMessages: bool = False
+enableDebugMessages: bool = True
 
 # Enable pygame welcome message
 # Enable or disable the "
 # pygame X.Y.Z (SDL X.Y.Z, Python 3.Y.Z)
 # Hello from the pygame community. https://www.pygame.org/contribute.html"
 # message.
-
 pygameWelcomeMessage: bool = True
 
 # Enable Scratch Addons debugger logs
