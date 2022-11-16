@@ -47,7 +47,6 @@ enableDebugMessages: bool = True
 # pygame X.Y.Z (SDL X.Y.Z, Python 3.Y.Z)
 # Hello from the pygame community. https://www.pygame.org/contribute.html"
 # message.
-
 pygameWelcomeMessage: bool = True
 
 # Enable Scratch Addons debugger logs

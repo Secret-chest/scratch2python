@@ -88,8 +88,8 @@ class Block:
             return newY
         elif self.opcode == "sensing_keypressed":  # key pressed?
             return KEY_MAPPING[self.getMenuValue("key_option")] in eventContainer.keys
-        elif self.opcode == "operators_not":  # not <>
-            return not self.evaluateBlockValue(self.getBlockInputValue("operand"))
+        elif self.opcode == "operator_not":  # not <>
+            return not self.target.blocks[self.getBlockInputValue("operand")].evaluateBlockValue(eventContainer)
 
     # Returns block input value
     def getBlockInputValue(self, inputId):

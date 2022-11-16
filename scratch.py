@@ -367,18 +367,16 @@ def execute(block, s, events=eventContainer.EventContainer()):
             return nextBlock
 
     elif opcode == "control_if":  # if <> then {...}
-        print("entered if", block.blockID)
         if block.target.blocks[inputs["CONDITION"][1]].evaluateBlockValue(events):
             # If there are blocks, get them
             if inputs["SUBSTACK"][1]:
-                print("Running if substack")
                 # No blocks will be flagged as ran inside a forever loop
                 for b in block.substack:
                     s.target.blocks[b].blockRan = False
                 nextBlock = s.target.blocks[inputs["SUBSTACK"][1]]
                 nb = s.target.blocks[inputs["SUBSTACK"][1]]
                 block.substack.add(nb.blockID)
-                while nb.next and nb.next != block.blockID:
+                while nb.next and nb.next not in block.substack:
                     nb.blockRan = False
                     nb.waiting = False
                     nb.timeDelay = 0
@@ -387,13 +385,10 @@ def execute(block, s, events=eventContainer.EventContainer()):
                     block.substack.add(nb.blockID)
                 nb.next = block.next
                 block.blockRan = True
-                print(nextBlock.blockID)
                 return nextBlock
-            print("No substack")
             block.blockRan = True
             # TODO why does it hang???
         else:
-            print("condition is false, leaving")
             block.blockRan = True
             return s.target.blocks[block.next]
 
@@ -460,9 +455,9 @@ def execute(block, s, events=eventContainer.EventContainer()):
             if block.proccode == "​​log​​ %s":  # Scratch Addons log ()
                 print("[", datetime.now().strftime("%H:%M:%S:%f"), "]", _("project-log"),  block.getCustomInputValue(0), file=sys.stderr)
             elif block.proccode == "​​warn​​ %s":  # Scratch Addons warn ()
-                print(_("project-warn"), block.getCustomInputValue(0), file=sys.stderr)
+                print("[", datetime.now().strftime("%H:%M:%S:%f"), "]", _("project-warn"), block.getCustomInputValue(0), file=sys.stderr)
             elif block.proccode == "​​error​​ %s":  # Scratch Addons error ()
-                print(_("project-error"), block.getCustomInputValue(0), file=sys.stderr)
+                print("[", datetime.now().strftime("%H:%M:%S:%f"), "]", _("project-error"), block.getCustomInputValue(0), file=sys.stderr)
 
     else:
         print(_("unknown-opcode"), opcode)
