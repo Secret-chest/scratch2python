@@ -27,3 +27,14 @@ class Target:
         self.rotationStyle = "all around"  # all around, left-right or do not rotate
         self.sprite = None
         self.name = ""
+
+    # Variable functions
+    def getVariableValue(self, varId):
+        return self.variables[varId][1]
+
+    def getVariableName(self, varId):
+        return self.variables[varId][0]
+
+    def setVariableValue(self, varId, newValue):
+        self.variables[varId][1] = newValue
+        return newValue
