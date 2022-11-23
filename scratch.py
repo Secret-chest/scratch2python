@@ -387,10 +387,51 @@ def execute(block, s, events=eventContainer.EventContainer()):
                 block.blockRan = True
                 return nextBlock
             block.blockRan = True
-            # TODO why does it hang???
         else:
             block.blockRan = True
             return s.target.blocks[block.next]
+
+    elif opcode == "control_if_else":  # if <> then {...}
+        if block.target.blocks[inputs["CONDITION"][1]].evaluateBlockValue(events):
+            # If there are blocks, get them
+            if inputs["SUBSTACK"][1]:
+                # No blocks will be flagged as ran inside a forever loop
+                for b in block.substack:
+                    s.target.blocks[b].blockRan = False
+                nextBlock = s.target.blocks[inputs["SUBSTACK"][1]]
+                nb = s.target.blocks[inputs["SUBSTACK"][1]]
+                block.substack.add(nb.blockID)
+                while nb.next and nb.next not in block.substack:
+                    nb.blockRan = False
+                    nb.waiting = False
+                    nb.timeDelay = 0
+                    nb.executionTime = 0
+                    nb = s.target.blocks[nb.next]
+                    block.substack.add(nb.blockID)
+                nb.next = block.next
+                block.blockRan = True
+                return nextBlock
+            block.blockRan = True
+        else:
+            # If there are blocks, get them
+            if inputs["SUBSTACK2"][1]:
+                # No blocks will be flagged as ran inside a forever loop
+                for b in block.substack2:
+                    s.target.blocks[b].blockRan = False
+                nextBlock = s.target.blocks[inputs["SUBSTACK2"][1]]
+                nb = s.target.blocks[inputs["SUBSTACK2"][1]]
+                block.substack2.add(nb.blockID)
+                while nb.next and nb.next not in block.substack2:
+                    nb.blockRan = False
+                    nb.waiting = False
+                    nb.timeDelay = 0
+                    nb.executionTime = 0
+                    nb = s.target.blocks[nb.next]
+                    block.substack2.add(nb.blockID)
+                nb.next = block.next
+                block.blockRan = True
+                return nextBlock
+            block.blockRan = True
 
     elif opcode == "looks_switchcostumeto":  # switch costume to [... v]
         nextBlock = block.getBlockInputValue("costume")

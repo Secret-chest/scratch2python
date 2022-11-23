@@ -37,6 +37,7 @@ class Block:
         self.timeDelay = 0  # wait time from the wait block
         self.target = None  # parent
         self.substack = set()  # blocks inside
+        self.substack2 = set()  # only for if then else
         self.script = set()  # blocks below
         self.screenRefresh = False  # do a screen refresh
         self.inEventLoop = False
