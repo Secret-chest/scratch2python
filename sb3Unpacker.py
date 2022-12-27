@@ -9,7 +9,7 @@ set. Those are then used to build the project in main.py.
 import zipfile as zf
 import json
 import config
-import target, costume, sound, block, variable, monitor  # , broadcast
+import target, costume, sound, block, monitor  # , broadcast
 from pathlib import Path
 import io
 import pygame
@@ -81,6 +81,10 @@ def sb3Unpack(sb3):
             s.file = project.read(soundObj["assetId"] + "." + soundObj["dataFormat"])
             s.name = soundObj["name"]
             t.sounds.append(s)
+
+        # Get variables
+        for variable in targetObj["variables"]:
+            t.variables[variable] = targetObj["variables"][variable]
 
         # Set blocks to their correct values
         for blockId, blockObj in targetObj["blocks"].items():

@@ -3,4 +3,3 @@ class EventContainer:
         self.keys = set()
         self.keyEvents = set()
         self.otherEvents = set()
-
