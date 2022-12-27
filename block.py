@@ -91,6 +91,8 @@ class Block:
             return KEY_MAPPING[self.getMenuValue("key_option")] in eventContainer.keys
         elif self.opcode == "operator_not":  # not <>
             return not self.target.blocks[self.getBlockInputValue("operand")].evaluateBlockValue(eventContainer)
+        elif self.opcode == "sensing_mousedown":  # mouse down?
+            return pygame.mouse.get_pressed()[0]
 
     # Returns block input value
     def getBlockInputValue(self, inputId):
