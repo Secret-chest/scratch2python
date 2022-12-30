@@ -62,6 +62,7 @@ class Block:
             except ZeroDivisionError:
                 raise ZeroDivisionError(_("zero-division-error"))
             return self.value
+
         elif self.opcode == "operator_random":  # pick random from () to ()
             decimals1 = len(str(math.modf(float(self.getInputValue("from"))))) - 2
             decimals2 = len(str(math.modf(float(self.getInputValue("to"))))) - 2
@@ -71,6 +72,7 @@ class Block:
                 decimals = decimals2
             self.value = random.randint(int(self.getInputValue("from")) * 10 ** decimals, int(self.getInputValue("to")) * 10 ** decimals) / 10 ** decimals
             return self.value
+
         elif self.opcode == "operator_equals":  # () = ()
             self.value = self.getInputValue("operand1") == self.getInputValue("operand2")
             return self.value
@@ -80,12 +82,14 @@ class Block:
         elif self.opcode == "operator_gt":  # () > ()
             self.value = self.getInputValue("operand1") > self.getInputValue("operand2")
             return self.value
+
         elif self.opcode == "motion_xposition":  # x position
             self.value = self.target.x
             return self.value
         elif self.opcode == "motion_xposition":  # y position
             self.value = self.target.y
             return self.value
+
         elif self.opcode == "sensing_mousex":  # mouse x
             newX, newY = pygame.mouse.get_pos()
             newX = newX - config.screenWidth // 2
@@ -96,14 +100,22 @@ class Block:
             newY = newY - config.screenWidth // 2
             self.value = newY
             return self.value
+
         elif self.opcode == "sensing_keypressed":  # key pressed?
             self.value = KEY_MAPPING[self.getMenuValue("key_option")] in eventContainer.keys
             return self.value
+        elif self.opcode == "sensing_mousedown":  # mouse down?
+            self.value = pygame.mouse.get_pressed()[0]
+            return self.value
+
         elif self.opcode == "operator_not":  # not <>
             self.value = not self.target.blocks[self.getBlockInputValue("operand")].evaluateBlockValue(eventContainer)
             return self.value
-        elif self.opcode == "sensing_mousedown":  # mouse down?
-            self.value = pygame.mouse.get_pressed()[0]
+        elif self.opcode == "operator_and":  # <> and <>
+            self.value = self.target.blocks[self.getBlockInputValue("operand1")].evaluateBlockValue(eventContainer) and self.target.blocks[self.getBlockInputValue("operand2")].evaluateBlockValue(eventContainer)
+            return self.value
+        elif self.opcode == "operator_or":  # <> or <>
+            self.value = self.target.blocks[self.getBlockInputValue("operand1")].evaluateBlockValue(eventContainer) or self.target.blocks[self.getBlockInputValue("operand2")].evaluateBlockValue(eventContainer)
             return self.value
 
     # Returns block input value
