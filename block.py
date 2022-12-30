@@ -71,6 +71,15 @@ class Block:
                 decimals = decimals2
             self.value = random.randint(int(self.getInputValue("from")) * 10 ** decimals, int(self.getInputValue("to")) * 10 ** decimals) / 10 ** decimals
             return self.value
+        elif self.opcode == "operator_equals":  # () = ()
+            self.value = self.getInputValue("operand1") == self.getInputValue("operand2")
+            return self.value
+        elif self.opcode == "operator_lt":  # () < ()
+            self.value = self.getInputValue("operand1") < self.getInputValue("operand2")
+            return self.value
+        elif self.opcode == "operator_gt":  # () > ()
+            self.value = self.getInputValue("operand1") > self.getInputValue("operand2")
+            return self.value
         elif self.opcode == "motion_xposition":  # x position
             self.value = self.target.x
             return self.value
@@ -81,18 +90,21 @@ class Block:
             newX, newY = pygame.mouse.get_pos()
             newX = newX - config.screenWidth // 2
             self.value = newX
-            return newX
+            return self.value
         elif self.opcode == "sensing_mousey":  # mouse y
             newX, newY = pygame.mouse.get_pos()
             newY = newY - config.screenWidth // 2
             self.value = newY
-            return newY
+            return self.value
         elif self.opcode == "sensing_keypressed":  # key pressed?
-            return KEY_MAPPING[self.getMenuValue("key_option")] in eventContainer.keys
+            self.value = KEY_MAPPING[self.getMenuValue("key_option")] in eventContainer.keys
+            return self.value
         elif self.opcode == "operator_not":  # not <>
-            return not self.target.blocks[self.getBlockInputValue("operand")].evaluateBlockValue(eventContainer)
+            self.value = not self.target.blocks[self.getBlockInputValue("operand")].evaluateBlockValue(eventContainer)
+            return self.value
         elif self.opcode == "sensing_mousedown":  # mouse down?
-            return pygame.mouse.get_pressed()[0]
+            self.value = pygame.mouse.get_pressed()[0]
+            return self.value
 
     # Returns block input value
     def getBlockInputValue(self, inputId):
