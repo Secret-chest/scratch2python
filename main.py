@@ -162,8 +162,8 @@ for t in targets:
 pygame.mixer.pre_init(22050, -16, 1, 12193)
 
 pygame.init()
-font = pygame.font.SysFont(pygame.font.get_default_font(), 16)
-fontXl = pygame.font.SysFont(pygame.font.get_default_font(), 36)
+font = pygame.font.Font("./fonts/SourceSansPro-Regular.ttf", 16)
+fontXl = pygame.font.Font("./fonts/SourceSansPro-Regular.ttf", 36)
 
 # Create paused message
 paused = fontXl.render(_("paused-message", keybind="F6"), True, (0, 0, 0))
