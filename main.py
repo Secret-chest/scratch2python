@@ -368,7 +368,7 @@ while projectRunning:
         allSprites.draw(display)
         allSprites.update()
     else:
-        display.blit(paused, (WIDTH // 2 - pausedWidth // 2, WIDTH // 2 - pausedHeight // 2))
+        display.blit(paused, (WIDTH // 2 - pausedWidth // 2, HEIGHT // 2 - pausedHeight // 2))
 
     pygame.display.flip()
     mainWindow.update()

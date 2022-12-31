@@ -12,6 +12,7 @@ import scratch
 import config
 import sys
 import i18n
+import copy
 
 i18n.set("locale", config.language)
 i18n.set("filename_format", "{locale}.{format}")
@@ -41,8 +42,8 @@ class TargetSprite(pygame.sprite.Sprite):
         self.y = target.y
         self.direction = target.direction
         self.size = target.size
-        self.image = sprite
         self.sprite = sprite
+        self.image = self.sprite.copy()
         self.rect = self.image.get_rect()
         self.isStage = target.isStage
         self.imageSize = sprite.get_size()
@@ -50,6 +51,7 @@ class TargetSprite(pygame.sprite.Sprite):
             self.name = _("stage")
         else:
             self.name = self.target.name
+
         self.setXy(self.x, self.y)
         self.setRot(self.direction)
 
@@ -81,7 +83,7 @@ class TargetSprite(pygame.sprite.Sprite):
         # Set X and Y
         self.x = x
         self.y = y
-        # print(_("debug-prefix"), _("new-sprite-position", x=x, y=y, name=self.name), file=sys.stderr)
+        print(_("debug-prefix"), _("new-sprite-position", x=x, y=y, name=self.name), file=sys.stderr)
         # Scratch really is weird.
         if self.isBitmap:
             self.rect.x = self.x + scratch.WIDTH // 2 - round(self.target.costumes[self.target.currentCostume].rotationCenterX) + round(self.imageSize[0] / 2)
@@ -100,8 +102,9 @@ class TargetSprite(pygame.sprite.Sprite):
     def setRot(self, rot):
         self.direction = rot
         print(_("debug-prefix"), _("new-sprite-rotation", rot=rot, name=self.name), file=sys.stderr)
-        self.image = self.sprite
-        sprite = pygame.transform.rotate(self.image, 90 - self.direction)
+        self.sprite = self.image
+        self.sprite = pygame.transform.rotate(self.sprite, 90 - self.direction)
+        self.rect = self.sprite.get_rect(center=self.rect.center)
 
     # Relatively set self rotation (turn)
     def setRotDelta(self, drot):

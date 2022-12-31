@@ -24,7 +24,7 @@ testMode: bool = True
 
 # Project file name
 # If in test mode, set the Scratch project file to load.
-projectFileName: str = "projects/MouseDown.sb3"
+projectFileName: str = "projects/Rotation.sb3"
 
 # Download cache size
 # Number of recent downloaded projects stored. 0 means infinity.
