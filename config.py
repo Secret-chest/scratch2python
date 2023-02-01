@@ -24,7 +24,7 @@ testMode: bool = True
 
 # Project file name
 # If in test mode, set the Scratch project file to load.
-projectFileName: str = "projects/Rotation.sb3"
+projectFileName: str = "projects/GtkPauseTest.sb3"
 
 # Download cache size
 # Number of recent downloaded projects stored. 0 means infinity.
@@ -40,7 +40,7 @@ enableTerminalOutput: bool = True
 
 # Enable debug messages
 # Set whether debug messages (messages to stderr) should be allowed.
-enableDebugMessages: bool = True
+enableDebugMessages: bool = False
 
 # Enable pygame welcome message
 # Enable or disable the "

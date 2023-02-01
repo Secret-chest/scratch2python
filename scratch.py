@@ -221,6 +221,16 @@ def execute(block, s, events=eventContainer.EventContainer()):
             print(_("debug-prefix"), _("block-waiting", time=block.timeDelay), file=sys.stderr)
         return block
 
+    elif opcode == "control_wait_until":  # wait until <>
+        block.screenRefresh = True
+        truth = block.target.blocks[inputs["CONDITION"][1]].evaluateBlockValue(events)
+        if truth:
+            block.blockRan = True
+            nextBlock = s.target.blocks[block.next]
+            return nextBlock
+        else:
+            return block
+
     elif opcode == "event_whenflagclicked":  # when green flag clicked
         pass
 

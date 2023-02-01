@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-__version__ = "v0.7.0"
+__version__ = "v0.8.0"
 __author__ = "Secret-chest"
 
 import tkinter.simpledialog
@@ -74,6 +74,7 @@ from tkinter.simpledialog import *
 from tkinter import filedialog
 from targetSprite import TargetSprite
 import eventContainer
+import select
 
 sys.stdout = sys.__stdout__
 
@@ -242,6 +243,15 @@ keyEventContainer = eventContainer.EventContainer()
 # Mainloop
 lastTime = time.time_ns()
 while projectRunning:
+    rlist, _, _ = select.select([sys.stdin], [], [], 0.1)
+    if rlist:
+        line = sys.stdin.readline().strip()
+        if line:
+            if line.startswith("STOP"):
+                pygame.quit()
+            elif line.startswith("PAUSE"):
+                isPaused = not isPaused
+
     keyEventContainer.keyEvents = set()
     # Process Pygame events
     for event in pygame.event.get():
