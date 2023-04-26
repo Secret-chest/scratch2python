@@ -1,24 +1,9 @@
 import gi
-from subprocess import PIPE, Popen
-from threading import Thread
-
-from queue import Queue, Empty
+import os
+import sys
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
-
-
-def enqueue_output(out, queue):
-    for line in iter(out.readline, b''):
-        queue.put(line)
-    out.close()
-
-
-p = Popen(['python', 'main.py'], stdout=PIPE, stdin=PIPE, bufsize=1, close_fds=True, universal_newlines=True)
-q = Queue()
-t = Thread(target=enqueue_output, args=(p.stdout, q))
-t.daemon = True  # thread dies with the program
-t.start()
 
 
 def pause(button):
@@ -44,5 +29,23 @@ builder.connect_signals(handlers)
 window = builder.get_object("test")
 window.show_all()
 
-if __name__ == '__main__':
+stdin  = sys.stdin.fileno() # usually 0
+stdout = sys.stdout.fileno() # usually 1
+
+parentStdin, childStdout  = os.pipe()
+childStdin,  parentStdout = os.pipe()
+pid = os.fork()
+if pid:
+    # parent process
+    os.close(childStdout)
+    os.close(childStdin)
+    os.dup2(parentStdin, stdin)
+    os.dup2(parentStdout, stdout)
     Gtk.main()
+else:
+    # child process
+    os.close(parentStdin)
+    os.close(parentStdout)
+    os.dup2(childStdin, stdin)
+    os.dup2(childStdout, stdout)
+    os.execl("python", "main.py", "main.py")

@@ -102,9 +102,11 @@ class TargetSprite(pygame.sprite.Sprite):
     def setRot(self, rot):
         self.direction = rot
         print(_("debug-prefix"), _("new-sprite-rotation", rot=rot, name=self.name), file=sys.stderr)
-        center = self.sprite.get_rect().center
-        self.sprite = pygame.transform.rotate(self.image, 90 - self.direction)
-        self.rect = self.sprite.get_rect(center=center)
+        center = self.sprite.get_rect().center   # TODO get correct rotation centre of sprite
+        print(center, (self.rect.x + center[0], self.rect.y + center[1]), (self.rect.x, self.rect.y), (self.x, self.y), self.direction)
+        self.image = pygame.transform.rotate(self.sprite, 90 - self.direction)
+        self.rect = self.image.get_rect(center=(self.rect.x + center[0], self.rect.y + center[1]))
+        self.setXy(self.x, self.y)
 
     # Relatively set self rotation (turn)
     def setRotDelta(self, drot):
