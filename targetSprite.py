@@ -106,11 +106,13 @@ class TargetSprite(pygame.sprite.Sprite):
         image_rect = self.sprite.get_rect(topleft=(self.rect.x - self.target.costumes[self.target.currentCostume].rotationCenterX, self.rect.y - self.target.costumes[self.target.currentCostume].rotationCenterX))
         #offset_center_to_pivot = pygame.math.Vector2((self.rect.x, self.rect.y)) - image_rect.center
         offset_center_to_pivot = pygame.math.Vector2((134, 36))
-        print(offset_center_to_pivot)
         rotated_offset = offset_center_to_pivot.rotate(90 - self.direction)
         rotated_image_center = (self.rect.x - rotated_offset.x, self.rect.y - rotated_offset.y)
+        print(rotated_image_center)
+
 
         self.image = pygame.transform.rotate(self.sprite, 90 - self.direction)
+        # FIXME
         self.rect = self.image.get_rect(center=rotated_image_center)
         self.setXy(self.x, self.y)
 
