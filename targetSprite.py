@@ -94,6 +94,7 @@ class TargetSprite(pygame.sprite.Sprite):
         self.rect.x = scratch.WIDTH // 2 + self.x + offset.x
         self.rect.y = scratch.HEIGHT // 2 - self.y + offset.y
         print(self.rect.x, self.rect.y, "/", self.x, self.y, "/", offset.x, offset.y)
+        # TODO update current rotation centre to correct sprite position
 
     # Relatively set self position
     def setXyDelta(self, dx, dy):

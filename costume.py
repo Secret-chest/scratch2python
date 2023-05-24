@@ -13,6 +13,7 @@ class Costume:
         self.dataFormat = "svg"
         self.rotationCenterX = 0
         self.rotationCenterY = 0
+        self.currentRotationCenter = (0, 0)
         self.bitmapResolution = 1
         self.file = None
         self.name = ""  # display name
