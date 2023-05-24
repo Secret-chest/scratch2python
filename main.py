@@ -75,6 +75,7 @@ from tkinter import filedialog
 from targetSprite import TargetSprite
 import eventContainer
 import select
+from scratch import display, setProject, mainWindow
 
 sys.stdout = sys.__stdout__
 
@@ -119,35 +120,12 @@ class SizeDialog(tkinter.simpledialog.Dialog):
         self.bind("<Escape>", lambda event: self.cancelPressed())
 
 
-# Start tkinter for showing some popups, and hide main window
-mainWindow = tk.Tk()
-mainWindow.withdraw()
-
 # Clean the cache if limit is exceeded
 downloads = sorted(Path("./download/").iterdir(), key=os.path.getmtime)
 downloadsToDelete = downloads[config.cachedDownloads:]
 for f in downloadsToDelete:
     os.remove(f)
 
-# Get project file name based on options and arguments
-if len(sys.argv) > 1:
-    setProject = sys.argv[1]
-else:
-    if config.testMode:
-        if not config.projectFileName.endswith(".sb3"):
-            if "http" not in config.projectFileName\
-               or "https" not in config.projectFileName:
-                setProject = downloader.downloadByID(config.projectFileName, "./download")
-            else:
-                setProject = downloader.downloadByURL(config.projectFileName, "./download")
-        else:
-            setProject = config.projectFileName
-    else:
-        fileTypes = [(_("sb3-desc"), ".sb3"), (_("all-files-desc"), ".*")]
-        setProject = filedialog.askopenfilename(parent=mainWindow,
-                                                initialdir=os.getcwd(),
-                                                title=_("choose-project-title"),
-                                                filetypes=fileTypes)
 
 # Get project data and create sprites
 targets, project = sb3Unpacker.sb3Unpack(setProject)
@@ -173,15 +151,6 @@ pausedWidth, pausedHeight = fontXl.size(_("paused-message", keybind="F6"))
 # Set player size and key delay
 HEIGHT = config.projectScreenHeight
 WIDTH = config.projectScreenWidth
-
-# Get project name and set icon
-projectName = Path(setProject).stem
-icon = pygame.image.load("icon.svg")
-
-# Create project player and window
-display = pygame.display.set_mode([WIDTH, HEIGHT])
-pygame.display.set_caption(_("window-title", projectName=projectName, s2pVersionString="Scratch2Python " + __version__))
-pygame.display.set_icon(icon)
 
 # Extract if requested
 if config.extractOnProjectRun:

@@ -15,6 +15,14 @@ import bs4
 import time
 from datetime import datetime
 import eventContainer
+from pathlib import Path
+import tkinter as tk
+import downloader
+from tkinter import filedialog
+import tkinter.simpledialog
+
+__version__ = "v0.8.0"
+__author__ = "Secret-chest"
 
 i18n.set("locale", config.language)
 i18n.set("filename_format", "{locale}.{format}")
@@ -32,8 +40,41 @@ if not config.enableTerminalOutput:
     sys.stdout = open(os.devnull, "w")
 
 
+# Start tkinter for showing some popups, and hide main window
+mainWindow = tk.Tk()
+mainWindow.withdraw()
+
+
+# Get project file name based on options and arguments
+if len(sys.argv) > 1:
+    setProject = sys.argv[1]
+else:
+    if config.testMode:
+        if not config.projectFileName.endswith(".sb3"):
+            if "http" not in config.projectFileName\
+               or "https" not in config.projectFileName:
+                setProject = downloader.downloadByID(config.projectFileName, "./download")
+            else:
+                setProject = downloader.downloadByURL(config.projectFileName, "./download")
+        else:
+            setProject = config.projectFileName
+    else:
+        fileTypes = [(_("sb3-desc"), ".sb3"), (_("all-files-desc"), ".*")]
+        setProject = filedialog.askopenfilename(parent=mainWindow,
+                                                initialdir=os.getcwd(),
+                                                title=_("choose-project-title"),
+                                                filetypes=fileTypes)
+
+
 HEIGHT = config.projectScreenHeight
 WIDTH = config.projectScreenWidth
+
+# Create project player and window
+projectName = Path(setProject).stem
+icon = pygame.image.load("icon.svg")
+display = pygame.display.set_mode([WIDTH, HEIGHT])
+pygame.display.set_caption(_("window-title", projectName=projectName, s2pVersionString="Scratch2Python " + __version__))
+pygame.display.set_icon(icon)
 
 # Key maps to convert the key option in blocks to Pygame constants
 KEY_MAPPING = {
