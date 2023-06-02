@@ -81,20 +81,18 @@ class TargetSprite(pygame.sprite.Sprite):
                     y = scratch.HEIGHT / 2 + self.rect.height / 2 - 16
                 elif y < scratch.HEIGHT / -2 - self.rect.height / 2 + 16:
                     y = scratch.HEIGHT / -2 - self.rect.height / 2 + 16
-        # Set X and Y
         self.x = x
         self.y = y
-        print("aici")
         # print(_("debug-prefix"), _("new-sprite-position", x=x, y=y, name=self.name), file=sys.stderr)
         #rect = self.sprite.get_rect(topleft=(self.x - self.target.costumes[self.target.currentCostume].rotationCenterX, self.y - self.target.costumes[self.target.currentCostume].rotationCenterY))
-        offset = pygame.Vector2(self.target.costumes[self.target.currentCostume].rotationCenterX - self.sprite.get_rect().width / 2, self.target.costumes[self.target.currentCostume].rotationCenterY - self.sprite.get_rect().height / 2)
+        offset = self.target.costumes[self.target.currentCostume].offset - pygame.math.Vector2(self.sprite.get_width() / 2, self.sprite.get_height() / 2)
         offset.rotate_ip(90 + self.direction)
-        self.image = pygame.transform.rotozoom(self.sprite, 90 - self.direction, 1)
+        self.image = pygame.transform.rotate(self.sprite, 90 - self.direction)
         # offset = pygame.Vector2(0, 0)
-        self.rect.centerx = scratch.WIDTH // 2 + self.x + offset.x
-        self.rect.centery = scratch.HEIGHT // 2 - self.y + offset.y
-        print(self.rect.x, self.rect.y, "/", self.x, self.y, "/", offset.x, offset.y)
-        # TODO update current rotation centre to correct sprite position
+        relativePosition = pygame.math.Vector2(self.spriteRect.centerx, self.spriteRect.centery)
+        position = pygame.math.Vector2(self.x - self.sprite.get_width() / 2 + scratch.WIDTH / 2, self.y - self.sprite.get_height() / 2 + scratch.HEIGHT / 2)
+
+        self.rect = self.image.get_rect(center=position+relativePosition+offset)
 
     # Relatively set self position
     def setXyDelta(self, dx, dy):

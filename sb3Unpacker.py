@@ -61,8 +61,8 @@ def sb3Unpack(sb3):
             if "md5ext" in costumeObj:
                 c.md5ext = costumeObj["md5ext"]
             c.rotationCenterX, c.rotationCenterY = costumeObj["rotationCenterX"], costumeObj["rotationCenterY"]
-            c.currentRotationCenter = (c.rotationCenterX, c.rotationCenterY)
             c.dataFormat = costumeObj["dataFormat"]
+            c.offset = pygame.math.Vector2(c.rotationCenterX, c.rotationCenterY)
             c.file = project.read(costumeObj["assetId"] + "." + costumeObj["dataFormat"])
             c.name = costumeObj["name"]
             if costumeObj["dataFormat"] != "svg":
