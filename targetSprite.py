@@ -82,7 +82,6 @@ class TargetSprite(pygame.sprite.Sprite):
                 elif y < scratch.HEIGHT / -2 - self.rect.height / 2 + 16:
                     y = scratch.HEIGHT / -2 - self.rect.height / 2 + 16
 
-        # TODO make fencing compatible with rotation centre
         self.x = x
         self.y = y
         # print(_("debug-prefix"), _("new-sprite-position", x=x, y=y, name=self.name), file=sys.stderr)
