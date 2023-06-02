@@ -124,7 +124,7 @@ class Block:
 
     # Returns block input value
     def getInputValue(self, inputId, lookIn=(1, 1), eventContainer=eventContainer.EventContainer()):
-        if self.inputs[inputId.upper()][lookIn[0]][0] in {4, 0, 5, 6}:
+        if self.inputs[inputId.upper()][lookIn[0]][0] in {4, 0, 5, 6, 8}:
             return self.inputs[inputId.upper()][lookIn[0]][1] or 0
         elif self.inputs[inputId.upper()][0] == 3:
             blockLink = self.inputs[inputId.upper()][1]
