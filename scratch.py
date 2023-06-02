@@ -252,6 +252,9 @@ def execute(block, s, events=eventContainer.EventContainer()):
     elif opcode == "motion_turnright":  # turn cw () degrees
         s.setRotDelta(float(block.getInputValue("degrees", eventContainer=events)))
 
+    elif opcode == "motion_pointindirection":  # point in direction ()
+        s.setRot(float(block.getInputValue("direction", eventContainer=events)))
+
     elif opcode == "control_wait":  # wait () seconds
         block.screenRefresh = True
         if not block.waiting:
