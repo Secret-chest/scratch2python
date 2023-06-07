@@ -47,7 +47,9 @@ class TargetSprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.spriteRect = self.sprite.get_rect()
         self.isStage = target.isStage
+        self.rotationStyle = target.rotationStyle
         self.imageSize = sprite.get_size()
+        self.flipped = False
         if self.target.name == "Stage":
             self.name = _("stage")
         else:
@@ -87,9 +89,26 @@ class TargetSprite(pygame.sprite.Sprite):
         # print(_("debug-prefix"), _("new-sprite-position", x=x, y=y, name=self.name), file=sys.stderr)
         #rect = self.sprite.get_rect(topleft=(self.x - self.target.costumes[self.target.currentCostume].rotationCenterX, self.y - self.target.costumes[self.target.currentCostume].rotationCenterY))
         offset = self.target.costumes[self.target.currentCostume].offset - pygame.math.Vector2(self.sprite.get_width() / 2, self.sprite.get_height() / 2)
-        offset.rotate_ip(90 + self.direction)
-        self.image = pygame.transform.rotate(self.sprite, 90 - self.direction)
-        # offset = pygame.Vector2(0, 0)
+
+        if self.rotationStyle == "all around":
+            self.image = pygame.transform.rotate(self.sprite, 90 - self.direction)
+            offset.rotate_ip(90 + self.direction)
+        elif self.rotationStyle == "left-right":
+            angle = self.direction % 360
+            print(angle, self.flipped)
+            if angle > 180:
+                self.flipped = True
+            else:
+                self.flipped = False
+            if self.flipped:
+                self.image = pygame.transform.flip(self.sprite, True, False)
+                offset = self.target.costumes[self.target.currentCostume].offset - pygame.math.Vector2(self.sprite.get_width() / 2, self.sprite.get_height() / 2)
+            else:
+                self.image = self.sprite
+                offset = pygame.math.Vector2(-self.target.costumes[self.target.currentCostume].offset.x, self.target.costumes[self.target.currentCostume].offset.y) - pygame.math.Vector2(-self.sprite.get_width() / 2, self.sprite.get_height() / 2)
+        else:
+            self.image = self.sprite
+
         relativePosition = pygame.math.Vector2(self.spriteRect.centerx, self.spriteRect.centery)
         position = pygame.math.Vector2(self.x - self.sprite.get_width() / 2 + scratch.WIDTH / 2, self.y - self.sprite.get_height() / 2 + scratch.HEIGHT / 2)
 

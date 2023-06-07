@@ -54,6 +54,10 @@ def sb3Unpack(sb3):
         t.currentCostume = targetObj["currentCostume"]
         t.isStage = targetObj["isStage"]
         t.name = targetObj["name"]
+        if not t.isStage:
+            t.rotationStyle = targetObj["rotationStyle"]
+        else:
+            t.rotationStyle = "all around"
 
         # Get costumes
         for costumeObj in targetObj["costumes"]:
