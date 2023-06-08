@@ -89,6 +89,9 @@ class Block:
         elif self.opcode == "motion_xposition":  # y position
             self.value = self.target.y
             return self.value
+        elif self.opcode == "motion_direction":  # y position
+            self.value = self.target.direction
+            return self.value
 
         elif self.opcode == "sensing_mousex":  # mouse x
             newX, newY = pygame.mouse.get_pos()
