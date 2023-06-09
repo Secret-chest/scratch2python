@@ -88,10 +88,14 @@ class TargetSprite(pygame.sprite.Sprite):
         self.y = y
         # print(_("debug-prefix"), _("new-sprite-position", x=x, y=y, name=self.name), file=sys.stderr)
         #rect = self.sprite.get_rect(topleft=(self.x - self.target.costumes[self.target.currentCostume].rotationCenterX, self.y - self.target.costumes[self.target.currentCostume].rotationCenterY))
-        offset = self.target.costumes[self.target.currentCostume].offset - pygame.math.Vector2(self.sprite.get_width() / 2, self.sprite.get_height() / 2)
+        if not self.isStage:
+            self.image = pygame.transform.smoothscale(self.sprite, (self.size, self.size))
+        else:
+            self.image = self.sprite
+        offset = self.target.costumes[self.target.currentCostume].offset.elementwise() * self.size / 100 - pygame.math.Vector2(self.sprite.get_width() / 2, self.sprite.get_height() / 2).elementwise() * self.size / 100
 
         if self.rotationStyle == "all around":
-            self.image = pygame.transform.rotate(self.sprite, 90 - self.direction)
+            self.image = pygame.transform.rotate(self.image, 90 - self.direction)
             offset.rotate_ip(90 + self.direction)
         elif self.rotationStyle == "left-right":
             angle = self.direction % 360
@@ -101,13 +105,12 @@ class TargetSprite(pygame.sprite.Sprite):
             else:
                 self.flipped = False
             if self.flipped:
-                self.image = pygame.transform.flip(self.sprite, True, False)
-                offset = self.target.costumes[self.target.currentCostume].offset - pygame.math.Vector2(self.sprite.get_width() / 2, self.sprite.get_height() / 2)
+                self.image = pygame.transform.flip(self.image, True, False)
+                offset = self.target.costumes[self.target.currentCostume].offset.elementwise() * self.size / 100 - pygame.math.Vector2(self.sprite.get_width() / 2, self.sprite.get_height() / 2).elementwise() * self.size / 100
             else:
-                self.image = self.sprite
-                offset = pygame.math.Vector2(-self.target.costumes[self.target.currentCostume].offset.x, self.target.costumes[self.target.currentCostume].offset.y) - pygame.math.Vector2(-self.sprite.get_width() / 2, self.sprite.get_height() / 2)
+                offset = pygame.math.Vector2(-self.target.costumes[self.target.currentCostume].offset.x, self.target.costumes[self.target.currentCostume].offset.y).elementwise() * self.size / 100 - pygame.math.Vector2(-self.sprite.get_width() / 2, self.sprite.get_height() / 2).elementwise() * self.size / 100
         else:
-            self.image = self.sprite
+            self.image = self.image
 
         relativePosition = pygame.math.Vector2(self.spriteRect.centerx, self.spriteRect.centery)
         position = pygame.math.Vector2(self.x - self.sprite.get_width() / 2 + scratch.WIDTH / 2, self.y - self.sprite.get_height() / 2 + scratch.HEIGHT / 2)
@@ -131,6 +134,18 @@ class TargetSprite(pygame.sprite.Sprite):
     def setRotDelta(self, drot):
         rot = self.direction + drot
         self.setRot(rot)
+
+    # Set self rotation
+    def setSize(self, size):
+        self.size = size
+        print(_("debug-prefix"), _("new-sprite-size", size=size, name=self.name), file=sys.stderr)
+
+        self.setXy(self.x, self.y)
+
+    # Relatively set self rotation (turn)
+    def setSizeDelta(self, dsize):
+        size = self.size + dsize
+        self.setSize(size)
 
     # Change costume
     def setCostume(self, costumeId):

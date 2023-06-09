@@ -24,7 +24,7 @@ testMode: bool = True
 
 # Project file name
 # If in test mode, set the Scratch project file to load.
-projectFileName: str = "projects/LeftRight.sb3"
+projectFileName: str = "projects/RotoZoom.sb3"
 
 # Download cache size
 # Number of recent downloaded projects stored. 0 means infinity.
@@ -67,7 +67,7 @@ keyDelay: int = 250
 # Screen width/height
 # Stage size. You can change that, but most projects won't work with it.
 # A scaling mode will be added later.
-# Vanilla is 480x360.
+# Vanilla is 480x360. Try 640x360 for 16/9 widescreen.
 screenWidth: int = 480
 screenHeight: int = 360
 

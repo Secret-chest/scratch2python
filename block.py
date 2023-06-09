@@ -100,7 +100,7 @@ class Block:
             return self.value
         elif self.opcode == "sensing_mousey":  # mouse y
             newX, newY = pygame.mouse.get_pos()
-            newY = newY - config.screenWidth // 2
+            newY = newY - config.screenHeight // 2
             self.value = newY
             return self.value
 

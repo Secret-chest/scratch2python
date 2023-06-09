@@ -255,6 +255,15 @@ def execute(block, s, events=eventContainer.EventContainer()):
     elif opcode == "motion_pointindirection":  # point in direction ()
         s.setRot(float(block.getInputValue("direction", eventContainer=events)))
 
+    elif opcode == "looks_changesizeby":  # turn cw () degrees
+        s.setSizeDelta(float(block.getInputValue("change", eventContainer=events)))
+
+    elif opcode == "looks_setsizeto":  # turn cw () degrees
+        s.setSize(float(block.getInputValue("size", eventContainer=events)))
+
+    elif opcode == "motion_pointindirection":  # point in direction ()
+        s.setRot(float(block.getInputValue("direction", eventContainer=events)))
+
     elif opcode == "motion_movesteps":  # move () steps
         offset = pygame.math.Vector2(float(block.getInputValue("steps", eventContainer=events)), 0)
         offset.rotate_ip(90 + s.direction)

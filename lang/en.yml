@@ -48,4 +48,5 @@ en:
   zero-division-error: "Project was trying to divide by 0"
   costumes-count: "%{sprite} has %{costumes} costumes"
   stage-not-found: "There is no stage sprite! Invalid project."
-  new-sprite-rotation: "Sprite %{name} rotated to %{rot}"
+  new-sprite-rotation: "Sprite %{name} rotated to %{rot} degrees"
+  new-sprite-size: "Sprite %{name} resized to %{size}%"
