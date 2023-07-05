@@ -13,6 +13,7 @@ import config
 import sys
 import i18n
 import copy
+import random
 
 i18n.set("locale", config.language)
 i18n.set("filename_format", "{locale}.{format}")
@@ -21,6 +22,13 @@ _ = i18n.t
 
 sprites = set()
 
+# Disable the print function
+def decorator(func):
+    def disabledPrint(*args, **kwargs):
+        if not config.disablePrint:
+            func(*args, **kwargs)
+    return disabledPrint
+print = decorator(print)
 
 class TargetSprite(pygame.sprite.Sprite):
     def __init__(self, target):
@@ -50,6 +58,7 @@ class TargetSprite(pygame.sprite.Sprite):
         self.rotationStyle = target.rotationStyle
         self.imageSize = sprite.get_size()
         self.flipped = False
+        self.layerOrder = target.layerOrder
         if self.target.name == "Stage":
             self.name = _("stage")
         else:
@@ -57,6 +66,8 @@ class TargetSprite(pygame.sprite.Sprite):
 
         self.setXy(self.x, self.y)
         self.setRot(self.direction)
+        self.setSize(self.size)
+        print(self.rect.size)
 
     # Set self position
     def setXy(self, x, y):
@@ -89,11 +100,11 @@ class TargetSprite(pygame.sprite.Sprite):
         # print(_("debug-prefix"), _("new-sprite-position", x=x, y=y, name=self.name), file=sys.stderr)
         #rect = self.sprite.get_rect(topleft=(self.x - self.target.costumes[self.target.currentCostume].rotationCenterX, self.y - self.target.costumes[self.target.currentCostume].rotationCenterY))
         if not self.isStage:
-            self.image = pygame.transform.smoothscale(self.sprite, (self.size, self.size))
+            self.image = pygame.transform.smoothscale(self.sprite, (self.size / 100 * self.imageSize[0], self.size / 100 * self.imageSize[1]))
         else:
             self.image = self.sprite
         offset = self.target.costumes[self.target.currentCostume].offset.elementwise() * self.size / 100 - pygame.math.Vector2(self.sprite.get_width() / 2, self.sprite.get_height() / 2).elementwise() * self.size / 100
-
+        # TODO fix rotation centre precision
         if self.rotationStyle == "all around":
             self.image = pygame.transform.rotate(self.image, 90 - self.direction)
             offset.rotate_ip(90 + self.direction)

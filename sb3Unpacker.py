@@ -54,6 +54,7 @@ def sb3Unpack(sb3):
             t.rotationStyle = targetObj["rotationStyle"]
         t.currentCostume = targetObj["currentCostume"]
         t.isStage = targetObj["isStage"]
+        t.layerOrder = targetObj["layerOrder"]
         t.name = targetObj["name"]
 
         # Get costumes

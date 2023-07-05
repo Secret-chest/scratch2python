@@ -85,6 +85,13 @@ if not config.enableTerminalOutput:
 if not config.enableDebugMessages:
     sys.stderr = open(os.devnull, "w")
 
+# Disable the print function
+def decorator(func):
+    def disabledPrint(*args, **kwargs):
+        if not config.disablePrint:
+            func(*args, **kwargs)
+    return disabledPrint
+print = decorator(print)
 
 # Define a dialog class for screen resolution
 class SizeDialog(tkinter.simpledialog.Dialog):
@@ -130,7 +137,7 @@ for f in downloadsToDelete:
 # Get project data and create sprites
 targets, project = sb3Unpacker.sb3Unpack(setProject)
 allSprites = pygame.sprite.Group()
-for t in targets:
+for t in sorted(targets, key=lambda t: t.layerOrder):
     sprite = TargetSprite(t)
     t.sprite = sprite
     allSprites.add(sprite)

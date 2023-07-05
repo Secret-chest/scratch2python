@@ -24,7 +24,7 @@ testMode: bool = True
 
 # Project file name
 # If in test mode, set the Scratch project file to load.
-projectFileName: str = "projects/RotoZoom.sb3"
+projectFileName: str = "projects/Layering.sb3"
 
 # Download cache size
 # Number of recent downloaded projects stored. 0 means infinity.
@@ -48,6 +48,9 @@ enableDebugMessages: bool = True
 # Hello from the pygame community. https://www.pygame.org/contribute.html"
 # message.
 pygameWelcomeMessage: bool = True
+
+# Disable print function
+disablePrint: bool = False
 
 # Enable Scratch Addons debugger logs
 # This allows projects using Scratch Addons to print messages to the console. Vanilla Scratch doesn't support it.
