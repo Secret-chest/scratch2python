@@ -42,7 +42,7 @@ class TargetSprite(pygame.sprite.Sprite):
             sprite = pygame.image.load(io.BytesIO(target.costumes[target.currentCostume].file))
             initialWidth = sprite.get_width()
             initialHeight = sprite.get_height()
-            sprite = pygame.transform.smoothscale(sprite, (sprite.get_width() // target.costumes[target.currentCostume].bitmapResolution, sprite.get_height() // target.costumes[target.currentCostume].bitmapResolution))
+            sprite = pygame.transform.smoothscale(sprite, (initialWidth / 2, initialHeight / 2))
         else:
             self.isBitmap = False
             sprite = scratch.loadSvg(target.costumes[target.currentCostume].file)
@@ -103,8 +103,9 @@ class TargetSprite(pygame.sprite.Sprite):
             self.image = pygame.transform.smoothscale(self.sprite, (self.size / 100 * self.imageSize[0], self.size / 100 * self.imageSize[1]))
         else:
             self.image = self.sprite
+
         offset = self.target.costumes[self.target.currentCostume].offset.elementwise() * self.size / 100 - pygame.math.Vector2(self.sprite.get_width() / 2, self.sprite.get_height() / 2).elementwise() * self.size / 100
-        # TODO fix rotation centre precision
+
         if self.rotationStyle == "all around":
             self.image = pygame.transform.rotate(self.image, 90 - self.direction)
             offset.rotate_ip(90 + self.direction)
@@ -126,7 +127,10 @@ class TargetSprite(pygame.sprite.Sprite):
         relativePosition = pygame.math.Vector2(self.spriteRect.centerx, self.spriteRect.centery)
         position = pygame.math.Vector2(self.x - self.sprite.get_width() / 2 + scratch.WIDTH / 2, self.y - self.sprite.get_height() / 2 + scratch.HEIGHT / 2)
 
-        self.rect = self.image.get_rect(center=position+relativePosition+offset)
+        if not self.isStage:
+            self.rect = self.image.get_rect(center=position+relativePosition+offset)
+        else:
+            self.rect = self.image.get_rect(center=(scratch.WIDTH / 2, scratch.HEIGHT / 2))
 
     # Relatively set self position
     def setXyDelta(self, dx, dy):
@@ -145,6 +149,20 @@ class TargetSprite(pygame.sprite.Sprite):
     def setRotDelta(self, drot):
         rot = self.direction + drot
         self.setRot(rot)
+
+    def pointTowards(self, x, y):
+        if self.y == y:
+            if self.y < y:
+                direction = -90
+            else:
+                direction = 90
+        else:
+            if self.y < y:
+                direction = math.degrees(math.atan(((self.x - x) / (self.y - y))))
+            else:
+                direction = math.degrees(math.atan(((self.x - x) / (self.y - y)))) + 180
+
+        self.setRot(direction)
 
     # Set self rotation
     def setSize(self, size):

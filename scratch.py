@@ -264,6 +264,33 @@ def execute(block, s, events=eventContainer.EventContainer()):
     elif opcode == "motion_pointindirection":  # point in direction ()
         s.setRot(float(block.getInputValue("direction", eventContainer=events)))
 
+    elif opcode == "motion_pointtowards":
+        nextBlock = block.getBlockInputValue("towards")
+        return s.target.blocks[nextBlock]
+
+    elif opcode == "motion_pointtowards_menu":
+        if block.getFieldValue("towards") == "_mouse_":  # go to [mouse pointer v]
+            newX, newY = pygame.mouse.get_pos()
+            newX = newX - WIDTH // 2
+            newY = HEIGHT // 2 - newY
+            s.pointTowards(newX, newY)
+            if s.target.blocks[block.parent].next:
+                return s.target.blocks[s.target.blocks[block.parent].next]
+            return
+
+        elif block.getFieldValue("towards") == "_random_":  # go to [random position v]
+            minX = 0 - WIDTH // 2
+            maxX = WIDTH // 2
+            minY = 0 - HEIGHT // 2
+            maxY = HEIGHT // 2
+            newX, newY = (random.randint(minX, maxX), random.randint(minY, maxY))
+            s.setXy(newX, newY)
+            if s.target.blocks[block.parent].next:
+                return s.target.blocks[s.target.blocks[block.parent].next]
+            return
+
+        # TODO: sprite lookup table
+
     elif opcode == "motion_movesteps":  # move () steps
         offset = pygame.math.Vector2(float(block.getInputValue("steps", eventContainer=events)), 0)
         offset.rotate_ip(90 + s.direction)
