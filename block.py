@@ -47,6 +47,9 @@ class Block:
 
     # Evaluates block value (for reporters)
     def evaluateBlockValue(self, eventContainer=eventContainer.EventContainer):
+        if self.opcode == "operator_join":  # join () ()
+            self.value = str(self.getInputValue("string1")) + str(self.getInputValue("string2"))
+            return self.value
         if self.opcode == "operator_add":  # () + ()
             self.value = float(self.getInputValue("num1")) + float(self.getInputValue("num2"))
             return self.value
