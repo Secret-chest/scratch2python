@@ -1,5 +1,6 @@
 import copy
 
+
 class BlockDef:
     def __init__(self, blockId, sprite, substack, shadow, inputs, fields):
         self.blockId = blockId
@@ -12,19 +13,26 @@ class BlockDef:
     def getInputValue(self, inputId):
         # input[0]: 1 = unobscured shadow, 2 = no shadow, 3 = obscured shadow
         # input[1][0]:
-        # * num: 4, 5, 6, 7, 8
+        # * float: 4
+        # * positive float: 5
+        # * positive int: 6
+        # * int: 7
+        # * boolean: 8 (unconfirmed)
         # * color: 9
         # * text: 10
         # * broadcast: 11
         # * variable: 12
         # * list: 13
+        # input[1][1]: the value
+        # input[1][2]: default value
         blockInput = self.inputs[inputId.upper()]
         if blockInput[0] == 1:
             # menu
             pass
         elif blockInput[0] == 3:
-            # obsucred menu
+            # obscured menu
             pass
         else:
             # normal input
+
             pass
