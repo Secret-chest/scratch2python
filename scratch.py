@@ -166,30 +166,6 @@ KEY_MAPPING = {
 }
 
 
-def cast(scratchType, value):
-    match scratchType:
-        case 4:
-            try:
-                return float(int)
-            except TypeError:
-                return 0
-        case 5:
-            try:
-                return float(int)
-            except TypeError:
-                return 0
-        case 6:
-            try:
-                return float(int)
-            except TypeError:
-                return 0
-        case 4:
-            try:
-                return float(int)
-            except TypeError:
-                return 0
-
-
 # Load SVG
 def loadSvg(svgBytes):
     svg = bs4.BeautifulSoup(svgBytes, "lxml-xml")
