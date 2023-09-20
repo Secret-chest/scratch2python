@@ -58,7 +58,38 @@ def parseValue(value, type_):
         return "#" + hex(int(round(value))).strip("0x")
 
 
+def _getInputValue(inputObject):
+    # input[0]: 1 = unobscured shadow, 2 = no shadow, 3 = obscured shadow
+    # input[1][0]:
+    # * float: 4
+    # * positive float: 5
+    # * positive int: 6
+    # * int: 7
+    # * boolean: 8
+    # * color: 9
+    # * text: 10
+    # * broadcast: 11
+    # * variable: 12
+    # * list: 13
+    # input[1][1]: the value
+    # input[1][2]: default value
+
+    if inputObject[0] == 1:
+        # menu
+        pass
+    elif inputObject[0] == 3:
+        # obscured menu
+        pass
+    else:
+        # no menu
+        if not isinstance(inputObject[1][1], list):
+            return inputObject[1][1]
+        return _getInputValue(inputObject[1][1])
+
+
 class BlockDef:
+    friendlyName = ""
+
     def __init__(self, blockId, sprite, substack, shadow, inputs, fields):
         self.blockId = blockId
         self.sprite = sprite
@@ -67,27 +98,9 @@ class BlockDef:
         self.inputs = copy.deepcopy(inputs)
         self.fields = copy.deepcopy(fields)
 
-    def getInputValue(self, inputId):
-        # input[0]: 1 = unobscured shadow, 2 = no shadow, 3 = obscured shadow
-        # input[1][0]:
-        # * float: 4
-        # * positive float: 5
-        # * positive int: 6
-        # * int: 7
-        # * boolean: 8
-        # * color: 9
-        # * text: 10
-        # * broadcast: 11
-        # * variable: 12
-        # * list: 13
-        # input[1][1]: the value
-        # input[1][2]: default value
-        blockInput = self.inputs[inputId.upper()]
-        if blockInput[0] == 1:
-            # menu
-            pass
-        elif blockInput[0] == 3:
-            # obscured menu
-            pass
-        else:
+    def runSelf(self):
+        raise RuntimeError("Please run a specific block type, not the block template class!")
 
+    def getInputValue(self, inputId):
+        blockInput = self.inputs[inputId.upper()]
+        return _getInputValue(blockInput)
